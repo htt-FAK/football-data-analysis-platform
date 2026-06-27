@@ -176,9 +176,12 @@ else
     fi
 fi
 
-# 验证表数量
-TABLE_COUNT=$(mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "SHOW TABLES;" 2>/dev/null | grep -c -E "leagues|seasons|teams|players|matches|standings|match_events|player_stats|shots|team_stats")
-echo_info "体育相关表数量: $TABLE_COUNT / 10"
+# 验证表数量（含 data_sources / crawl_logs 共 12 张表）
+TABLE_COUNT=$(mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "SHOW TABLES;" 2>/dev/null | grep -c -E "leagues|seasons|teams|players|matches|standings|match_events|player_stats|shots|team_stats|data_sources|crawl_logs")
+echo_info "体育相关表数量: $TABLE_COUNT / 12"
+if [ "$TABLE_COUNT" -lt 12 ]; then
+    echo_warn "表数量不足 12 张，建议检查 init_database.sql 是否执行成功"
+fi
 echo ""
 
 # ============================================================
@@ -292,12 +295,14 @@ REDIS_PASSWORD=
 WS_HEARTBEAT_INTERVAL=25
 WS_LIVE_POLL_INTERVAL=30
 
-# 实时数据抓取配置（秒）
-CRAWL_REALTIME_INTERVAL=30
+# 实时数据抓取配置（秒）— config.py 读取 LIVE_CRAWL_INTERVAL
+LIVE_CRAWL_INTERVAL=30
+# 进行中比赛缓存 TTL（秒）— config.py 读取 REDIS_LIVE_TTL
+REDIS_LIVE_TTL=300
 
 # Excel 导出配置
 EXPORT_DIR=/opt/sports/project/export
-EXPORT_CRON=0 6 * * *
+EXPORT_CRON=0 2 * * *
 EXPORT_INCLUDE_ANOMALY=true
 EXPORT_INCLUDE_COMPARISON=true
 EOF
