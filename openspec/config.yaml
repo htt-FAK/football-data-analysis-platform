@@ -1,0 +1,10 @@
+schema: spec-driven
+
+context: |
+  项目名称：09体育赛事数据采集与分析
+  所属公司：中国高科（CHINA HI-TECH GROUP）
+  技术栈：Python, FastAPI, React, TypeScript, Hadoop HDFS, MySQL, ECharts
+  服务器：TencentOS Server 3 (CentOS系), OpenJDK 1.8, Hadoop 3.3.6 伪分布式
+  数据源：懂球帝, FBref, Understat, Football-Data
+  联赛范围：2026世界杯, 英超
+  语言：所有文档和代码注释使用中文
