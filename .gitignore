@@ -38,5 +38,8 @@ data/processed/
 *.log
 tmp/
 
+# Local docs not for GitHub
+09体育赛事数据采集与分析-项目方案.md
+
 # OS
 Thumbs.db

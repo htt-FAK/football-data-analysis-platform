@@ -18,10 +18,11 @@ from app.api.websocket import ws_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """应用生命周期：启动时初始化，关闭时清理"""
-    # TODO: 启动时初始化 Redis 连接池、调度器
+    """应用生命周期：启动时初始化调度器，关闭时清理"""
+    from app.scheduler.jobs import start_scheduler, shutdown_scheduler
+    start_scheduler()
     yield
-    # TODO: 关闭时清理资源
+    shutdown_scheduler()
 
 
 app = FastAPI(
@@ -45,7 +46,7 @@ app.include_router(leagues_router, prefix="/api/v1/leagues", tags=["联赛"])
 app.include_router(teams_router, prefix="/api/v1/teams", tags=["球队"])
 app.include_router(players_router, prefix="/api/v1/players", tags=["球员"])
 app.include_router(matches_router, prefix="/api/v1/matches", tags=["比赛"])
-app.include_router(live_router, prefix="/api/v1/matches/live", tags=["实时比赛"])
+app.include_router(live_router, prefix="/api/v1/live", tags=["实时比赛"])
 app.include_router(data_sources_router, prefix="/api/v1/data-sources", tags=["数据源"])
 app.include_router(crawl_router, prefix="/api/v1/crawl", tags=["爬虫"])
 app.include_router(ws_router, tags=["WebSocket"])

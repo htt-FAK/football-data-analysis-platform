@@ -87,6 +87,19 @@ CREATE TABLE IF NOT EXISTS players (
     height INT COMMENT '身高(cm)',
     weight INT COMMENT '体重(kg)',
     photo_url VARCHAR(255) COMMENT '头像URL',
+    -- 门将专属字段
+    saves INT DEFAULT 0 COMMENT '扑救数(GK)',
+    save_rate FLOAT DEFAULT 0 COMMENT '扑救率(GK)',
+    xcs FLOAT DEFAULT 0 COMMENT '预期失球(GK)',
+    sweeper_actions INT DEFAULT 0 COMMENT '出击次数(GK)',
+    -- 六边图评分字段（按位置差异化展示）
+    atk_score FLOAT DEFAULT 0 COMMENT '进攻维度评分',
+    org_score FLOAT DEFAULT 0 COMMENT '组织维度评分',
+    def_score FLOAT DEFAULT 0 COMMENT '防守维度评分',
+    gk_score FLOAT DEFAULT 0 COMMENT '门线维度评分(GK)',
+    phy_score FLOAT DEFAULT 0 COMMENT '身体/运动维度评分',
+    dis_score FLOAT DEFAULT 0 COMMENT '纪律维度评分',
+    overall_rating FLOAT DEFAULT 0 COMMENT '综合评分(按位置权重计算)',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     -- 增量同步字段

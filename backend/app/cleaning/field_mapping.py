@@ -103,6 +103,74 @@ FIELD_MAP = {
         "score_fullTime_home": "home_score",
         "score_fullTime_away": "away_score",
     },
+    # API-Football v3：JSON 嵌套结构（爬虫已展平一层）
+    "api_football": {
+        "fixture_id": "match_id",
+        "date": "date",
+        "league_name": "league",
+        "league_season": "season",
+        "round": "matchday",
+        "home_team_name": "home_team",
+        "away_team_name": "away_team",
+        "goals_home": "home_score",
+        "goals_away": "away_score",
+        "status": "status",
+        # 球员统计
+        "player_name": "name",
+        "team_name": "team",
+        "position": "position",
+        "games_appearences": "appearances",
+        "games_minutes": "minutes_played",
+        "goals_total": "goals",
+        "goals_assists": "assists",
+        "shots_total": "shots",
+        "shots_on": "shots_on_target",
+        "passes_total": "passes",
+        "passes_accuracy": "pass_accuracy",
+        "tackles_total": "tackles",
+        "duels_won": "interceptions",
+    },
+    # TheSportsDB：免费 API，元信息为主
+    "thesportsdb": {
+        "idLeague": "league_id",
+        "strLeague": "league",
+        "idTeam": "team_id",
+        "strTeam": "team",
+        "strTeamShort": "team",
+        "strStadium": "stadium",
+        "strManager": "coach",
+        "intFormedYear": "founded_year",
+        "strCountry": "country",
+        # 球员
+        "idPlayer": "player_id",
+        "strPlayer": "name",
+        "strTeam": "team",
+        "strPosition": "position",
+        "strNationality": "nationality",
+        "dateBorn": "birth_date",
+    },
+    # OpenLigaDB：德甲为主，XML/JSON
+    "openligadb": {
+        "matchID": "match_id",
+        "matchDateTime": "date",
+        "groupOrderID": "matchday",
+        "league_name": "league",
+        "team1_teamName": "home_team",
+        "team2_teamName": "away_team",
+        "matchResults_resultName": "result_type",
+        # 事件
+        "goalMatchMinute": "minute",
+        "goalPlayerName": "player",
+        "goalTeamID": "team",
+    },
+    # TeamRankings：评分/概率
+    "teamrankings": {
+        "team": "team",
+        "rating": "overall_rating",
+        "win_pct": "win_rate",
+        "rank": "position",
+        "league": "league",
+    },
 }
 
 
