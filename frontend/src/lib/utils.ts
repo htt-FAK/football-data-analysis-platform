@@ -451,9 +451,9 @@ type CountryMeta = {
   code?: string;
 };
 
-// 国旗图源：优先使用国内访问稳定的镜像，避免 jsDelivr 境外源导致图片加载缓慢。
-// flagcdn.com 在国内有节点，加载 4x3 SVG 通常比 jsDelivr 快很多。
-const FLAG_BASE_URL = "https://flagcdn.com";
+// 国旗图源：本地化自托管（public/flags/），避免外部 CDN 国内访问慢。
+// Vite 中 /flags/xxx.svg 对应 public/flags/xxx.svg，构建后随静态资源一起部署。
+const FLAG_BASE_URL = "/flags";
 
 const COUNTRY_META_MAP: Record<string, CountryMeta> = {
   world: { label: "国际" },
@@ -616,8 +616,8 @@ export function getCountryLabel(value: string | null | undefined): string {
 export function getCountryFlagUrl(value: string | null | undefined): string | undefined {
   const code = getCountryMeta(value)?.code;
   if (!code) return undefined;
-  // flagcdn.com 的标准路径：/flags/{尺寸}/{code}.png（PNG 在国内 CDN 命中率更高、加载更快）
-  return `${FLAG_BASE_URL}/flags/4x3/${code.toLowerCase()}.png`;
+  // 本地自托管国旗：/flags/{code}.svg，构建时随 public 目录一起部署。
+  return `${FLAG_BASE_URL}/${code.toLowerCase()}.svg`;
 }
 
 export function getLeagueTypeLabel(type: string | null | undefined): string {

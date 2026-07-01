@@ -1,0 +1,3 @@
+# 此目录存放本地化的国家/地区国旗 SVG。
+# 运行 download_flags.sh 从 jsDelivr 批量下载。
+# 前端 utils.ts 的 getCountryFlagUrl() 会从 /flags/{code}.svg 加载。
