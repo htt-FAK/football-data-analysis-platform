@@ -1,0 +1,297 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: 世界杯
+        - generic [ref=e15]: 足球数据专题
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "世界杯" [ref=e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e20]
+        - generic [ref=e25]: 世界杯
+      - link "球队" [ref=e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e27]
+        - generic [ref=e32]: 球队
+      - link "球员" [ref=e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e34]
+        - generic [ref=e37]: 球员
+      - link "比赛" [ref=e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e39]
+        - generic [ref=e41]: 比赛
+      - link "AI预测" [ref=e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e43]
+        - generic [ref=e46]: AI预测
+    - generic [ref=e47]: v1.0.0
+  - main [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]: 2026 世界杯
+          - generic [ref=e54]: 本地后端总览
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: "--"
+            - generic [ref=e58]: 球员记录
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - generic [ref=e61]: "--"
+              - generic [ref=e62]: 比赛场次
+            - generic [ref=e63]:
+              - generic [ref=e64]: "--"
+              - generic [ref=e65]: 球队数量
+            - generic [ref=e66]:
+              - generic [ref=e67]: "--"
+              - generic [ref=e68]: 已完赛
+        - generic [ref=e69]:
+          - generic [ref=e72]: 分组 --
+          - generic [ref=e74]: 正在连接本地后端...
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - img [ref=e80]
+              - text: 淘汰赛实时对阵
+            - heading "世界杯对阵图" [level=2] [ref=e85]
+            - paragraph [ref=e86]: 直接使用世界杯真实赛程，自动每 30 秒刷新一次。
+          - generic [ref=e87]:
+            - generic [ref=e88]: 已完赛 0 / 0
+            - generic [ref=e89]: 进行中 0
+            - generic [ref=e90]: 更新于 --
+        - generic [ref=e91]:
+          - button "32强" [ref=e92] [cursor=pointer]
+          - button "16强" [ref=e93] [cursor=pointer]
+          - button "1/4决赛" [ref=e94] [cursor=pointer]
+          - button "半决赛" [ref=e95] [cursor=pointer]
+        - generic [ref=e96]:
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e100]: 32强
+              - generic [ref=e102]: 暂无该轮次赛程
+            - generic [ref=e103]:
+              - generic [ref=e104]: 16强
+              - generic [ref=e106]: 暂无该轮次赛程
+            - generic [ref=e107]:
+              - generic [ref=e108]: 1/4决赛
+              - generic [ref=e110]: 暂无该轮次赛程
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - img [ref=e114]
+              - generic [ref=e116]: 赛事进度
+            - generic [ref=e117]:
+              - generic [ref=e119]:
+                - generic [ref=e120]: 32强
+                - generic [ref=e121]: 0/0
+              - generic [ref=e124]:
+                - generic [ref=e125]: 16强
+                - generic [ref=e126]: 0/0
+              - generic [ref=e129]:
+                - generic [ref=e130]: 1/4决赛
+                - generic [ref=e131]: 0/0
+              - generic [ref=e134]:
+                - generic [ref=e135]: 半决赛
+                - generic [ref=e136]: 0/0
+              - generic [ref=e139]:
+                - generic [ref=e140]: 决赛
+                - generic [ref=e141]: 0/0
+      - generic [ref=e144]:
+        - generic [ref=e145]:
+          - heading "小组积分榜" [level=2] [ref=e146]
+          - generic [ref=e147]: 0 个分组 / 0 支球队
+        - button "全部" [ref=e149] [cursor=pointer]: 全部
+        - generic [ref=e151]: 正在加载小组积分榜...
+      - generic [ref=e154]:
+        - generic [ref=e155]:
+          - generic [ref=e156]:
+            - heading "球员榜单" [level=2] [ref=e157]
+            - generic [ref=e158]: 0 名球员
+          - generic [ref=e159]:
+            - button "进球" [ref=e160] [cursor=pointer]: 进球
+            - button "助攻" [ref=e162] [cursor=pointer]
+            - button "评分" [ref=e163] [cursor=pointer]
+          - generic [ref=e165]: 暂无榜单数据。
+        - generic [ref=e166]:
+          - generic [ref=e167]:
+            - heading "最佳评分球员" [level=2] [ref=e168]
+            - generic [ref=e169]: 评分榜首
+          - generic [ref=e170]: 暂无评分球员数据。
+      - generic [ref=e172]:
+        - generic [ref=e173]:
+          - heading "最近赛果" [level=2] [ref=e174]
+          - generic [ref=e175]: 最近 8 场已结束世界杯比赛
+        - generic [ref=e176]:
+          - link "小组赛 06/12 03:00 墨西哥 墨西哥 2 - 0 南非 南非 已结束 这场比赛的事件摘要回填中。" [ref=e177] [cursor=pointer]:
+            - /url: /matches/1521
+            - generic [ref=e178]:
+              - generic [ref=e179]:
+                - generic [ref=e180]: 小组赛
+                - generic [ref=e181]: 06/12 03:00
+              - generic [ref=e182]:
+                - generic [ref=e183]: 墨西哥
+                - img "墨西哥" [ref=e185]
+              - generic [ref=e186]:
+                - generic [ref=e187]: "2"
+                - generic [ref=e188]: "-"
+                - generic [ref=e189]: "0"
+              - generic [ref=e190]:
+                - img "南非" [ref=e192]
+                - generic [ref=e193]: 南非
+              - generic [ref=e194]:
+                - generic [ref=e195]: 已结束
+                - img [ref=e196]
+            - generic [ref=e199]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/12 10:00 韩国 韩国 2 - 1 捷克 捷克 已结束 这场比赛的事件摘要回填中。" [ref=e200] [cursor=pointer]:
+            - /url: /matches/1522
+            - generic [ref=e201]:
+              - generic [ref=e202]:
+                - generic [ref=e203]: 小组赛
+                - generic [ref=e204]: 06/12 10:00
+              - generic [ref=e205]:
+                - generic [ref=e206]: 韩国
+                - img "韩国" [ref=e208]
+              - generic [ref=e209]:
+                - generic [ref=e210]: "2"
+                - generic [ref=e211]: "-"
+                - generic [ref=e212]: "1"
+              - generic [ref=e213]:
+                - img "捷克" [ref=e215]
+                - generic [ref=e216]: 捷克
+              - generic [ref=e217]:
+                - generic [ref=e218]: 已结束
+                - img [ref=e219]
+            - generic [ref=e222]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/13 03:00 加拿大 加拿大 1 - 1 波黑 波黑 已结束 这场比赛的事件摘要回填中。" [ref=e223] [cursor=pointer]:
+            - /url: /matches/1523
+            - generic [ref=e224]:
+              - generic [ref=e225]:
+                - generic [ref=e226]: 小组赛
+                - generic [ref=e227]: 06/13 03:00
+              - generic [ref=e228]:
+                - generic [ref=e229]: 加拿大
+                - img "加拿大" [ref=e231]
+              - generic [ref=e232]:
+                - generic [ref=e233]: "1"
+                - generic [ref=e234]: "-"
+                - generic [ref=e235]: "1"
+              - generic [ref=e236]:
+                - img "波黑" [ref=e238]
+                - generic [ref=e239]: 波黑
+              - generic [ref=e240]:
+                - generic [ref=e241]: 已结束
+                - img [ref=e242]
+            - generic [ref=e245]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/13 09:00 美国 美国 4 - 1 巴拉圭 巴拉圭 已结束 这场比赛的事件摘要回填中。" [ref=e246] [cursor=pointer]:
+            - /url: /matches/1524
+            - generic [ref=e247]:
+              - generic [ref=e248]:
+                - generic [ref=e249]: 小组赛
+                - generic [ref=e250]: 06/13 09:00
+              - generic [ref=e251]:
+                - generic [ref=e252]: 美国
+                - img "美国" [ref=e254]
+              - generic [ref=e255]:
+                - generic [ref=e256]: "4"
+                - generic [ref=e257]: "-"
+                - generic [ref=e258]: "1"
+              - generic [ref=e259]:
+                - img "巴拉圭" [ref=e261]
+                - generic [ref=e262]: 巴拉圭
+              - generic [ref=e263]:
+                - generic [ref=e264]: 已结束
+                - img [ref=e265]
+            - generic [ref=e268]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/14 03:00 卡塔尔 卡塔尔 1 - 1 瑞士 瑞士 已结束 这场比赛的事件摘要回填中。" [ref=e269] [cursor=pointer]:
+            - /url: /matches/1525
+            - generic [ref=e270]:
+              - generic [ref=e271]:
+                - generic [ref=e272]: 小组赛
+                - generic [ref=e273]: 06/14 03:00
+              - generic [ref=e274]:
+                - generic [ref=e275]: 卡塔尔
+                - img "卡塔尔" [ref=e277]
+              - generic [ref=e278]:
+                - generic [ref=e279]: "1"
+                - generic [ref=e280]: "-"
+                - generic [ref=e281]: "1"
+              - generic [ref=e282]:
+                - img "瑞士" [ref=e284]
+                - generic [ref=e285]: 瑞士
+              - generic [ref=e286]:
+                - generic [ref=e287]: 已结束
+                - img [ref=e288]
+            - generic [ref=e291]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/14 06:00 巴西 巴西 1 - 1 摩洛哥 摩洛哥 已结束 这场比赛的事件摘要回填中。" [ref=e292] [cursor=pointer]:
+            - /url: /matches/1526
+            - generic [ref=e293]:
+              - generic [ref=e294]:
+                - generic [ref=e295]: 小组赛
+                - generic [ref=e296]: 06/14 06:00
+              - generic [ref=e297]:
+                - generic [ref=e298]: 巴西
+                - img "巴西" [ref=e300]
+              - generic [ref=e301]:
+                - generic [ref=e302]: "1"
+                - generic [ref=e303]: "-"
+                - generic [ref=e304]: "1"
+              - generic [ref=e305]:
+                - img "摩洛哥" [ref=e307]
+                - generic [ref=e308]: 摩洛哥
+              - generic [ref=e309]:
+                - generic [ref=e310]: 已结束
+                - img [ref=e311]
+            - generic [ref=e314]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/14 09:00 海地 海地 0 - 1 苏格兰 苏格兰 已结束 这场比赛的事件摘要回填中。" [ref=e315] [cursor=pointer]:
+            - /url: /matches/1527
+            - generic [ref=e316]:
+              - generic [ref=e317]:
+                - generic [ref=e318]: 小组赛
+                - generic [ref=e319]: 06/14 09:00
+              - generic [ref=e320]:
+                - generic [ref=e321]: 海地
+                - img "海地" [ref=e323]
+              - generic [ref=e324]:
+                - generic [ref=e325]: "0"
+                - generic [ref=e326]: "-"
+                - generic [ref=e327]: "1"
+              - generic [ref=e328]:
+                - img "苏格兰" [ref=e330]
+                - generic [ref=e331]: 苏格兰
+              - generic [ref=e332]:
+                - generic [ref=e333]: 已结束
+                - img [ref=e334]
+            - generic [ref=e337]: 这场比赛的事件摘要回填中。
+          - link "小组赛 06/14 12:00 澳大利亚 澳大利亚 2 - 0 土耳其 土耳其 已结束 这场比赛的事件摘要回填中。" [ref=e338] [cursor=pointer]:
+            - /url: /matches/1528
+            - generic [ref=e339]:
+              - generic [ref=e340]:
+                - generic [ref=e341]: 小组赛
+                - generic [ref=e342]: 06/14 12:00
+              - generic [ref=e343]:
+                - generic [ref=e344]: 澳大利亚
+                - img "澳大利亚" [ref=e346]
+              - generic [ref=e347]:
+                - generic [ref=e348]: "2"
+                - generic [ref=e349]: "-"
+                - generic [ref=e350]: "0"
+              - generic [ref=e351]:
+                - img "土耳其" [ref=e353]
+                - generic [ref=e354]: 土耳其
+              - generic [ref=e355]:
+                - generic [ref=e356]: 已结束
+                - img [ref=e357]
+            - generic [ref=e360]: 这场比赛的事件摘要回填中。
+      - generic [ref=e362]:
+        - generic [ref=e363]:
+          - heading "覆盖状态" [level=2] [ref=e364]
+          - generic [ref=e365]: 0 个后端模块
+        - generic [ref=e366]: 暂无覆盖状态快照。
+        - generic [ref=e367]:
+          - generic [ref=e368]: "数据来源: 本地后端世界杯覆盖状态"
+          - generic [ref=e369]: "赛季: 2026"
+          - generic [ref=e370]: 前后端联调模式

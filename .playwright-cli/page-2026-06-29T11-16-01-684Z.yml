@@ -1,0 +1,1410 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: SPORTSDATA
+        - generic [ref=e15]: Football Analytics
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "仪表盘" [ref=e19] [cursor=pointer]:
+        - /url: /
+        - img [ref=e20]
+        - generic [ref=e25]: 仪表盘
+      - link "联赛" [ref=e26] [cursor=pointer]:
+        - /url: /leagues
+        - img [ref=e27]
+        - generic [ref=e33]: 联赛
+      - link "球队" [ref=e34] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e35]
+        - generic [ref=e40]: 球队
+      - link "球员" [ref=e41] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e42]
+        - generic [ref=e45]: 球员
+      - link "比赛" [ref=e46] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e47]
+        - generic [ref=e49]: 比赛
+      - link "世界杯" [ref=e50] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e51]
+        - generic [ref=e56]: 世界杯
+      - link "AI预测" [ref=e57] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e58]
+        - generic [ref=e61]: AI预测
+    - generic [ref=e62]:
+      - generic [ref=e63]: 数据概览
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: "2"
+          - generic [ref=e67]: 联赛
+        - generic [ref=e68]:
+          - generic [ref=e69]: "80"
+          - generic [ref=e70]: 球队
+        - generic [ref=e71]:
+          - generic [ref=e72]: "100"
+          - generic [ref=e73]: 比赛
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - button "设置" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "帮助" [ref=e80] [cursor=pointer]:
+          - img [ref=e81]
+      - generic [ref=e84]: v1.0.0
+  - main [ref=e85]:
+    - generic [ref=e87]:
+      - navigation [ref=e88]:
+        - link [ref=e89] [cursor=pointer]:
+          - /url: /
+          - img [ref=e90]
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - link "联赛中心" [ref=e96] [cursor=pointer]:
+            - /url: /leagues
+        - generic [ref=e97]:
+          - img [ref=e98]
+          - generic [ref=e100]: 世界杯
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e106]: Sports Analytics
+          - heading "世界杯" [level=1] [ref=e107]
+          - paragraph [ref=e108]: 查看当前联赛的分组积分榜、比赛赛程与累计积分趋势。
+        - generic [ref=e109]:
+          - img [ref=e110]
+          - text: World
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - button "积分榜" [ref=e115] [cursor=pointer]:
+            - img [ref=e116]
+            - text: 积分榜
+          - button "赛程" [active] [ref=e122] [cursor=pointer]:
+            - img [ref=e123]
+            - text: 赛程
+          - button "趋势" [ref=e125] [cursor=pointer]:
+            - img [ref=e126]
+            - text: 趋势
+        - generic [ref=e3099]:
+          - generic [ref=e3100]:
+            - generic [ref=e3102]: 比赛日 1
+            - link "已结束 First Stage · Group A 06/11 19:00 Mexico 2-0 South Africa Mexico City Stadium - Mexico City" [ref=e3105] [cursor=pointer]:
+              - /url: /matches/1521
+              - generic [ref=e3106]:
+                - generic [ref=e3108]:
+                  - generic [ref=e3109]:
+                    - generic [ref=e3110]: 已结束
+                    - generic [ref=e3111]: First Stage · Group A
+                  - generic [ref=e3112]: 06/11 19:00
+                - generic [ref=e3113]:
+                  - generic [ref=e3115]: Mexico
+                  - generic [ref=e3117]: 2-0
+                  - generic [ref=e3119]: South Africa
+                - generic [ref=e3120]: Mexico City Stadium - Mexico City
+          - generic [ref=e3122]:
+            - generic [ref=e3124]: 比赛日 2
+            - link "已结束 First Stage · Group A 06/12 02:00 Korea Republic 2-1 Czechia Guadalajara Stadium - Guadalajara" [ref=e3127] [cursor=pointer]:
+              - /url: /matches/1522
+              - generic [ref=e3128]:
+                - generic [ref=e3130]:
+                  - generic [ref=e3131]:
+                    - generic [ref=e3132]: 已结束
+                    - generic [ref=e3133]: First Stage · Group A
+                  - generic [ref=e3134]: 06/12 02:00
+                - generic [ref=e3135]:
+                  - generic [ref=e3137]: Korea Republic
+                  - generic [ref=e3139]: 2-1
+                  - generic [ref=e3141]: Czechia
+                - generic [ref=e3142]: Guadalajara Stadium - Guadalajara
+          - generic [ref=e3144]:
+            - generic [ref=e3146]: 比赛日 3
+            - link "已结束 First Stage · Group B 06/12 19:00 Canada 1-1 Bosnia and Herzegovina Toronto Stadium - Toronto" [ref=e3149] [cursor=pointer]:
+              - /url: /matches/1523
+              - generic [ref=e3150]:
+                - generic [ref=e3152]:
+                  - generic [ref=e3153]:
+                    - generic [ref=e3154]: 已结束
+                    - generic [ref=e3155]: First Stage · Group B
+                  - generic [ref=e3156]: 06/12 19:00
+                - generic [ref=e3157]:
+                  - generic [ref=e3159]: Canada
+                  - generic [ref=e3161]: 1-1
+                  - generic [ref=e3163]: Bosnia and Herzegovina
+                - generic [ref=e3164]: Toronto Stadium - Toronto
+          - generic [ref=e3166]:
+            - generic [ref=e3168]: 比赛日 4
+            - link "已结束 First Stage · Group D 06/13 01:00 USA 4-1 Paraguay Los Angeles Stadium - Los Angeles" [ref=e3171] [cursor=pointer]:
+              - /url: /matches/1524
+              - generic [ref=e3172]:
+                - generic [ref=e3174]:
+                  - generic [ref=e3175]:
+                    - generic [ref=e3176]: 已结束
+                    - generic [ref=e3177]: First Stage · Group D
+                  - generic [ref=e3178]: 06/13 01:00
+                - generic [ref=e3179]:
+                  - generic [ref=e3181]: USA
+                  - generic [ref=e3183]: 4-1
+                  - generic [ref=e3185]: Paraguay
+                - generic [ref=e3186]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e3188]:
+            - generic [ref=e3190]: 比赛日 5
+            - link "已结束 First Stage · Group C 06/14 01:00 Haiti 0-1 Scotland Boston Stadium - Boston" [ref=e3193] [cursor=pointer]:
+              - /url: /matches/1527
+              - generic [ref=e3194]:
+                - generic [ref=e3196]:
+                  - generic [ref=e3197]:
+                    - generic [ref=e3198]: 已结束
+                    - generic [ref=e3199]: First Stage · Group C
+                  - generic [ref=e3200]: 06/14 01:00
+                - generic [ref=e3201]:
+                  - generic [ref=e3203]: Haiti
+                  - generic [ref=e3205]: 0-1
+                  - generic [ref=e3207]: Scotland
+                - generic [ref=e3208]: Boston Stadium - Boston
+          - generic [ref=e3210]:
+            - generic [ref=e3212]: 比赛日 6
+            - link "已结束 First Stage · Group D 06/14 04:00 Australia 2-0 Türkiye BC Place Vancouver - Vancouver" [ref=e3215] [cursor=pointer]:
+              - /url: /matches/1528
+              - generic [ref=e3216]:
+                - generic [ref=e3218]:
+                  - generic [ref=e3219]:
+                    - generic [ref=e3220]: 已结束
+                    - generic [ref=e3221]: First Stage · Group D
+                  - generic [ref=e3222]: 06/14 04:00
+                - generic [ref=e3223]:
+                  - generic [ref=e3225]: Australia
+                  - generic [ref=e3227]: 2-0
+                  - generic [ref=e3229]: Türkiye
+                - generic [ref=e3230]: BC Place Vancouver - Vancouver
+          - generic [ref=e3232]:
+            - generic [ref=e3234]: 比赛日 7
+            - link "已结束 First Stage · Group C 06/13 22:00 Brazil 1-1 Morocco New York/New Jersey Stadium - New Jersey" [ref=e3237] [cursor=pointer]:
+              - /url: /matches/1526
+              - generic [ref=e3238]:
+                - generic [ref=e3240]:
+                  - generic [ref=e3241]:
+                    - generic [ref=e3242]: 已结束
+                    - generic [ref=e3243]: First Stage · Group C
+                  - generic [ref=e3244]: 06/13 22:00
+                - generic [ref=e3245]:
+                  - generic [ref=e3247]: Brazil
+                  - generic [ref=e3249]: 1-1
+                  - generic [ref=e3251]: Morocco
+                - generic [ref=e3252]: New York/New Jersey Stadium - New Jersey
+          - generic [ref=e3254]:
+            - generic [ref=e3256]: 比赛日 8
+            - link "已结束 First Stage · Group B 06/13 19:00 Qatar 1-1 Switzerland San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e3259] [cursor=pointer]:
+              - /url: /matches/1525
+              - generic [ref=e3260]:
+                - generic [ref=e3262]:
+                  - generic [ref=e3263]:
+                    - generic [ref=e3264]: 已结束
+                    - generic [ref=e3265]: First Stage · Group B
+                  - generic [ref=e3266]: 06/13 19:00
+                - generic [ref=e3267]:
+                  - generic [ref=e3269]: Qatar
+                  - generic [ref=e3271]: 1-1
+                  - generic [ref=e3273]: Switzerland
+                - generic [ref=e3274]: San Francisco Bay Area Stadium - San Francisco Bay Area
+          - generic [ref=e3276]:
+            - generic [ref=e3278]: 比赛日 9
+            - link "已结束 First Stage · Group E 06/14 23:00 Côte d'Ivoire 1-0 Ecuador Philadelphia Stadium - Philadelphia" [ref=e3281] [cursor=pointer]:
+              - /url: /matches/1531
+              - generic [ref=e3282]:
+                - generic [ref=e3284]:
+                  - generic [ref=e3285]:
+                    - generic [ref=e3286]: 已结束
+                    - generic [ref=e3287]: First Stage · Group E
+                  - generic [ref=e3288]: 06/14 23:00
+                - generic [ref=e3289]:
+                  - generic [ref=e3291]: Côte d'Ivoire
+                  - generic [ref=e3293]: 1-0
+                  - generic [ref=e3295]: Ecuador
+                - generic [ref=e3296]: Philadelphia Stadium - Philadelphia
+          - generic [ref=e3298]:
+            - generic [ref=e3300]: 比赛日 10
+            - link "已结束 First Stage · Group E 06/14 17:00 Germany 7-1 Curaçao Houston Stadium - Houston" [ref=e3303] [cursor=pointer]:
+              - /url: /matches/1529
+              - generic [ref=e3304]:
+                - generic [ref=e3306]:
+                  - generic [ref=e3307]:
+                    - generic [ref=e3308]: 已结束
+                    - generic [ref=e3309]: First Stage · Group E
+                  - generic [ref=e3310]: 06/14 17:00
+                - generic [ref=e3311]:
+                  - generic [ref=e3313]: Germany
+                  - generic [ref=e3315]: 7-1
+                  - generic [ref=e3317]: Curaçao
+                - generic [ref=e3318]: Houston Stadium - Houston
+          - generic [ref=e3320]:
+            - generic [ref=e3322]: 比赛日 11
+            - link "已结束 First Stage · Group F 06/14 20:00 Netherlands 2-2 Japan Dallas Stadium - Dallas" [ref=e3325] [cursor=pointer]:
+              - /url: /matches/1530
+              - generic [ref=e3326]:
+                - generic [ref=e3328]:
+                  - generic [ref=e3329]:
+                    - generic [ref=e3330]: 已结束
+                    - generic [ref=e3331]: First Stage · Group F
+                  - generic [ref=e3332]: 06/14 20:00
+                - generic [ref=e3333]:
+                  - generic [ref=e3335]: Netherlands
+                  - generic [ref=e3337]: 2-2
+                  - generic [ref=e3339]: Japan
+                - generic [ref=e3340]: Dallas Stadium - Dallas
+          - generic [ref=e3342]:
+            - generic [ref=e3344]: 比赛日 12
+            - link "已结束 First Stage · Group F 06/15 02:00 Sweden 5-1 Tunisia Monterrey Stadium - Monterrey" [ref=e3347] [cursor=pointer]:
+              - /url: /matches/1532
+              - generic [ref=e3348]:
+                - generic [ref=e3350]:
+                  - generic [ref=e3351]:
+                    - generic [ref=e3352]: 已结束
+                    - generic [ref=e3353]: First Stage · Group F
+                  - generic [ref=e3354]: 06/15 02:00
+                - generic [ref=e3355]:
+                  - generic [ref=e3357]: Sweden
+                  - generic [ref=e3359]: 5-1
+                  - generic [ref=e3361]: Tunisia
+                - generic [ref=e3362]: Monterrey Stadium - Monterrey
+          - generic [ref=e3364]:
+            - generic [ref=e3366]: 比赛日 13
+            - link "已结束 First Stage · Group H 06/15 22:00 Saudi Arabia 1-1 Uruguay Miami Stadium - Miami" [ref=e3369] [cursor=pointer]:
+              - /url: /matches/1535
+              - generic [ref=e3370]:
+                - generic [ref=e3372]:
+                  - generic [ref=e3373]:
+                    - generic [ref=e3374]: 已结束
+                    - generic [ref=e3375]: First Stage · Group H
+                  - generic [ref=e3376]: 06/15 22:00
+                - generic [ref=e3377]:
+                  - generic [ref=e3379]: Saudi Arabia
+                  - generic [ref=e3381]: 1-1
+                  - generic [ref=e3383]: Uruguay
+                - generic [ref=e3384]: Miami Stadium - Miami
+          - generic [ref=e3386]:
+            - generic [ref=e3388]: 比赛日 14
+            - link "已结束 First Stage · Group H 06/15 16:00 Spain 0-0 Cabo Verde Atlanta Stadium - Atlanta" [ref=e3391] [cursor=pointer]:
+              - /url: /matches/1533
+              - generic [ref=e3392]:
+                - generic [ref=e3394]:
+                  - generic [ref=e3395]:
+                    - generic [ref=e3396]: 已结束
+                    - generic [ref=e3397]: First Stage · Group H
+                  - generic [ref=e3398]: 06/15 16:00
+                - generic [ref=e3399]:
+                  - generic [ref=e3401]: Spain
+                  - generic [ref=e3403]: 0-0
+                  - generic [ref=e3405]: Cabo Verde
+                - generic [ref=e3406]: Atlanta Stadium - Atlanta
+          - generic [ref=e3408]:
+            - generic [ref=e3410]: 比赛日 15
+            - link "已结束 First Stage · Group G 06/16 01:00 IR Iran 2-2 New Zealand Los Angeles Stadium - Los Angeles" [ref=e3413] [cursor=pointer]:
+              - /url: /matches/1536
+              - generic [ref=e3414]:
+                - generic [ref=e3416]:
+                  - generic [ref=e3417]:
+                    - generic [ref=e3418]: 已结束
+                    - generic [ref=e3419]: First Stage · Group G
+                  - generic [ref=e3420]: 06/16 01:00
+                - generic [ref=e3421]:
+                  - generic [ref=e3423]: IR Iran
+                  - generic [ref=e3425]: 2-2
+                  - generic [ref=e3427]: New Zealand
+                - generic [ref=e3428]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e3430]:
+            - generic [ref=e3432]: 比赛日 16
+            - link "已结束 First Stage · Group G 06/15 19:00 Belgium 1-1 Egypt Seattle Stadium - Seattle" [ref=e3435] [cursor=pointer]:
+              - /url: /matches/1534
+              - generic [ref=e3436]:
+                - generic [ref=e3438]:
+                  - generic [ref=e3439]:
+                    - generic [ref=e3440]: 已结束
+                    - generic [ref=e3441]: First Stage · Group G
+                  - generic [ref=e3442]: 06/15 19:00
+                - generic [ref=e3443]:
+                  - generic [ref=e3445]: Belgium
+                  - generic [ref=e3447]: 1-1
+                  - generic [ref=e3449]: Egypt
+                - generic [ref=e3450]: Seattle Stadium - Seattle
+          - generic [ref=e3452]:
+            - generic [ref=e3454]: 比赛日 17
+            - link "已结束 First Stage · Group I 06/16 19:00 France 3-1 Senegal New York/New Jersey Stadium - New Jersey" [ref=e3457] [cursor=pointer]:
+              - /url: /matches/1537
+              - generic [ref=e3458]:
+                - generic [ref=e3460]:
+                  - generic [ref=e3461]:
+                    - generic [ref=e3462]: 已结束
+                    - generic [ref=e3463]: First Stage · Group I
+                  - generic [ref=e3464]: 06/16 19:00
+                - generic [ref=e3465]:
+                  - generic [ref=e3467]: France
+                  - generic [ref=e3469]: 3-1
+                  - generic [ref=e3471]: Senegal
+                - generic [ref=e3472]: New York/New Jersey Stadium - New Jersey
+          - generic [ref=e3474]:
+            - generic [ref=e3476]: 比赛日 18
+            - link "已结束 First Stage · Group I 06/16 22:00 Iraq 1-4 Norway Boston Stadium - Boston" [ref=e3479] [cursor=pointer]:
+              - /url: /matches/1538
+              - generic [ref=e3480]:
+                - generic [ref=e3482]:
+                  - generic [ref=e3483]:
+                    - generic [ref=e3484]: 已结束
+                    - generic [ref=e3485]: First Stage · Group I
+                  - generic [ref=e3486]: 06/16 22:00
+                - generic [ref=e3487]:
+                  - generic [ref=e3489]: Iraq
+                  - generic [ref=e3491]: 1-4
+                  - generic [ref=e3493]: Norway
+                - generic [ref=e3494]: Boston Stadium - Boston
+          - generic [ref=e3496]:
+            - generic [ref=e3498]: 比赛日 19
+            - link "已结束 First Stage · Group J 06/17 01:00 Argentina 3-0 Algeria Kansas City Stadium - Kansas City" [ref=e3501] [cursor=pointer]:
+              - /url: /matches/1539
+              - generic [ref=e3502]:
+                - generic [ref=e3504]:
+                  - generic [ref=e3505]:
+                    - generic [ref=e3506]: 已结束
+                    - generic [ref=e3507]: First Stage · Group J
+                  - generic [ref=e3508]: 06/17 01:00
+                - generic [ref=e3509]:
+                  - generic [ref=e3511]: Argentina
+                  - generic [ref=e3513]: 3-0
+                  - generic [ref=e3515]: Algeria
+                - generic [ref=e3516]: Kansas City Stadium - Kansas City
+          - generic [ref=e3518]:
+            - generic [ref=e3520]: 比赛日 20
+            - link "已结束 First Stage · Group J 06/17 04:00 Austria 3-1 Jordan San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e3523] [cursor=pointer]:
+              - /url: /matches/1540
+              - generic [ref=e3524]:
+                - generic [ref=e3526]:
+                  - generic [ref=e3527]:
+                    - generic [ref=e3528]: 已结束
+                    - generic [ref=e3529]: First Stage · Group J
+                  - generic [ref=e3530]: 06/17 04:00
+                - generic [ref=e3531]:
+                  - generic [ref=e3533]: Austria
+                  - generic [ref=e3535]: 3-1
+                  - generic [ref=e3537]: Jordan
+                - generic [ref=e3538]: San Francisco Bay Area Stadium - San Francisco Bay Area
+          - generic [ref=e3540]:
+            - generic [ref=e3542]: 比赛日 21
+            - link "已结束 First Stage · Group L 06/17 23:00 Ghana 1-0 Panama Toronto Stadium - Toronto" [ref=e3545] [cursor=pointer]:
+              - /url: /matches/1543
+              - generic [ref=e3546]:
+                - generic [ref=e3548]:
+                  - generic [ref=e3549]:
+                    - generic [ref=e3550]: 已结束
+                    - generic [ref=e3551]: First Stage · Group L
+                  - generic [ref=e3552]: 06/17 23:00
+                - generic [ref=e3553]:
+                  - generic [ref=e3555]: Ghana
+                  - generic [ref=e3557]: 1-0
+                  - generic [ref=e3559]: Panama
+                - generic [ref=e3560]: Toronto Stadium - Toronto
+          - generic [ref=e3562]:
+            - generic [ref=e3564]: 比赛日 22
+            - link "已结束 First Stage · Group L 06/17 20:00 England 4-2 Croatia Dallas Stadium - Dallas" [ref=e3567] [cursor=pointer]:
+              - /url: /matches/1542
+              - generic [ref=e3568]:
+                - generic [ref=e3570]:
+                  - generic [ref=e3571]:
+                    - generic [ref=e3572]: 已结束
+                    - generic [ref=e3573]: First Stage · Group L
+                  - generic [ref=e3574]: 06/17 20:00
+                - generic [ref=e3575]:
+                  - generic [ref=e3577]: England
+                  - generic [ref=e3579]: 4-2
+                  - generic [ref=e3581]: Croatia
+                - generic [ref=e3582]: Dallas Stadium - Dallas
+          - generic [ref=e3584]:
+            - generic [ref=e3586]: 比赛日 23
+            - link "已结束 First Stage · Group K 06/17 17:00 Portugal 1-1 Congo DR Houston Stadium - Houston" [ref=e3589] [cursor=pointer]:
+              - /url: /matches/1541
+              - generic [ref=e3590]:
+                - generic [ref=e3592]:
+                  - generic [ref=e3593]:
+                    - generic [ref=e3594]: 已结束
+                    - generic [ref=e3595]: First Stage · Group K
+                  - generic [ref=e3596]: 06/17 17:00
+                - generic [ref=e3597]:
+                  - generic [ref=e3599]: Portugal
+                  - generic [ref=e3601]: 1-1
+                  - generic [ref=e3603]: Congo DR
+                - generic [ref=e3604]: Houston Stadium - Houston
+          - generic [ref=e3606]:
+            - generic [ref=e3608]: 比赛日 24
+            - link "已结束 First Stage · Group K 06/18 02:00 Uzbekistan 1-3 Colombia Mexico City Stadium - Mexico City" [ref=e3611] [cursor=pointer]:
+              - /url: /matches/1544
+              - generic [ref=e3612]:
+                - generic [ref=e3614]:
+                  - generic [ref=e3615]:
+                    - generic [ref=e3616]: 已结束
+                    - generic [ref=e3617]: First Stage · Group K
+                  - generic [ref=e3618]: 06/18 02:00
+                - generic [ref=e3619]:
+                  - generic [ref=e3621]: Uzbekistan
+                  - generic [ref=e3623]: 1-3
+                  - generic [ref=e3625]: Colombia
+                - generic [ref=e3626]: Mexico City Stadium - Mexico City
+          - generic [ref=e3628]:
+            - generic [ref=e3630]: 比赛日 25
+            - link "已结束 First Stage · Group A 06/18 16:00 Czechia 1-1 South Africa Atlanta Stadium - Atlanta" [ref=e3633] [cursor=pointer]:
+              - /url: /matches/1545
+              - generic [ref=e3634]:
+                - generic [ref=e3636]:
+                  - generic [ref=e3637]:
+                    - generic [ref=e3638]: 已结束
+                    - generic [ref=e3639]: First Stage · Group A
+                  - generic [ref=e3640]: 06/18 16:00
+                - generic [ref=e3641]:
+                  - generic [ref=e3643]: Czechia
+                  - generic [ref=e3645]: 1-1
+                  - generic [ref=e3647]: South Africa
+                - generic [ref=e3648]: Atlanta Stadium - Atlanta
+          - generic [ref=e3650]:
+            - generic [ref=e3652]: 比赛日 26
+            - link "已结束 First Stage · Group B 06/18 19:00 Switzerland 4-1 Bosnia and Herzegovina Los Angeles Stadium - Los Angeles" [ref=e3655] [cursor=pointer]:
+              - /url: /matches/1546
+              - generic [ref=e3656]:
+                - generic [ref=e3658]:
+                  - generic [ref=e3659]:
+                    - generic [ref=e3660]: 已结束
+                    - generic [ref=e3661]: First Stage · Group B
+                  - generic [ref=e3662]: 06/18 19:00
+                - generic [ref=e3663]:
+                  - generic [ref=e3665]: Switzerland
+                  - generic [ref=e3667]: 4-1
+                  - generic [ref=e3669]: Bosnia and Herzegovina
+                - generic [ref=e3670]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e3672]:
+            - generic [ref=e3674]: 比赛日 27
+            - link "已结束 First Stage · Group B 06/18 22:00 Canada 6-0 Qatar BC Place Vancouver - Vancouver" [ref=e3677] [cursor=pointer]:
+              - /url: /matches/1547
+              - generic [ref=e3678]:
+                - generic [ref=e3680]:
+                  - generic [ref=e3681]:
+                    - generic [ref=e3682]: 已结束
+                    - generic [ref=e3683]: First Stage · Group B
+                  - generic [ref=e3684]: 06/18 22:00
+                - generic [ref=e3685]:
+                  - generic [ref=e3687]: Canada
+                  - generic [ref=e3689]: 6-0
+                  - generic [ref=e3691]: Qatar
+                - generic [ref=e3692]: BC Place Vancouver - Vancouver
+          - generic [ref=e3694]:
+            - generic [ref=e3696]: 比赛日 28
+            - link "已结束 First Stage · Group A 06/19 01:00 Mexico 1-0 Korea Republic Guadalajara Stadium - Guadalajara" [ref=e3699] [cursor=pointer]:
+              - /url: /matches/1548
+              - generic [ref=e3700]:
+                - generic [ref=e3702]:
+                  - generic [ref=e3703]:
+                    - generic [ref=e3704]: 已结束
+                    - generic [ref=e3705]: First Stage · Group A
+                  - generic [ref=e3706]: 06/19 01:00
+                - generic [ref=e3707]:
+                  - generic [ref=e3709]: Mexico
+                  - generic [ref=e3711]: 1-0
+                  - generic [ref=e3713]: Korea Republic
+                - generic [ref=e3714]: Guadalajara Stadium - Guadalajara
+          - generic [ref=e3716]:
+            - generic [ref=e3718]: 比赛日 29
+            - link "已结束 First Stage · Group C 06/20 00:30 Brazil 3-0 Haiti Philadelphia Stadium - Philadelphia" [ref=e3721] [cursor=pointer]:
+              - /url: /matches/1551
+              - generic [ref=e3722]:
+                - generic [ref=e3724]:
+                  - generic [ref=e3725]:
+                    - generic [ref=e3726]: 已结束
+                    - generic [ref=e3727]: First Stage · Group C
+                  - generic [ref=e3728]: 06/20 00:30
+                - generic [ref=e3729]:
+                  - generic [ref=e3731]: Brazil
+                  - generic [ref=e3733]: 3-0
+                  - generic [ref=e3735]: Haiti
+                - generic [ref=e3736]: Philadelphia Stadium - Philadelphia
+          - generic [ref=e3738]:
+            - generic [ref=e3740]: 比赛日 30
+            - link "已结束 First Stage · Group C 06/19 22:00 Scotland 0-1 Morocco Boston Stadium - Boston" [ref=e3743] [cursor=pointer]:
+              - /url: /matches/1550
+              - generic [ref=e3744]:
+                - generic [ref=e3746]:
+                  - generic [ref=e3747]:
+                    - generic [ref=e3748]: 已结束
+                    - generic [ref=e3749]: First Stage · Group C
+                  - generic [ref=e3750]: 06/19 22:00
+                - generic [ref=e3751]:
+                  - generic [ref=e3753]: Scotland
+                  - generic [ref=e3755]: 0-1
+                  - generic [ref=e3757]: Morocco
+                - generic [ref=e3758]: Boston Stadium - Boston
+          - generic [ref=e3760]:
+            - generic [ref=e3762]: 比赛日 31
+            - link "已结束 First Stage · Group D 06/20 03:00 Türkiye 0-1 Paraguay San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e3765] [cursor=pointer]:
+              - /url: /matches/1552
+              - generic [ref=e3766]:
+                - generic [ref=e3768]:
+                  - generic [ref=e3769]:
+                    - generic [ref=e3770]: 已结束
+                    - generic [ref=e3771]: First Stage · Group D
+                  - generic [ref=e3772]: 06/20 03:00
+                - generic [ref=e3773]:
+                  - generic [ref=e3775]: Türkiye
+                  - generic [ref=e3777]: 0-1
+                  - generic [ref=e3779]: Paraguay
+                - generic [ref=e3780]: San Francisco Bay Area Stadium - San Francisco Bay Area
+          - generic [ref=e3782]:
+            - generic [ref=e3784]: 比赛日 32
+            - link "已结束 First Stage · Group D 06/19 19:00 USA 2-0 Australia Seattle Stadium - Seattle" [ref=e3787] [cursor=pointer]:
+              - /url: /matches/1549
+              - generic [ref=e3788]:
+                - generic [ref=e3790]:
+                  - generic [ref=e3791]:
+                    - generic [ref=e3792]: 已结束
+                    - generic [ref=e3793]: First Stage · Group D
+                  - generic [ref=e3794]: 06/19 19:00
+                - generic [ref=e3795]:
+                  - generic [ref=e3797]: USA
+                  - generic [ref=e3799]: 2-0
+                  - generic [ref=e3801]: Australia
+                - generic [ref=e3802]: Seattle Stadium - Seattle
+          - generic [ref=e3804]:
+            - generic [ref=e3806]: 比赛日 33
+            - link "已结束 First Stage · Group E 06/20 20:00 Germany 2-1 Côte d'Ivoire Toronto Stadium - Toronto" [ref=e3809] [cursor=pointer]:
+              - /url: /matches/1554
+              - generic [ref=e3810]:
+                - generic [ref=e3812]:
+                  - generic [ref=e3813]:
+                    - generic [ref=e3814]: 已结束
+                    - generic [ref=e3815]: First Stage · Group E
+                  - generic [ref=e3816]: 06/20 20:00
+                - generic [ref=e3817]:
+                  - generic [ref=e3819]: Germany
+                  - generic [ref=e3821]: 2-1
+                  - generic [ref=e3823]: Côte d'Ivoire
+                - generic [ref=e3824]: Toronto Stadium - Toronto
+          - generic [ref=e3826]:
+            - generic [ref=e3828]: 比赛日 34
+            - link "已结束 First Stage · Group E 06/21 00:00 Ecuador 0-0 Curaçao Kansas City Stadium - Kansas City" [ref=e3831] [cursor=pointer]:
+              - /url: /matches/1555
+              - generic [ref=e3832]:
+                - generic [ref=e3834]:
+                  - generic [ref=e3835]:
+                    - generic [ref=e3836]: 已结束
+                    - generic [ref=e3837]: First Stage · Group E
+                  - generic [ref=e3838]: 06/21 00:00
+                - generic [ref=e3839]:
+                  - generic [ref=e3841]: Ecuador
+                  - generic [ref=e3843]: 0-0
+                  - generic [ref=e3845]: Curaçao
+                - generic [ref=e3846]: Kansas City Stadium - Kansas City
+          - generic [ref=e3848]:
+            - generic [ref=e3850]: 比赛日 35
+            - link "已结束 First Stage · Group F 06/20 17:00 Netherlands 5-1 Sweden Houston Stadium - Houston" [ref=e3853] [cursor=pointer]:
+              - /url: /matches/1553
+              - generic [ref=e3854]:
+                - generic [ref=e3856]:
+                  - generic [ref=e3857]:
+                    - generic [ref=e3858]: 已结束
+                    - generic [ref=e3859]: First Stage · Group F
+                  - generic [ref=e3860]: 06/20 17:00
+                - generic [ref=e3861]:
+                  - generic [ref=e3863]: Netherlands
+                  - generic [ref=e3865]: 5-1
+                  - generic [ref=e3867]: Sweden
+                - generic [ref=e3868]: Houston Stadium - Houston
+          - generic [ref=e3870]:
+            - generic [ref=e3872]: 比赛日 36
+            - link "已结束 First Stage · Group F 06/21 04:00 Tunisia 0-4 Japan Monterrey Stadium - Monterrey" [ref=e3875] [cursor=pointer]:
+              - /url: /matches/1556
+              - generic [ref=e3876]:
+                - generic [ref=e3878]:
+                  - generic [ref=e3879]:
+                    - generic [ref=e3880]: 已结束
+                    - generic [ref=e3881]: First Stage · Group F
+                  - generic [ref=e3882]: 06/21 04:00
+                - generic [ref=e3883]:
+                  - generic [ref=e3885]: Tunisia
+                  - generic [ref=e3887]: 0-4
+                  - generic [ref=e3889]: Japan
+                - generic [ref=e3890]: Monterrey Stadium - Monterrey
+          - generic [ref=e3892]:
+            - generic [ref=e3894]: 比赛日 37
+            - link "已结束 First Stage · Group H 06/21 22:00 Uruguay 2-2 Cabo Verde Miami Stadium - Miami" [ref=e3897] [cursor=pointer]:
+              - /url: /matches/1559
+              - generic [ref=e3898]:
+                - generic [ref=e3900]:
+                  - generic [ref=e3901]:
+                    - generic [ref=e3902]: 已结束
+                    - generic [ref=e3903]: First Stage · Group H
+                  - generic [ref=e3904]: 06/21 22:00
+                - generic [ref=e3905]:
+                  - generic [ref=e3907]: Uruguay
+                  - generic [ref=e3909]: 2-2
+                  - generic [ref=e3911]: Cabo Verde
+                - generic [ref=e3912]: Miami Stadium - Miami
+          - generic [ref=e3914]:
+            - generic [ref=e3916]: 比赛日 38
+            - link "已结束 First Stage · Group H 06/21 16:00 Spain 4-0 Saudi Arabia Atlanta Stadium - Atlanta" [ref=e3919] [cursor=pointer]:
+              - /url: /matches/1557
+              - generic [ref=e3920]:
+                - generic [ref=e3922]:
+                  - generic [ref=e3923]:
+                    - generic [ref=e3924]: 已结束
+                    - generic [ref=e3925]: First Stage · Group H
+                  - generic [ref=e3926]: 06/21 16:00
+                - generic [ref=e3927]:
+                  - generic [ref=e3929]: Spain
+                  - generic [ref=e3931]: 4-0
+                  - generic [ref=e3933]: Saudi Arabia
+                - generic [ref=e3934]: Atlanta Stadium - Atlanta
+          - generic [ref=e3936]:
+            - generic [ref=e3938]: 比赛日 39
+            - link "已结束 First Stage · Group G 06/21 19:00 Belgium 0-0 IR Iran Los Angeles Stadium - Los Angeles" [ref=e3941] [cursor=pointer]:
+              - /url: /matches/1558
+              - generic [ref=e3942]:
+                - generic [ref=e3944]:
+                  - generic [ref=e3945]:
+                    - generic [ref=e3946]: 已结束
+                    - generic [ref=e3947]: First Stage · Group G
+                  - generic [ref=e3948]: 06/21 19:00
+                - generic [ref=e3949]:
+                  - generic [ref=e3951]: Belgium
+                  - generic [ref=e3953]: 0-0
+                  - generic [ref=e3955]: IR Iran
+                - generic [ref=e3956]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e3958]:
+            - generic [ref=e3960]: 比赛日 40
+            - link "已结束 First Stage · Group G 06/22 01:00 New Zealand 1-3 Egypt BC Place Vancouver - Vancouver" [ref=e3963] [cursor=pointer]:
+              - /url: /matches/1560
+              - generic [ref=e3964]:
+                - generic [ref=e3966]:
+                  - generic [ref=e3967]:
+                    - generic [ref=e3968]: 已结束
+                    - generic [ref=e3969]: First Stage · Group G
+                  - generic [ref=e3970]: 06/22 01:00
+                - generic [ref=e3971]:
+                  - generic [ref=e3973]: New Zealand
+                  - generic [ref=e3975]: 1-3
+                  - generic [ref=e3977]: Egypt
+                - generic [ref=e3978]: BC Place Vancouver - Vancouver
+          - generic [ref=e3980]:
+            - generic [ref=e3982]: 比赛日 41
+            - link "已结束 First Stage · Group I 06/23 00:00 Norway 3-2 Senegal New York/New Jersey Stadium - New Jersey" [ref=e3985] [cursor=pointer]:
+              - /url: /matches/1563
+              - generic [ref=e3986]:
+                - generic [ref=e3988]:
+                  - generic [ref=e3989]:
+                    - generic [ref=e3990]: 已结束
+                    - generic [ref=e3991]: First Stage · Group I
+                  - generic [ref=e3992]: 06/23 00:00
+                - generic [ref=e3993]:
+                  - generic [ref=e3995]: Norway
+                  - generic [ref=e3997]: 3-2
+                  - generic [ref=e3999]: Senegal
+                - generic [ref=e4000]: New York/New Jersey Stadium - New Jersey
+          - generic [ref=e4002]:
+            - generic [ref=e4004]: 比赛日 42
+            - link "已结束 First Stage · Group I 06/22 21:00 France 3-0 Iraq Philadelphia Stadium - Philadelphia" [ref=e4007] [cursor=pointer]:
+              - /url: /matches/1562
+              - generic [ref=e4008]:
+                - generic [ref=e4010]:
+                  - generic [ref=e4011]:
+                    - generic [ref=e4012]: 已结束
+                    - generic [ref=e4013]: First Stage · Group I
+                  - generic [ref=e4014]: 06/22 21:00
+                - generic [ref=e4015]:
+                  - generic [ref=e4017]: France
+                  - generic [ref=e4019]: 3-0
+                  - generic [ref=e4021]: Iraq
+                - generic [ref=e4022]: Philadelphia Stadium - Philadelphia
+          - generic [ref=e4024]:
+            - generic [ref=e4026]: 比赛日 43
+            - link "已结束 First Stage · Group J 06/22 17:00 Argentina 2-0 Austria Dallas Stadium - Dallas" [ref=e4029] [cursor=pointer]:
+              - /url: /matches/1561
+              - generic [ref=e4030]:
+                - generic [ref=e4032]:
+                  - generic [ref=e4033]:
+                    - generic [ref=e4034]: 已结束
+                    - generic [ref=e4035]: First Stage · Group J
+                  - generic [ref=e4036]: 06/22 17:00
+                - generic [ref=e4037]:
+                  - generic [ref=e4039]: Argentina
+                  - generic [ref=e4041]: 2-0
+                  - generic [ref=e4043]: Austria
+                - generic [ref=e4044]: Dallas Stadium - Dallas
+          - generic [ref=e4046]:
+            - generic [ref=e4048]: 比赛日 44
+            - link "已结束 First Stage · Group J 06/23 03:00 Jordan 1-2 Algeria San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e4051] [cursor=pointer]:
+              - /url: /matches/1564
+              - generic [ref=e4052]:
+                - generic [ref=e4054]:
+                  - generic [ref=e4055]:
+                    - generic [ref=e4056]: 已结束
+                    - generic [ref=e4057]: First Stage · Group J
+                  - generic [ref=e4058]: 06/23 03:00
+                - generic [ref=e4059]:
+                  - generic [ref=e4061]: Jordan
+                  - generic [ref=e4063]: 1-2
+                  - generic [ref=e4065]: Algeria
+                - generic [ref=e4066]: San Francisco Bay Area Stadium - San Francisco Bay Area
+          - generic [ref=e4068]:
+            - generic [ref=e4070]: 比赛日 45
+            - link "已结束 First Stage · Group L 06/23 20:00 England 0-0 Ghana Boston Stadium - Boston" [ref=e4073] [cursor=pointer]:
+              - /url: /matches/1566
+              - generic [ref=e4074]:
+                - generic [ref=e4076]:
+                  - generic [ref=e4077]:
+                    - generic [ref=e4078]: 已结束
+                    - generic [ref=e4079]: First Stage · Group L
+                  - generic [ref=e4080]: 06/23 20:00
+                - generic [ref=e4081]:
+                  - generic [ref=e4083]: England
+                  - generic [ref=e4085]: 0-0
+                  - generic [ref=e4087]: Ghana
+                - generic [ref=e4088]: Boston Stadium - Boston
+          - generic [ref=e4090]:
+            - generic [ref=e4092]: 比赛日 46
+            - link "已结束 First Stage · Group L 06/23 23:00 Panama 0-1 Croatia Toronto Stadium - Toronto" [ref=e4095] [cursor=pointer]:
+              - /url: /matches/1567
+              - generic [ref=e4096]:
+                - generic [ref=e4098]:
+                  - generic [ref=e4099]:
+                    - generic [ref=e4100]: 已结束
+                    - generic [ref=e4101]: First Stage · Group L
+                  - generic [ref=e4102]: 06/23 23:00
+                - generic [ref=e4103]:
+                  - generic [ref=e4105]: Panama
+                  - generic [ref=e4107]: 0-1
+                  - generic [ref=e4109]: Croatia
+                - generic [ref=e4110]: Toronto Stadium - Toronto
+          - generic [ref=e4112]:
+            - generic [ref=e4114]: 比赛日 47
+            - link "已结束 First Stage · Group K 06/23 17:00 Portugal 5-0 Uzbekistan Houston Stadium - Houston" [ref=e4117] [cursor=pointer]:
+              - /url: /matches/1565
+              - generic [ref=e4118]:
+                - generic [ref=e4120]:
+                  - generic [ref=e4121]:
+                    - generic [ref=e4122]: 已结束
+                    - generic [ref=e4123]: First Stage · Group K
+                  - generic [ref=e4124]: 06/23 17:00
+                - generic [ref=e4125]:
+                  - generic [ref=e4127]: Portugal
+                  - generic [ref=e4129]: 5-0
+                  - generic [ref=e4131]: Uzbekistan
+                - generic [ref=e4132]: Houston Stadium - Houston
+          - generic [ref=e4134]:
+            - generic [ref=e4136]: 比赛日 48
+            - link "已结束 First Stage · Group K 06/24 02:00 Colombia 1-0 Congo DR Guadalajara Stadium - Guadalajara" [ref=e4139] [cursor=pointer]:
+              - /url: /matches/1568
+              - generic [ref=e4140]:
+                - generic [ref=e4142]:
+                  - generic [ref=e4143]:
+                    - generic [ref=e4144]: 已结束
+                    - generic [ref=e4145]: First Stage · Group K
+                  - generic [ref=e4146]: 06/24 02:00
+                - generic [ref=e4147]:
+                  - generic [ref=e4149]: Colombia
+                  - generic [ref=e4151]: 1-0
+                  - generic [ref=e4153]: Congo DR
+                - generic [ref=e4154]: Guadalajara Stadium - Guadalajara
+          - generic [ref=e4156]:
+            - generic [ref=e4158]: 比赛日 49
+            - link "已结束 First Stage · Group C 06/24 22:00 Scotland 0-3 Brazil Miami Stadium - Miami" [ref=e4161] [cursor=pointer]:
+              - /url: /matches/1572
+              - generic [ref=e4162]:
+                - generic [ref=e4164]:
+                  - generic [ref=e4165]:
+                    - generic [ref=e4166]: 已结束
+                    - generic [ref=e4167]: First Stage · Group C
+                  - generic [ref=e4168]: 06/24 22:00
+                - generic [ref=e4169]:
+                  - generic [ref=e4171]: Scotland
+                  - generic [ref=e4173]: 0-3
+                  - generic [ref=e4175]: Brazil
+                - generic [ref=e4176]: Miami Stadium - Miami
+          - generic [ref=e4178]:
+            - generic [ref=e4180]: 比赛日 50
+            - link "已结束 First Stage · Group C 06/24 22:00 Morocco 4-2 Haiti Atlanta Stadium - Atlanta" [ref=e4183] [cursor=pointer]:
+              - /url: /matches/1571
+              - generic [ref=e4184]:
+                - generic [ref=e4186]:
+                  - generic [ref=e4187]:
+                    - generic [ref=e4188]: 已结束
+                    - generic [ref=e4189]: First Stage · Group C
+                  - generic [ref=e4190]: 06/24 22:00
+                - generic [ref=e4191]:
+                  - generic [ref=e4193]: Morocco
+                  - generic [ref=e4195]: 4-2
+                  - generic [ref=e4197]: Haiti
+                - generic [ref=e4198]: Atlanta Stadium - Atlanta
+          - generic [ref=e4200]:
+            - generic [ref=e4202]: 比赛日 51
+            - link "已结束 First Stage · Group B 06/24 19:00 Switzerland 2-1 Canada BC Place Vancouver - Vancouver" [ref=e4205] [cursor=pointer]:
+              - /url: /matches/1570
+              - generic [ref=e4206]:
+                - generic [ref=e4208]:
+                  - generic [ref=e4209]:
+                    - generic [ref=e4210]: 已结束
+                    - generic [ref=e4211]: First Stage · Group B
+                  - generic [ref=e4212]: 06/24 19:00
+                - generic [ref=e4213]:
+                  - generic [ref=e4215]: Switzerland
+                  - generic [ref=e4217]: 2-1
+                  - generic [ref=e4219]: Canada
+                - generic [ref=e4220]: BC Place Vancouver - Vancouver
+          - generic [ref=e4222]:
+            - generic [ref=e4224]: 比赛日 52
+            - link "已结束 First Stage · Group B 06/24 19:00 Bosnia and Herzegovina 3-1 Qatar Seattle Stadium - Seattle" [ref=e4227] [cursor=pointer]:
+              - /url: /matches/1569
+              - generic [ref=e4228]:
+                - generic [ref=e4230]:
+                  - generic [ref=e4231]:
+                    - generic [ref=e4232]: 已结束
+                    - generic [ref=e4233]: First Stage · Group B
+                  - generic [ref=e4234]: 06/24 19:00
+                - generic [ref=e4235]:
+                  - generic [ref=e4237]: Bosnia and Herzegovina
+                  - generic [ref=e4239]: 3-1
+                  - generic [ref=e4241]: Qatar
+                - generic [ref=e4242]: Seattle Stadium - Seattle
+          - generic [ref=e4244]:
+            - generic [ref=e4246]: 比赛日 53
+            - link "已结束 First Stage · Group A 06/25 01:00 Czechia 0-3 Mexico Mexico City Stadium - Mexico City" [ref=e4249] [cursor=pointer]:
+              - /url: /matches/1574
+              - generic [ref=e4250]:
+                - generic [ref=e4252]:
+                  - generic [ref=e4253]:
+                    - generic [ref=e4254]: 已结束
+                    - generic [ref=e4255]: First Stage · Group A
+                  - generic [ref=e4256]: 06/25 01:00
+                - generic [ref=e4257]:
+                  - generic [ref=e4259]: Czechia
+                  - generic [ref=e4261]: 0-3
+                  - generic [ref=e4263]: Mexico
+                - generic [ref=e4264]: Mexico City Stadium - Mexico City
+          - generic [ref=e4266]:
+            - generic [ref=e4268]: 比赛日 54
+            - link "已结束 First Stage · Group A 06/25 01:00 South Africa 1-0 Korea Republic Monterrey Stadium - Monterrey" [ref=e4271] [cursor=pointer]:
+              - /url: /matches/1573
+              - generic [ref=e4272]:
+                - generic [ref=e4274]:
+                  - generic [ref=e4275]:
+                    - generic [ref=e4276]: 已结束
+                    - generic [ref=e4277]: First Stage · Group A
+                  - generic [ref=e4278]: 06/25 01:00
+                - generic [ref=e4279]:
+                  - generic [ref=e4281]: South Africa
+                  - generic [ref=e4283]: 1-0
+                  - generic [ref=e4285]: Korea Republic
+                - generic [ref=e4286]: Monterrey Stadium - Monterrey
+          - generic [ref=e4288]:
+            - generic [ref=e4290]: 比赛日 55
+            - link "已结束 First Stage · Group E 06/25 20:00 Curaçao 0-2 Côte d'Ivoire Philadelphia Stadium - Philadelphia" [ref=e4293] [cursor=pointer]:
+              - /url: /matches/1575
+              - generic [ref=e4294]:
+                - generic [ref=e4296]:
+                  - generic [ref=e4297]:
+                    - generic [ref=e4298]: 已结束
+                    - generic [ref=e4299]: First Stage · Group E
+                  - generic [ref=e4300]: 06/25 20:00
+                - generic [ref=e4301]:
+                  - generic [ref=e4303]: Curaçao
+                  - generic [ref=e4305]: 0-2
+                  - generic [ref=e4307]: Côte d'Ivoire
+                - generic [ref=e4308]: Philadelphia Stadium - Philadelphia
+          - generic [ref=e4310]:
+            - generic [ref=e4312]: 比赛日 56
+            - link "已结束 First Stage · Group E 06/25 20:00 Ecuador 2-1 Germany New York/New Jersey Stadium - New Jersey" [ref=e4315] [cursor=pointer]:
+              - /url: /matches/1576
+              - generic [ref=e4316]:
+                - generic [ref=e4318]:
+                  - generic [ref=e4319]:
+                    - generic [ref=e4320]: 已结束
+                    - generic [ref=e4321]: First Stage · Group E
+                  - generic [ref=e4322]: 06/25 20:00
+                - generic [ref=e4323]:
+                  - generic [ref=e4325]: Ecuador
+                  - generic [ref=e4327]: 2-1
+                  - generic [ref=e4329]: Germany
+                - generic [ref=e4330]: New York/New Jersey Stadium - New Jersey
+          - generic [ref=e4332]:
+            - generic [ref=e4334]: 比赛日 57
+            - link "已结束 First Stage · Group F 06/25 23:00 Japan 1-1 Sweden Dallas Stadium - Dallas" [ref=e4337] [cursor=pointer]:
+              - /url: /matches/1578
+              - generic [ref=e4338]:
+                - generic [ref=e4340]:
+                  - generic [ref=e4341]:
+                    - generic [ref=e4342]: 已结束
+                    - generic [ref=e4343]: First Stage · Group F
+                  - generic [ref=e4344]: 06/25 23:00
+                - generic [ref=e4345]:
+                  - generic [ref=e4347]: Japan
+                  - generic [ref=e4349]: 1-1
+                  - generic [ref=e4351]: Sweden
+                - generic [ref=e4352]: Dallas Stadium - Dallas
+          - generic [ref=e4354]:
+            - generic [ref=e4356]: 比赛日 58
+            - link "已结束 First Stage · Group F 06/25 23:00 Tunisia 1-3 Netherlands Kansas City Stadium - Kansas City" [ref=e4359] [cursor=pointer]:
+              - /url: /matches/1577
+              - generic [ref=e4360]:
+                - generic [ref=e4362]:
+                  - generic [ref=e4363]:
+                    - generic [ref=e4364]: 已结束
+                    - generic [ref=e4365]: First Stage · Group F
+                  - generic [ref=e4366]: 06/25 23:00
+                - generic [ref=e4367]:
+                  - generic [ref=e4369]: Tunisia
+                  - generic [ref=e4371]: 1-3
+                  - generic [ref=e4373]: Netherlands
+                - generic [ref=e4374]: Kansas City Stadium - Kansas City
+          - generic [ref=e4376]:
+            - generic [ref=e4378]: 比赛日 59
+            - link "已结束 First Stage · Group D 06/26 02:00 Türkiye 3-2 USA Los Angeles Stadium - Los Angeles" [ref=e4381] [cursor=pointer]:
+              - /url: /matches/1580
+              - generic [ref=e4382]:
+                - generic [ref=e4384]:
+                  - generic [ref=e4385]:
+                    - generic [ref=e4386]: 已结束
+                    - generic [ref=e4387]: First Stage · Group D
+                  - generic [ref=e4388]: 06/26 02:00
+                - generic [ref=e4389]:
+                  - generic [ref=e4391]: Türkiye
+                  - generic [ref=e4393]: 3-2
+                  - generic [ref=e4395]: USA
+                - generic [ref=e4396]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e4398]:
+            - generic [ref=e4400]: 比赛日 60
+            - link "已结束 First Stage · Group D 06/26 02:00 Paraguay 0-0 Australia San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e4403] [cursor=pointer]:
+              - /url: /matches/1579
+              - generic [ref=e4404]:
+                - generic [ref=e4406]:
+                  - generic [ref=e4407]:
+                    - generic [ref=e4408]: 已结束
+                    - generic [ref=e4409]: First Stage · Group D
+                  - generic [ref=e4410]: 06/26 02:00
+                - generic [ref=e4411]:
+                  - generic [ref=e4413]: Paraguay
+                  - generic [ref=e4415]: 0-0
+                  - generic [ref=e4417]: Australia
+                - generic [ref=e4418]: San Francisco Bay Area Stadium - San Francisco Bay Area
+          - generic [ref=e4420]:
+            - generic [ref=e4422]: 比赛日 61
+            - link "已结束 First Stage · Group I 06/26 19:00 Norway 1-4 France Boston Stadium - Boston" [ref=e4425] [cursor=pointer]:
+              - /url: /matches/1582
+              - generic [ref=e4426]:
+                - generic [ref=e4428]:
+                  - generic [ref=e4429]:
+                    - generic [ref=e4430]: 已结束
+                    - generic [ref=e4431]: First Stage · Group I
+                  - generic [ref=e4432]: 06/26 19:00
+                - generic [ref=e4433]:
+                  - generic [ref=e4435]: Norway
+                  - generic [ref=e4437]: 1-4
+                  - generic [ref=e4439]: France
+                - generic [ref=e4440]: Boston Stadium - Boston
+          - generic [ref=e4442]:
+            - generic [ref=e4444]: 比赛日 62
+            - link "已结束 First Stage · Group I 06/26 19:00 Senegal 5-0 Iraq Toronto Stadium - Toronto" [ref=e4447] [cursor=pointer]:
+              - /url: /matches/1581
+              - generic [ref=e4448]:
+                - generic [ref=e4450]:
+                  - generic [ref=e4451]:
+                    - generic [ref=e4452]: 已结束
+                    - generic [ref=e4453]: First Stage · Group I
+                  - generic [ref=e4454]: 06/26 19:00
+                - generic [ref=e4455]:
+                  - generic [ref=e4457]: Senegal
+                  - generic [ref=e4459]: 5-0
+                  - generic [ref=e4461]: Iraq
+                - generic [ref=e4462]: Toronto Stadium - Toronto
+          - generic [ref=e4464]:
+            - generic [ref=e4466]: 比赛日 63
+            - link "已结束 First Stage · Group G 06/27 03:00 Egypt 1-1 IR Iran Seattle Stadium - Seattle" [ref=e4469] [cursor=pointer]:
+              - /url: /matches/1586
+              - generic [ref=e4470]:
+                - generic [ref=e4472]:
+                  - generic [ref=e4473]:
+                    - generic [ref=e4474]: 已结束
+                    - generic [ref=e4475]: First Stage · Group G
+                  - generic [ref=e4476]: 06/27 03:00
+                - generic [ref=e4477]:
+                  - generic [ref=e4479]: Egypt
+                  - generic [ref=e4481]: 1-1
+                  - generic [ref=e4483]: IR Iran
+                - generic [ref=e4484]: Seattle Stadium - Seattle
+          - generic [ref=e4486]:
+            - generic [ref=e4488]: 比赛日 64
+            - link "已结束 First Stage · Group G 06/27 03:00 New Zealand 1-5 Belgium BC Place Vancouver - Vancouver" [ref=e4491] [cursor=pointer]:
+              - /url: /matches/1585
+              - generic [ref=e4492]:
+                - generic [ref=e4494]:
+                  - generic [ref=e4495]:
+                    - generic [ref=e4496]: 已结束
+                    - generic [ref=e4497]: First Stage · Group G
+                  - generic [ref=e4498]: 06/27 03:00
+                - generic [ref=e4499]:
+                  - generic [ref=e4501]: New Zealand
+                  - generic [ref=e4503]: 1-5
+                  - generic [ref=e4505]: Belgium
+                - generic [ref=e4506]: BC Place Vancouver - Vancouver
+          - generic [ref=e4508]:
+            - generic [ref=e4510]: 比赛日 65
+            - link "已结束 First Stage · Group H 06/27 00:00 Cabo Verde 0-0 Saudi Arabia Houston Stadium - Houston" [ref=e4513] [cursor=pointer]:
+              - /url: /matches/1584
+              - generic [ref=e4514]:
+                - generic [ref=e4516]:
+                  - generic [ref=e4517]:
+                    - generic [ref=e4518]: 已结束
+                    - generic [ref=e4519]: First Stage · Group H
+                  - generic [ref=e4520]: 06/27 00:00
+                - generic [ref=e4521]:
+                  - generic [ref=e4523]: Cabo Verde
+                  - generic [ref=e4525]: 0-0
+                  - generic [ref=e4527]: Saudi Arabia
+                - generic [ref=e4528]: Houston Stadium - Houston
+          - generic [ref=e4530]:
+            - generic [ref=e4532]: 比赛日 66
+            - link "已结束 First Stage · Group H 06/27 00:00 Uruguay 0-1 Spain Guadalajara Stadium - Guadalajara" [ref=e4535] [cursor=pointer]:
+              - /url: /matches/1583
+              - generic [ref=e4536]:
+                - generic [ref=e4538]:
+                  - generic [ref=e4539]:
+                    - generic [ref=e4540]: 已结束
+                    - generic [ref=e4541]: First Stage · Group H
+                  - generic [ref=e4542]: 06/27 00:00
+                - generic [ref=e4543]:
+                  - generic [ref=e4545]: Uruguay
+                  - generic [ref=e4547]: 0-1
+                  - generic [ref=e4549]: Spain
+                - generic [ref=e4550]: Guadalajara Stadium - Guadalajara
+          - generic [ref=e4552]:
+            - generic [ref=e4554]: 比赛日 67
+            - link "已结束 First Stage · Group L 06/27 21:00 Panama 0-2 England New York/New Jersey Stadium - New Jersey" [ref=e4557] [cursor=pointer]:
+              - /url: /matches/1587
+              - generic [ref=e4558]:
+                - generic [ref=e4560]:
+                  - generic [ref=e4561]:
+                    - generic [ref=e4562]: 已结束
+                    - generic [ref=e4563]: First Stage · Group L
+                  - generic [ref=e4564]: 06/27 21:00
+                - generic [ref=e4565]:
+                  - generic [ref=e4567]: Panama
+                  - generic [ref=e4569]: 0-2
+                  - generic [ref=e4571]: England
+                - generic [ref=e4572]: New York/New Jersey Stadium - New Jersey
+          - generic [ref=e4574]:
+            - generic [ref=e4576]: 比赛日 68
+            - link "已结束 First Stage · Group L 06/27 21:00 Croatia 2-1 Ghana Philadelphia Stadium - Philadelphia" [ref=e4579] [cursor=pointer]:
+              - /url: /matches/1588
+              - generic [ref=e4580]:
+                - generic [ref=e4582]:
+                  - generic [ref=e4583]:
+                    - generic [ref=e4584]: 已结束
+                    - generic [ref=e4585]: First Stage · Group L
+                  - generic [ref=e4586]: 06/27 21:00
+                - generic [ref=e4587]:
+                  - generic [ref=e4589]: Croatia
+                  - generic [ref=e4591]: 2-1
+                  - generic [ref=e4593]: Ghana
+                - generic [ref=e4594]: Philadelphia Stadium - Philadelphia
+          - generic [ref=e4596]:
+            - generic [ref=e4598]: 比赛日 69
+            - link "已结束 First Stage · Group J 06/28 02:00 Algeria 3-3 Austria Kansas City Stadium - Kansas City" [ref=e4601] [cursor=pointer]:
+              - /url: /matches/1591
+              - generic [ref=e4602]:
+                - generic [ref=e4604]:
+                  - generic [ref=e4605]:
+                    - generic [ref=e4606]: 已结束
+                    - generic [ref=e4607]: First Stage · Group J
+                  - generic [ref=e4608]: 06/28 02:00
+                - generic [ref=e4609]:
+                  - generic [ref=e4611]: Algeria
+                  - generic [ref=e4613]: 3-3
+                  - generic [ref=e4615]: Austria
+                - generic [ref=e4616]: Kansas City Stadium - Kansas City
+          - generic [ref=e4618]:
+            - generic [ref=e4620]: 比赛日 70
+            - link "已结束 First Stage · Group J 06/28 02:00 Jordan 1-3 Argentina Dallas Stadium - Dallas" [ref=e4623] [cursor=pointer]:
+              - /url: /matches/1592
+              - generic [ref=e4624]:
+                - generic [ref=e4626]:
+                  - generic [ref=e4627]:
+                    - generic [ref=e4628]: 已结束
+                    - generic [ref=e4629]: First Stage · Group J
+                  - generic [ref=e4630]: 06/28 02:00
+                - generic [ref=e4631]:
+                  - generic [ref=e4633]: Jordan
+                  - generic [ref=e4635]: 1-3
+                  - generic [ref=e4637]: Argentina
+                - generic [ref=e4638]: Dallas Stadium - Dallas
+          - generic [ref=e4640]:
+            - generic [ref=e4642]: 比赛日 71
+            - link "已结束 First Stage · Group K 06/27 23:30 Colombia 0-0 Portugal Miami Stadium - Miami" [ref=e4645] [cursor=pointer]:
+              - /url: /matches/1590
+              - generic [ref=e4646]:
+                - generic [ref=e4648]:
+                  - generic [ref=e4649]:
+                    - generic [ref=e4650]: 已结束
+                    - generic [ref=e4651]: First Stage · Group K
+                  - generic [ref=e4652]: 06/27 23:30
+                - generic [ref=e4653]:
+                  - generic [ref=e4655]: Colombia
+                  - generic [ref=e4657]: 0-0
+                  - generic [ref=e4659]: Portugal
+                - generic [ref=e4660]: Miami Stadium - Miami
+          - generic [ref=e4662]:
+            - generic [ref=e4664]: 比赛日 72
+            - link "已结束 First Stage · Group K 06/27 23:30 Congo DR 3-1 Uzbekistan Atlanta Stadium - Atlanta" [ref=e4667] [cursor=pointer]:
+              - /url: /matches/1589
+              - generic [ref=e4668]:
+                - generic [ref=e4670]:
+                  - generic [ref=e4671]:
+                    - generic [ref=e4672]: 已结束
+                    - generic [ref=e4673]: First Stage · Group K
+                  - generic [ref=e4674]: 06/27 23:30
+                - generic [ref=e4675]:
+                  - generic [ref=e4677]: Congo DR
+                  - generic [ref=e4679]: 3-1
+                  - generic [ref=e4681]: Uzbekistan
+                - generic [ref=e4682]: Atlanta Stadium - Atlanta
+          - generic [ref=e4684]:
+            - generic [ref=e4686]: 比赛日 73
+            - link "未开始 Round of 32 06/28 19:00 South Africa VS Canada Los Angeles Stadium - Los Angeles" [ref=e4689] [cursor=pointer]:
+              - /url: /matches/1593
+              - generic [ref=e4690]:
+                - generic [ref=e4692]:
+                  - generic [ref=e4693]:
+                    - generic [ref=e4694]: 未开始
+                    - generic [ref=e4695]: Round of 32
+                  - generic [ref=e4696]: 06/28 19:00
+                - generic [ref=e4697]:
+                  - generic [ref=e4699]: South Africa
+                  - generic [ref=e4701]: VS
+                  - generic [ref=e4703]: Canada
+                - generic [ref=e4704]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e4706]:
+            - generic [ref=e4708]: 比赛日 74
+            - link "未开始 Round of 32 06/29 20:30 Germany VS Paraguay Boston Stadium - Boston" [ref=e4711] [cursor=pointer]:
+              - /url: /matches/1595
+              - generic [ref=e4712]:
+                - generic [ref=e4714]:
+                  - generic [ref=e4715]:
+                    - generic [ref=e4716]: 未开始
+                    - generic [ref=e4717]: Round of 32
+                  - generic [ref=e4718]: 06/29 20:30
+                - generic [ref=e4719]:
+                  - generic [ref=e4721]: Germany
+                  - generic [ref=e4723]: VS
+                  - generic [ref=e4725]: Paraguay
+                - generic [ref=e4726]: Boston Stadium - Boston
+          - generic [ref=e4728]:
+            - generic [ref=e4730]: 比赛日 75
+            - link "未开始 Round of 32 06/30 01:00 Netherlands VS Morocco Monterrey Stadium - Monterrey" [ref=e4733] [cursor=pointer]:
+              - /url: /matches/1596
+              - generic [ref=e4734]:
+                - generic [ref=e4736]:
+                  - generic [ref=e4737]:
+                    - generic [ref=e4738]: 未开始
+                    - generic [ref=e4739]: Round of 32
+                  - generic [ref=e4740]: 06/30 01:00
+                - generic [ref=e4741]:
+                  - generic [ref=e4743]: Netherlands
+                  - generic [ref=e4745]: VS
+                  - generic [ref=e4747]: Morocco
+                - generic [ref=e4748]: Monterrey Stadium - Monterrey
+          - generic [ref=e4750]:
+            - generic [ref=e4752]: 比赛日 76
+            - link "未开始 Round of 32 06/29 17:00 Brazil VS Japan Houston Stadium - Houston" [ref=e4755] [cursor=pointer]:
+              - /url: /matches/1594
+              - generic [ref=e4756]:
+                - generic [ref=e4758]:
+                  - generic [ref=e4759]:
+                    - generic [ref=e4760]: 未开始
+                    - generic [ref=e4761]: Round of 32
+                  - generic [ref=e4762]: 06/29 17:00
+                - generic [ref=e4763]:
+                  - generic [ref=e4765]: Brazil
+                  - generic [ref=e4767]: VS
+                  - generic [ref=e4769]: Japan
+                - generic [ref=e4770]: Houston Stadium - Houston
+          - generic [ref=e4772]:
+            - generic [ref=e4774]: 比赛日 77
+            - link "未开始 Round of 32 06/30 21:00 France VS Sweden New York/New Jersey Stadium - New Jersey" [ref=e4777] [cursor=pointer]:
+              - /url: /matches/1598
+              - generic [ref=e4778]:
+                - generic [ref=e4780]:
+                  - generic [ref=e4781]:
+                    - generic [ref=e4782]: 未开始
+                    - generic [ref=e4783]: Round of 32
+                  - generic [ref=e4784]: 06/30 21:00
+                - generic [ref=e4785]:
+                  - generic [ref=e4787]: France
+                  - generic [ref=e4789]: VS
+                  - generic [ref=e4791]: Sweden
+                - generic [ref=e4792]: New York/New Jersey Stadium - New Jersey
+          - generic [ref=e4794]:
+            - generic [ref=e4796]: 比赛日 78
+            - link "未开始 Round of 32 06/30 17:00 Côte d'Ivoire VS Norway Dallas Stadium - Dallas" [ref=e4799] [cursor=pointer]:
+              - /url: /matches/1597
+              - generic [ref=e4800]:
+                - generic [ref=e4802]:
+                  - generic [ref=e4803]:
+                    - generic [ref=e4804]: 未开始
+                    - generic [ref=e4805]: Round of 32
+                  - generic [ref=e4806]: 06/30 17:00
+                - generic [ref=e4807]:
+                  - generic [ref=e4809]: Côte d'Ivoire
+                  - generic [ref=e4811]: VS
+                  - generic [ref=e4813]: Norway
+                - generic [ref=e4814]: Dallas Stadium - Dallas
+          - generic [ref=e4816]:
+            - generic [ref=e4818]: 比赛日 79
+            - link "未开始 Round of 32 07/01 01:00 Mexico VS Ecuador Mexico City Stadium - Mexico City" [ref=e4821] [cursor=pointer]:
+              - /url: /matches/1599
+              - generic [ref=e4822]:
+                - generic [ref=e4824]:
+                  - generic [ref=e4825]:
+                    - generic [ref=e4826]: 未开始
+                    - generic [ref=e4827]: Round of 32
+                  - generic [ref=e4828]: 07/01 01:00
+                - generic [ref=e4829]:
+                  - generic [ref=e4831]: Mexico
+                  - generic [ref=e4833]: VS
+                  - generic [ref=e4835]: Ecuador
+                - generic [ref=e4836]: Mexico City Stadium - Mexico City
+          - generic [ref=e4838]:
+            - generic [ref=e4840]: 比赛日 80
+            - link "未开始 Round of 32 07/01 16:00 England VS Congo DR Atlanta Stadium - Atlanta" [ref=e4843] [cursor=pointer]:
+              - /url: /matches/1600
+              - generic [ref=e4844]:
+                - generic [ref=e4846]:
+                  - generic [ref=e4847]:
+                    - generic [ref=e4848]: 未开始
+                    - generic [ref=e4849]: Round of 32
+                  - generic [ref=e4850]: 07/01 16:00
+                - generic [ref=e4851]:
+                  - generic [ref=e4853]: England
+                  - generic [ref=e4855]: VS
+                  - generic [ref=e4857]: Congo DR
+                - generic [ref=e4858]: Atlanta Stadium - Atlanta
+          - generic [ref=e4860]:
+            - generic [ref=e4862]: 比赛日 81
+            - link "未开始 Round of 32 07/02 00:00 USA VS Bosnia and Herzegovina San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e4865] [cursor=pointer]:
+              - /url: /matches/1602
+              - generic [ref=e4866]:
+                - generic [ref=e4868]:
+                  - generic [ref=e4869]:
+                    - generic [ref=e4870]: 未开始
+                    - generic [ref=e4871]: Round of 32
+                  - generic [ref=e4872]: 07/02 00:00
+                - generic [ref=e4873]:
+                  - generic [ref=e4875]: USA
+                  - generic [ref=e4877]: VS
+                  - generic [ref=e4879]: Bosnia and Herzegovina
+                - generic [ref=e4880]: San Francisco Bay Area Stadium - San Francisco Bay Area
+          - generic [ref=e4882]:
+            - generic [ref=e4884]: 比赛日 82
+            - link "未开始 Round of 32 07/01 20:00 Belgium VS Senegal Seattle Stadium - Seattle" [ref=e4887] [cursor=pointer]:
+              - /url: /matches/1601
+              - generic [ref=e4888]:
+                - generic [ref=e4890]:
+                  - generic [ref=e4891]:
+                    - generic [ref=e4892]: 未开始
+                    - generic [ref=e4893]: Round of 32
+                  - generic [ref=e4894]: 07/01 20:00
+                - generic [ref=e4895]:
+                  - generic [ref=e4897]: Belgium
+                  - generic [ref=e4899]: VS
+                  - generic [ref=e4901]: Senegal
+                - generic [ref=e4902]: Seattle Stadium - Seattle
+          - generic [ref=e4904]:
+            - generic [ref=e4906]: 比赛日 83
+            - link "未开始 Round of 32 07/02 23:00 Portugal VS Croatia Toronto Stadium - Toronto" [ref=e4909] [cursor=pointer]:
+              - /url: /matches/1604
+              - generic [ref=e4910]:
+                - generic [ref=e4912]:
+                  - generic [ref=e4913]:
+                    - generic [ref=e4914]: 未开始
+                    - generic [ref=e4915]: Round of 32
+                  - generic [ref=e4916]: 07/02 23:00
+                - generic [ref=e4917]:
+                  - generic [ref=e4919]: Portugal
+                  - generic [ref=e4921]: VS
+                  - generic [ref=e4923]: Croatia
+                - generic [ref=e4924]: Toronto Stadium - Toronto
+          - generic [ref=e4926]:
+            - generic [ref=e4928]: 比赛日 84
+            - link "未开始 Round of 32 07/02 19:00 Spain VS Austria Los Angeles Stadium - Los Angeles" [ref=e4931] [cursor=pointer]:
+              - /url: /matches/1603
+              - generic [ref=e4932]:
+                - generic [ref=e4934]:
+                  - generic [ref=e4935]:
+                    - generic [ref=e4936]: 未开始
+                    - generic [ref=e4937]: Round of 32
+                  - generic [ref=e4938]: 07/02 19:00
+                - generic [ref=e4939]:
+                  - generic [ref=e4941]: Spain
+                  - generic [ref=e4943]: VS
+                  - generic [ref=e4945]: Austria
+                - generic [ref=e4946]: Los Angeles Stadium - Los Angeles
+          - generic [ref=e4948]:
+            - generic [ref=e4950]: 比赛日 85
+            - link "未开始 Round of 32 07/03 03:00 Switzerland VS Algeria BC Place Vancouver - Vancouver" [ref=e4953] [cursor=pointer]:
+              - /url: /matches/1605
+              - generic [ref=e4954]:
+                - generic [ref=e4956]:
+                  - generic [ref=e4957]:
+                    - generic [ref=e4958]: 未开始
+                    - generic [ref=e4959]: Round of 32
+                  - generic [ref=e4960]: 07/03 03:00
+                - generic [ref=e4961]:
+                  - generic [ref=e4963]: Switzerland
+                  - generic [ref=e4965]: VS
+                  - generic [ref=e4967]: Algeria
+                - generic [ref=e4968]: BC Place Vancouver - Vancouver
+          - generic [ref=e4970]:
+            - generic [ref=e4972]: 比赛日 86
+            - link "未开始 Round of 32 07/03 22:00 Argentina VS Cabo Verde Miami Stadium - Miami" [ref=e4975] [cursor=pointer]:
+              - /url: /matches/1607
+              - generic [ref=e4976]:
+                - generic [ref=e4978]:
+                  - generic [ref=e4979]:
+                    - generic [ref=e4980]: 未开始
+                    - generic [ref=e4981]: Round of 32
+                  - generic [ref=e4982]: 07/03 22:00
+                - generic [ref=e4983]:
+                  - generic [ref=e4985]: Argentina
+                  - generic [ref=e4987]: VS
+                  - generic [ref=e4989]: Cabo Verde
+                - generic [ref=e4990]: Miami Stadium - Miami
+          - generic [ref=e4992]:
+            - generic [ref=e4994]: 比赛日 87
+            - link "未开始 Round of 32 07/04 01:30 Colombia VS Ghana Kansas City Stadium - Kansas City" [ref=e4997] [cursor=pointer]:
+              - /url: /matches/1608
+              - generic [ref=e4998]:
+                - generic [ref=e5000]:
+                  - generic [ref=e5001]:
+                    - generic [ref=e5002]: 未开始
+                    - generic [ref=e5003]: Round of 32
+                  - generic [ref=e5004]: 07/04 01:30
+                - generic [ref=e5005]:
+                  - generic [ref=e5007]: Colombia
+                  - generic [ref=e5009]: VS
+                  - generic [ref=e5011]: Ghana
+                - generic [ref=e5012]: Kansas City Stadium - Kansas City
+          - generic [ref=e5014]:
+            - generic [ref=e5016]: 比赛日 88
+            - link "未开始 Round of 32 07/03 18:00 Australia VS Egypt Dallas Stadium - Dallas" [ref=e5019] [cursor=pointer]:
+              - /url: /matches/1606
+              - generic [ref=e5020]:
+                - generic [ref=e5022]:
+                  - generic [ref=e5023]:
+                    - generic [ref=e5024]: 未开始
+                    - generic [ref=e5025]: Round of 32
+                  - generic [ref=e5026]: 07/03 18:00
+                - generic [ref=e5027]:
+                  - generic [ref=e5029]: Australia
+                  - generic [ref=e5031]: VS
+                  - generic [ref=e5033]: Egypt
+                - generic [ref=e5034]: Dallas Stadium - Dallas

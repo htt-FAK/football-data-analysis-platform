@@ -87,8 +87,30 @@ FIELD_MAP = {
         "date": "date",
         "id": "match_id",
     },
-    # football-data.org：API 风格
+    # football-data.co.uk：CSV 下载风格（实际生产数据格式）
     "football_data": {
+        "Date": "date",
+        "Time": "time",
+        "HomeTeam": "home_team",
+        "AwayTeam": "away_team",
+        "FTHG": "home_score",
+        "FTAG": "away_score",
+        "FTR": "result",           # H/D/A
+        "HS": "home_shots",
+        "AS": "away_shots",
+        "HST": "home_shots_on_target",
+        "AST": "away_shots_on_target",
+        "HY": "home_yellow",
+        "AY": "away_yellow",
+        "HR": "home_red",
+        "AR": "away_red",
+        "HC": "home_corners",
+        "AC": "away_corners",
+        "HF": "home_fouls",
+        "AF": "away_fouls",
+        "Referee": "referee",
+        # Div 不映射到 league（用 ingest league_name 参数传入规范中文名）
+        # 保留 API 风格字段兼容
         "id": "match_id",
         "utcDate": "date",
         "matchday": "matchday",

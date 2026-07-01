@@ -8,8 +8,8 @@
 - /standing       积分榜页面（JS 渲染，需降级处理）
 """
 
-import re
 import logging
+import re
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -49,6 +49,13 @@ class DongqiudiCrawler(BaseCrawler):
 
     def __init__(self):
         super().__init__(source_code="dongqiudi", base_url="https://www.dongqiudi.com/")
+        self.session.headers.update(
+            {
+                "Accept": "application/json, text/plain, */*",
+                "Origin": "https://www.dongqiudi.com",
+                "X-Requested-With": "XMLHttpRequest",
+            }
+        )
 
     def crawl(self, target: str, league: str = "英超", **kwargs) -> list[dict]:
         """采集入口
@@ -404,6 +411,165 @@ class DongqiudiCrawler(BaseCrawler):
 
         logger.info("[dongqiudi] 比赛详情采集完成: match_id=%s", match_id)
         return [result]
+
+    def fetch_schedule_list_api(self, start_date: str) -> list[dict]:
+        """Fetch schedule rows from the current Dongqiudi JSON API."""
+        response = self._fetch(
+            f"{self.base_url}magicball/v1/list/schedule_list",
+            params={
+                "language": "en-US",
+                "cmp_type": "soccer",
+                "tab_type": "schedule",
+                "start": f"{start_date} 00:00:00",
+            },
+        )
+        payload = response.json()
+        matches = ((payload.get("data") or {}).get("matches") or [])
+        logger.info("[dongqiudi] schedule_list API fetched %d matches for %s", len(matches), start_date)
+        return matches
+
+    def fetch_match_overview(self, match_id: str | int) -> dict:
+        """Fetch the match overview payload that contains the event timeline."""
+        response = self._fetch(f"{self.base_url}api/data/overview/match/{match_id}")
+        payload = response.json()
+        logger.info(
+            "[dongqiudi] overview API fetched match_id=%s with %d minute buckets",
+            match_id,
+            len(payload.get("events") or {}),
+        )
+        return payload
+
+    def normalize_overview_events(self, match_id: str | int, overview: dict) -> list[dict]:
+        """Normalize Dongqiudi overview event buckets into key event rows."""
+        normalized: list[dict] = []
+        events_by_minute = overview.get("events") or {}
+
+        for minute_key, bucket in events_by_minute.items():
+            minute = self._parse_event_minute(minute_key)
+            if minute is None:
+                continue
+
+            for side_key, team_side in (("teamAEvents", "home"), ("teamBEvents", "away")):
+                entries = bucket.get(side_key) or []
+                outgoing_queue = [entry for entry in entries if (entry.get("code") or "").upper() == "SO"]
+
+                for entry in entries:
+                    normalized_event = self._normalize_overview_entry(
+                        match_id=match_id,
+                        minute=minute,
+                        minute_key=minute_key,
+                        team_side=team_side,
+                        entry=entry,
+                        outgoing_queue=outgoing_queue,
+                    )
+                    if normalized_event:
+                        normalized.append(normalized_event)
+
+        return normalized
+
+    @staticmethod
+    def _parse_event_minute(minute_value: str | int | None) -> int | None:
+        if minute_value is None:
+            return None
+        text = str(minute_value).strip()
+        if not text:
+            return None
+        base = text.split("+", 1)[0]
+        digits = "".join(ch for ch in base if ch.isdigit())
+        return int(digits) if digits else None
+
+    def _normalize_overview_entry(
+        self,
+        match_id: str | int,
+        minute: int,
+        minute_key: str,
+        team_side: str,
+        entry: dict,
+        outgoing_queue: list[dict],
+    ) -> dict | None:
+        code = (entry.get("code") or "").upper()
+        if code == "SO":
+            return None
+
+        event_type_map = {
+            "G": "goal",
+            "YC": "yellow_card",
+            "RC": "red_card",
+        }
+
+        if code in event_type_map:
+            event_type = event_type_map[code]
+            return {
+                "match_id": match_id,
+                "minute": minute,
+                "event_type": event_type,
+                "team": team_side,
+                "team_side": team_side,
+                "player": entry.get("person"),
+                "player_source_id": entry.get("person_id"),
+                "detail": self._build_event_detail(code, entry),
+                "data_source": "dongqiudi",
+                "source_id": self._build_event_source_id(match_id, minute_key, team_side, event_type, entry),
+            }
+
+        if code == "SI":
+            outgoing = outgoing_queue.pop(0) if outgoing_queue else {}
+            return {
+                "match_id": match_id,
+                "minute": minute,
+                "event_type": "substitution",
+                "team": team_side,
+                "team_side": team_side,
+                "player": entry.get("person"),
+                "player_source_id": entry.get("person_id"),
+                "detail": self._build_substitution_detail(entry.get("person"), outgoing.get("person")),
+                "data_source": "dongqiudi",
+                "source_id": self._build_event_source_id(
+                    match_id,
+                    minute_key,
+                    team_side,
+                    "substitution",
+                    entry,
+                    extra=f"out:{outgoing.get('person_id') or outgoing.get('person') or 'unknown'}",
+                ),
+            }
+
+        return None
+
+    @staticmethod
+    def _build_event_detail(code: str, entry: dict) -> str:
+        player = entry.get("person") or "未知球员"
+        reason = (entry.get("reason") or "").strip()
+        score = (entry.get("score") or "").strip()
+
+        if code == "G":
+            return f"{player} 进球（{score}）" if score else f"{player} 进球"
+        if code == "YC":
+            return f"{player} 黄牌" + (f"：{reason}" if reason else "")
+        if code == "RC":
+            return f"{player} 红牌" + (f"：{reason}" if reason else "")
+        return player
+
+    @staticmethod
+    def _build_substitution_detail(player_in: str | None, player_out: str | None) -> str:
+        incoming = player_in or "未知球员"
+        outgoing = player_out or "未知球员"
+        return f"换人：{incoming} 上，{outgoing} 下"
+
+    @staticmethod
+    def _build_event_source_id(
+        match_id: str | int,
+        minute_key: str,
+        team_side: str,
+        event_type: str,
+        entry: dict,
+        extra: str | None = None,
+    ) -> str:
+        player_part = entry.get("person_id") or entry.get("person") or "unknown"
+        parts = [str(match_id), str(minute_key), team_side, event_type, str(player_part)]
+        if extra:
+            parts.append(extra)
+        return "-".join(parts)
 
     def _parse_match_events(self, soup: BeautifulSoup, match_id: str) -> list[dict]:
         """解析比赛事件（进球、卡牌、换人）

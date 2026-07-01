@@ -1,0 +1,151 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: 世界杯
+        - generic [ref=e15]: 足球数据专题
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "世界杯" [ref=e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e20]
+        - generic [ref=e25]: 世界杯
+      - link "球队" [ref=e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e27]
+        - generic [ref=e32]: 球队
+      - link "球员" [ref=e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e34]
+        - generic [ref=e37]: 球员
+      - link "比赛" [ref=e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e39]
+        - generic [ref=e41]: 比赛
+      - link "AI 预测" [ref=e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e43]
+        - generic [ref=e46]: AI 预测
+    - generic [ref=e47]: v1.0.0
+  - main [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - link "返回球员列表" [ref=e51] [cursor=pointer]:
+          - /url: /players
+          - img [ref=e52]
+          - text: 返回球员列表
+        - navigation [ref=e54]:
+          - link [ref=e55] [cursor=pointer]:
+            - /url: /
+            - img [ref=e56]
+          - generic [ref=e59]:
+            - img [ref=e60]
+            - link "球员中心" [ref=e62] [cursor=pointer]:
+              - /url: /players
+          - generic [ref=e63]:
+            - img [ref=e64]
+            - generic [ref=e66]: 卡塞米罗
+        - generic [ref=e69]:
+          - generic [ref=e72]: 世界杯数据专题
+          - heading "卡塞米罗" [level=1] [ref=e73]
+          - paragraph [ref=e74]: 巴西 · 中场
+      - generic [ref=e75]:
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - img "卡塞米罗" [ref=e82]
+            - heading "卡塞米罗" [level=2] [ref=e83]
+            - paragraph [ref=e84]: CASEMIRO
+            - generic [ref=e85]:
+              - generic [ref=e86]: 中场
+              - generic [ref=e87]:
+                - img [ref=e88]
+                - text: 5号
+          - generic [ref=e91]:
+            - generic [ref=e92]: "39.4"
+            - generic [ref=e93]: 总评
+          - generic [ref=e94]:
+            - generic [ref=e95]:
+              - img [ref=e97]
+              - generic [ref=e100]:
+                - generic [ref=e101]: 国籍
+                - generic [ref=e102]: 巴西
+            - generic [ref=e103]:
+              - img [ref=e105]
+              - generic [ref=e107]:
+                - generic [ref=e108]: 出生日期
+                - generic [ref=e109]: 1992/02/23
+            - generic [ref=e110]:
+              - img [ref=e112]
+              - generic [ref=e118]:
+                - generic [ref=e119]: 身高
+                - generic [ref=e120]: 185 cm
+            - generic [ref=e121]:
+              - img [ref=e123]
+              - generic [ref=e126]:
+                - generic [ref=e127]: 体重
+                - generic [ref=e128]: 84 kg
+          - link "所属球队 巴西" [ref=e130] [cursor=pointer]:
+            - /url: /teams/34
+            - img [ref=e132]
+            - generic [ref=e138]:
+              - generic [ref=e139]: 所属球队
+              - generic [ref=e140]: 巴西
+            - img [ref=e141]
+        - generic [ref=e144]:
+          - generic [ref=e145]:
+            - button "概览" [ref=e146] [cursor=pointer]
+            - button "赛季统计" [ref=e147] [cursor=pointer]
+            - button "能力雷达" [ref=e148] [cursor=pointer]
+            - button "位置排名" [ref=e149] [cursor=pointer]
+          - generic [ref=e151]:
+            - generic [ref=e155]:
+              - heading "位置排名" [level=2] [ref=e156]
+              - paragraph [ref=e157]: 中场 位置排名
+            - generic [ref=e158]:
+              - generic [ref=e160]:
+                - img [ref=e161]
+                - generic [ref=e167]: "26"
+                - generic [ref=e168]: 同位置排名 / 369 人
+              - generic [ref=e170]:
+                - img [ref=e171]
+                - generic [ref=e175]: 前7%
+                - generic [ref=e176]: 超越 93% 同位置球员
+              - generic [ref=e178]:
+                - img [ref=e179]
+                - generic [ref=e182]: "369"
+                - generic [ref=e183]: 同位置总人数
+            - generic [ref=e184]:
+              - generic [ref=e186]: 各维度排名
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - generic [ref=e190]: 进攻影响
+                  - generic [ref=e194]:
+                    - generic [ref=e195]: 第21名
+                    - generic [ref=e196]: / 369
+                - generic [ref=e197]:
+                  - generic [ref=e198]: 机会创造
+                  - generic [ref=e202]:
+                    - generic [ref=e203]: 第29名
+                    - generic [ref=e204]: / 369
+                - generic [ref=e205]:
+                  - generic [ref=e206]: 前场压迫
+                  - generic [ref=e210]:
+                    - generic [ref=e211]: 第15名
+                    - generic [ref=e212]: / 369
+                - generic [ref=e213]:
+                  - generic [ref=e214]: 身体对抗
+                  - generic [ref=e218]:
+                    - generic [ref=e219]: 第13名
+                    - generic [ref=e220]: / 369
+                - generic [ref=e221]:
+                  - generic [ref=e222]: 决策稳定性
+                  - generic [ref=e226]:
+                    - generic [ref=e227]: 第357名
+                    - generic [ref=e228]: / 369
+                - generic [ref=e229]:
+                  - generic [ref=e230]: 综合水平
+                  - generic [ref=e234]:
+                    - generic [ref=e235]: 第26名
+                    - generic [ref=e236]: / 369

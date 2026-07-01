@@ -5,6 +5,9 @@ from app.api.matches import router as matches_router
 from app.api.live import router as live_router
 from app.api.data_sources import router as data_sources_router
 from app.api.crawl import router as crawl_router
+from app.api.worldcup import router as worldcup_router
+from app.api.predict import router as predict_router
 
 __all__ = ["leagues_router", "teams_router", "players_router",
-           "matches_router", "live_router", "data_sources_router", "crawl_router"]
+           "matches_router", "live_router", "data_sources_router", "crawl_router",
+           "worldcup_router", "predict_router"]

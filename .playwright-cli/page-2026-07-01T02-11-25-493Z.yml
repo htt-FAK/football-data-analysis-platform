@@ -1,0 +1,57 @@
+- generic [ref=f7e3]:
+  - complementary [ref=f7e4]:
+    - generic [ref=f7e6]:
+      - img [ref=f7e8]:
+        - generic [ref=f7e12]: SD
+      - generic [ref=f7e13]:
+        - generic [ref=f7e14]: 世界杯
+        - generic [ref=f7e15]: 足球数据专题
+    - generic [ref=f7e17]: 导航
+    - navigation [ref=f7e18]:
+      - link "世界杯" [ref=f7e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=f7e20]
+        - generic [ref=f7e25]: 世界杯
+      - link "球队" [ref=f7e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=f7e27]
+        - generic [ref=f7e32]: 球队
+      - link "球员" [ref=f7e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=f7e34]
+        - generic [ref=f7e37]: 球员
+      - link "比赛" [ref=f7e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=f7e39]
+        - generic [ref=f7e41]: 比赛
+      - link "AI 预测" [ref=f7e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=f7e43]
+        - generic [ref=f7e46]: AI 预测
+    - generic [ref=f7e47]: v1.0.0
+  - main [ref=f7e48]:
+    - generic [ref=f7e49]:
+      - generic [ref=f7e52]:
+        - generic [ref=f7e55]: 世界杯数据专题
+        - heading "比赛中心" [level=1] [ref=f7e56]
+        - paragraph [ref=f7e57]: 仅保留 2026 世界杯赛程，按北京时间查看、筛选和进入详情。
+      - generic [ref=f7e59]:
+        - generic [ref=f7e60]:
+          - img [ref=f7e61]
+          - generic [ref=f7e63]: 世界杯筛选
+        - generic [ref=f7e64]:
+          - combobox [ref=f7e65]:
+            - option "全部状态" [selected]
+            - option "未开始"
+            - option "赛果待同步"
+            - option "进行中"
+            - option "已结束"
+          - generic [ref=f7e66]:
+            - img
+            - textbox [ref=f7e67]
+          - generic [ref=f7e68]:
+            - img
+            - textbox "阶段（小组赛 / 淘汰赛）" [ref=f7e69]
+        - button "重置筛选" [ref=f7e71] [cursor=pointer]:
+          - img [ref=f7e72]
+          - text: 重置筛选

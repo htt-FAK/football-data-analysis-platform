@@ -1,0 +1,111 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: 世界杯
+        - generic [ref=e15]: 足球数据专题
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "世界杯" [ref=e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e20]
+        - generic [ref=e25]: 世界杯
+      - link "球队" [ref=e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e27]
+        - generic [ref=e32]: 球队
+      - link "球员" [ref=e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e34]
+        - generic [ref=e37]: 球员
+      - link "比赛" [ref=e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e39]
+        - generic [ref=e41]: 比赛
+      - link "AI 预测" [ref=e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e43]
+        - generic [ref=e46]: AI 预测
+    - generic [ref=e47]: v1.0.0
+  - main [ref=e48]:
+    - generic [ref=e49]:
+      - navigation [ref=e50]:
+        - link [ref=e51] [cursor=pointer]:
+          - /url: /
+          - img [ref=e52]
+        - generic [ref=e55]:
+          - img [ref=e56]
+          - link "比赛中心" [ref=e58] [cursor=pointer]:
+            - /url: /matches
+        - generic [ref=e59]:
+          - img [ref=e60]
+          - generic [ref=e62]: 比赛详情
+      - generic [ref=e65]:
+        - generic [ref=e68]: 世界杯数据专题
+        - heading "比赛详情" [level=1] [ref=e69]
+        - paragraph [ref=e70]: 查看事件时间线、xG、射门和聚合报告。
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - generic [ref=e75]: 已结束
+            - generic [ref=e76]: 32强
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - generic [ref=e80]: 巴西
+              - img "巴西" [ref=e82]
+            - generic [ref=e83]:
+              - generic [ref=e84]: "2"
+              - generic [ref=e85]: ":"
+              - generic [ref=e86]: "1"
+            - generic [ref=e87]:
+              - img "日本" [ref=e89]
+              - generic [ref=e91]: 日本
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - img [ref=e94]
+            - text: 北京时间 06/30 01:00
+          - generic [ref=e96]:
+            - img [ref=e97]
+            - text: Houston Stadium - Houston
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - button "概览" [ref=e102] [cursor=pointer]
+          - button "事件" [ref=e103] [cursor=pointer]
+          - button "xG 时间线" [ref=e104] [cursor=pointer]
+          - button "射门" [ref=e105] [cursor=pointer]
+          - button "报告" [ref=e106] [cursor=pointer]
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - paragraph [ref=e113]: 主队 xG
+                - paragraph [ref=e114]: "--"
+                - paragraph [ref=e115]: 2026 世界杯本地后端暂未采集到真实逐脚射门记录，当前无法生成真实 xG 时间线。
+              - img [ref=e117]
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - paragraph [ref=e125]: 客队 xG
+                - paragraph [ref=e126]: "--"
+                - paragraph [ref=e127]: 2026 世界杯本地后端暂未采集到真实逐脚射门记录，当前无法生成真实 xG 时间线。
+              - img [ref=e129]
+            - generic [ref=e135]:
+              - generic [ref=e136]:
+                - paragraph [ref=e137]: 联赛
+                - paragraph [ref=e138]: 世界杯
+              - img [ref=e140]
+            - generic [ref=e146]:
+              - generic [ref=e147]:
+                - paragraph [ref=e148]: 赛季
+                - paragraph [ref=e149]: "2026"
+              - img [ref=e151]
+          - generic [ref=e154]:
+            - generic [ref=e155]:
+              - generic [ref=e157]: 比赛摘要
+              - generic [ref=e159]:
+                - generic [ref=e160]:
+                  - img [ref=e162]
+                  - generic [ref=e165]: 暂无比赛摘要
+                - paragraph [ref=e167]: 比赛摘要会优先展示关键事件和影响较大的赛况变化。
+            - generic [ref=e170]: 数据可用性

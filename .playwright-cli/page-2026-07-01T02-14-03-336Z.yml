@@ -1,0 +1,52 @@
+- generic [ref=f12e3]:
+  - complementary [ref=f12e4]:
+    - generic [ref=f12e6]:
+      - img [ref=f12e8]:
+        - generic [ref=f12e12]: SD
+      - generic [ref=f12e13]:
+        - generic [ref=f12e14]: 世界杯
+        - generic [ref=f12e15]: 足球数据专题
+    - generic [ref=f12e17]: 导航
+    - navigation [ref=f12e18]:
+      - link "世界杯" [ref=f12e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=f12e20]
+        - generic [ref=f12e25]: 世界杯
+      - link "球队" [ref=f12e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=f12e27]
+        - generic [ref=f12e32]: 球队
+      - link "球员" [ref=f12e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=f12e34]
+        - generic [ref=f12e37]: 球员
+      - link "比赛" [ref=f12e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=f12e39]
+        - generic [ref=f12e41]: 比赛
+      - link "AI 预测" [ref=f12e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=f12e43]
+        - generic [ref=f12e46]: AI 预测
+    - generic [ref=f12e47]: v1.0.0
+  - main [ref=f12e48]:
+    - generic [ref=f12e50]:
+      - generic [ref=f12e51]:
+        - generic [ref=f12e52]:
+          - generic [ref=f12e53]:
+            - img [ref=f12e54]
+            - text: 2026 世界杯 · AI 预测中心
+          - heading "赛前前瞻 · 多模型深度预测" [level=1] [ref=f12e57]
+          - paragraph [ref=f12e58]: 未开赛比赛支持生成预测；已结束比赛保留赛前分析与历史结果。触发后会在后台持续运行，切换页面也不会中断。
+        - button "刷新" [disabled]:
+          - img
+          - text: 刷新
+      - generic [ref=f12e59]:
+        - generic [ref=f12e60]:
+          - generic [ref=f12e62]: 可预测比赛
+          - generic [ref=f12e70]: 历史预测结果
+        - generic [ref=f12e78]:
+          - generic [ref=f12e79]:
+            - img [ref=f12e81]
+            - generic [ref=f12e89]: 选择一场比赛
+          - paragraph [ref=f12e91]: 从左侧选择一场未开赛比赛进行预测，或查看已结束比赛的历史预测结果。

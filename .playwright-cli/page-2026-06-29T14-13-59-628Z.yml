@@ -1,0 +1,13 @@
+- generic [ref=e3]:
+  - generic [ref=e4]: "[plugin:vite:oxc] Transform failed with 1 error: [PARSE_ERROR] Unexpected token ╭─[ src/pages/AIPredict.tsx:271:11 ] │ 271 │ <div │ │ │ ╰─ ─────╯"
+  - generic [ref=e5]: D:/Users/黄涛韬/OneDrive/桌面/课设/frontend/src/pages/AIPredict.tsx
+  - generic [ref=e7]: at transformWithOxc (file:///D:/Users/%E9%BB%84%E6%B6%9B%E9%9F%AC/OneDrive/%E6%A1%8C%E9%9D%A2/%E8%AF%BE%E8%AE%BE/frontend/node_modules/vite/dist/node/chunks/node.js:3657:19) at TransformPluginContext.transform (file:///D:/Users/%E9%BB%84%E6%B6%9B%E9%9F%AC/OneDrive/%E6%A1%8C%E9%9D%A2/%E8%AF%BE%E8%AE%BE/frontend/node_modules/vite/dist/node/chunks/node.js:3728:26) at EnvironmentPluginContainer.transform (file:///D:/Users/%E9%BB%84%E6%B6%9B%E9%9F%AC/OneDrive/%E6%A1%8C%E9%9D%A2/%E8%AF%BE%E8%AE%BE/frontend/node_modules/vite/dist/node/chunks/node.js:29699:51) at async loadAndTransform (file:///D:/Users/%E9%BB%84%E6%B6%9B%E9%9F%AC/OneDrive/%E6%A1%8C%E9%9D%A2/%E8%AF%BE%E8%AE%BE/frontend/node_modules/vite/dist/node/chunks/node.js:19725:26) at async viteTransformMiddleware (file:///D:/Users/%E9%BB%84%E6%B6%9B%E9%9F%AC/OneDrive/%E6%A1%8C%E9%9D%A2/%E8%AF%BE%E8%AE%BE/frontend/node_modules/vite/dist/node/chunks/node.js:24149:20)
+  - generic [ref=e8]:
+    - text: Click outside, press Esc key, or fix the code to dismiss.
+    - text: You can also disable this overlay by setting
+    - code [ref=e9]: server.hmr.overlay
+    - text: to
+    - code [ref=e10]: "false"
+    - text: in
+    - code [ref=e11]: vite.config.ts
+    - text: .

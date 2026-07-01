@@ -1,0 +1,155 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: 世界杯
+        - generic [ref=e15]: 足球数据专题
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "世界杯" [ref=e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e20]
+        - generic [ref=e25]: 世界杯
+      - link "球队" [ref=e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e27]
+        - generic [ref=e32]: 球队
+      - link "球员" [ref=e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e34]
+        - generic [ref=e37]: 球员
+      - link "比赛" [ref=e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e39]
+        - generic [ref=e41]: 比赛
+      - link "AI预测" [ref=e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e43]
+        - generic [ref=e46]: AI预测
+    - generic [ref=e47]:
+      - generic [ref=e48]: 数据概览
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]: "1"
+          - generic [ref=e52]: 赛事
+        - generic [ref=e53]:
+          - generic [ref=e54]: "--"
+          - generic [ref=e55]: 球队
+        - generic [ref=e56]:
+          - generic [ref=e57]: "--"
+          - generic [ref=e58]: 比赛
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - button "设置" [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button "帮助" [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+      - generic [ref=e69]: v1.0.0
+  - main [ref=e70]:
+    - generic [ref=e71]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]: 2026 世界杯
+          - generic [ref=e76]: 本地后端总览
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]: "--"
+            - generic [ref=e80]: 球员记录
+          - generic [ref=e81]:
+            - generic [ref=e82]:
+              - generic [ref=e83]: "--"
+              - generic [ref=e84]: 比赛场次
+            - generic [ref=e85]:
+              - generic [ref=e86]: "--"
+              - generic [ref=e87]: 球队数量
+            - generic [ref=e88]:
+              - generic [ref=e89]: "--"
+              - generic [ref=e90]: 已完赛
+        - generic [ref=e91]:
+          - generic [ref=e94]: 分组 --
+          - generic [ref=e96]: 正在连接本地后端...
+      - generic [ref=e98]:
+        - generic [ref=e99]:
+          - generic [ref=e100]:
+            - generic [ref=e101]:
+              - img [ref=e102]
+              - text: 淘汰赛实时对阵
+            - heading "世界杯对阵图" [level=2] [ref=e107]
+            - paragraph [ref=e108]: 直接使用世界杯真实赛程，自动每 30 秒刷新一次。
+          - generic [ref=e109]:
+            - generic [ref=e110]: 已完赛 0 / 0
+            - generic [ref=e111]: 进行中 0
+            - generic [ref=e112]: 更新于 01/01 08:00
+        - generic [ref=e113]:
+          - button "32强" [ref=e114] [cursor=pointer]
+          - button "16强" [ref=e115] [cursor=pointer]
+          - button "1/4决赛" [ref=e116] [cursor=pointer]
+          - button "半决赛" [ref=e117] [cursor=pointer]
+        - generic [ref=e118]:
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - generic [ref=e122]: 32强
+              - generic [ref=e124]: 暂无该轮次赛程
+            - generic [ref=e125]:
+              - generic [ref=e126]: 16强
+              - generic [ref=e128]: 暂无该轮次赛程
+            - generic [ref=e129]:
+              - generic [ref=e130]: 1/4决赛
+              - generic [ref=e132]: 暂无该轮次赛程
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - img [ref=e136]
+              - generic [ref=e138]: 赛事进度
+            - generic [ref=e139]:
+              - generic [ref=e141]:
+                - generic [ref=e142]: 32强
+                - generic [ref=e143]: 0/0
+              - generic [ref=e146]:
+                - generic [ref=e147]: 16强
+                - generic [ref=e148]: 0/0
+              - generic [ref=e151]:
+                - generic [ref=e152]: 1/4决赛
+                - generic [ref=e153]: 0/0
+              - generic [ref=e156]:
+                - generic [ref=e157]: 半决赛
+                - generic [ref=e158]: 0/0
+              - generic [ref=e161]:
+                - generic [ref=e162]: 决赛
+                - generic [ref=e163]: 0/0
+      - generic [ref=e166]:
+        - generic [ref=e167]:
+          - heading "小组积分榜" [level=2] [ref=e168]
+          - generic [ref=e169]: 0 个分组 / 0 支球队
+        - button "全部" [ref=e171] [cursor=pointer]: 全部
+        - generic [ref=e173]: 正在加载小组积分榜...
+      - generic [ref=e176]:
+        - generic [ref=e177]:
+          - generic [ref=e178]:
+            - heading "球员榜单" [level=2] [ref=e179]
+            - generic [ref=e180]: 0 名球员
+          - generic [ref=e181]:
+            - button "进球" [ref=e182] [cursor=pointer]: 进球
+            - button "助攻" [ref=e184] [cursor=pointer]
+            - button "评分" [ref=e185] [cursor=pointer]
+          - generic [ref=e187]: 暂无榜单数据。
+        - generic [ref=e188]:
+          - generic [ref=e189]:
+            - heading "最佳评分球员" [level=2] [ref=e190]
+            - generic [ref=e191]: 评分榜首
+          - generic [ref=e192]: 暂无评分球员数据。
+      - generic [ref=e194]:
+        - generic [ref=e195]:
+          - heading "最近赛果" [level=2] [ref=e196]
+          - generic [ref=e197]: 最近 8 场已结束世界杯比赛
+        - generic [ref=e199]: 正在加载最近比赛...
+      - generic [ref=e201]:
+        - generic [ref=e202]:
+          - heading "覆盖状态" [level=2] [ref=e203]
+          - generic [ref=e204]: 0 个后端模块
+        - generic [ref=e205]: 暂无覆盖状态快照。
+        - generic [ref=e206]:
+          - generic [ref=e207]: "数据来源: 本地后端世界杯覆盖状态"
+          - generic [ref=e208]: "赛季: 2026"
+          - generic [ref=e209]: 前后端联调模式

@@ -1,0 +1,319 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: WORLDCUP
+        - generic [ref=e15]: Football Data
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "仪表盘" [ref=e19] [cursor=pointer]:
+        - /url: /
+        - img [ref=e20]
+        - generic [ref=e25]: 仪表盘
+      - link "联赛" [ref=e26] [cursor=pointer]:
+        - /url: /leagues
+        - img [ref=e27]
+        - generic [ref=e33]: 联赛
+      - link "球队" [ref=e34] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e35]
+        - generic [ref=e40]: 球队
+      - link "球员" [ref=e41] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e42]
+        - generic [ref=e45]: 球员
+      - link "比赛" [ref=e46] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e47]
+        - generic [ref=e49]: 比赛
+      - link "世界杯" [ref=e50] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e51]
+        - generic [ref=e56]: 世界杯
+      - link "AI预测" [ref=e57] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e58]
+        - generic [ref=e61]: AI预测
+    - generic [ref=e62]:
+      - generic [ref=e63]: 数据概览
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: "1"
+          - generic [ref=e67]: 联赛
+        - generic [ref=e68]:
+          - generic [ref=e69]: —
+          - generic [ref=e70]: 球队
+        - generic [ref=e71]:
+          - generic [ref=e72]: "100"
+          - generic [ref=e73]: 比赛
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - button "设置" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "帮助" [ref=e80] [cursor=pointer]:
+          - img [ref=e81]
+      - generic [ref=e84]: v1.0.0
+  - main [ref=e85]:
+    - generic [ref=e86]:
+      - generic [ref=e89]:
+        - generic [ref=e92]: Sports Analytics
+        - heading "球员中心" [level=1] [ref=e93]
+        - paragraph [ref=e94]: 仅保留世界杯球员，浏览榜单、详情与能力对比
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - button "球员列表" [ref=e97] [cursor=pointer]:
+            - img [ref=e98]
+            - text: 球员列表
+          - button "排行榜" [ref=e99] [cursor=pointer]:
+            - img [ref=e100]
+            - text: 排行榜
+          - button "球员对比" [ref=e106] [cursor=pointer]:
+            - img [ref=e107]
+            - text: 球员对比
+        - generic [ref=e111]:
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - img [ref=e115]
+              - generic [ref=e117]: 筛选条件
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - img
+                - textbox "搜索球员姓名..." [ref=e120]
+              - combobox [ref=e121]:
+                - option "全部位置" [selected]
+                - option "门将 (GK)"
+                - option "后卫 (DF)"
+                - option "中场 (MF)"
+                - option "前锋 (FW)"
+              - combobox [ref=e122]:
+                - option "全部小组" [selected]
+                - option "A组"
+                - option "B组"
+                - option "C组"
+                - option "D组"
+                - option "E组"
+                - option "F组"
+                - option "G组"
+                - option "H组"
+                - option "I组"
+                - option "J组"
+                - option "K组"
+                - option "L组"
+          - generic [ref=e123]:
+            - generic [ref=e127]:
+              - heading "球员列表" [level=2] [ref=e128]
+              - paragraph [ref=e129]: 仅展示世界杯球员，共 100 人
+            - generic [ref=e130]:
+              - img [ref=e131]
+              - text: "100"
+          - generic [ref=e136]:
+            - link "姆巴佩 70 姆巴佩 FW 法国 · I组" [ref=e137] [cursor=pointer]:
+              - /url: /players/490
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - img "姆巴佩" [ref=e142]
+                  - generic [ref=e143]: "70"
+                - generic [ref=e144]:
+                  - generic [ref=e145]: 姆巴佩
+                  - generic [ref=e147]: FW
+                  - generic [ref=e148]: 法国 · I组
+            - link "温达夫 52 温达夫 FW 德国 · E组" [ref=e149] [cursor=pointer]:
+              - /url: /players/520
+              - generic [ref=e152]:
+                - generic [ref=e153]:
+                  - img "温达夫" [ref=e154]
+                  - generic [ref=e155]: "52"
+                - generic [ref=e156]:
+                  - generic [ref=e157]: 温达夫
+                  - generic [ref=e159]: FW
+                  - generic [ref=e160]: 德国 · E组
+            - link "维尼修斯 68 维尼修斯 FW 巴西 · C组" [ref=e161] [cursor=pointer]:
+              - /url: /players/174
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - img "维尼修斯" [ref=e166]
+                  - generic [ref=e167]: "68"
+                - generic [ref=e168]:
+                  - generic [ref=e169]: 维尼修斯
+                  - generic [ref=e171]: FW
+                  - generic [ref=e172]: 巴西 · C组
+            - link "萨尔 62 萨尔 FW 塞内加尔 · I组" [ref=e173] [cursor=pointer]:
+              - /url: /players/1013
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - img "萨尔" [ref=e178]
+                  - generic [ref=e179]: "62"
+                - generic [ref=e180]:
+                  - generic [ref=e181]: 萨尔
+                  - generic [ref=e183]: FW
+                  - generic [ref=e184]: 塞内加尔 · I组
+            - link "登贝莱 57 登贝莱 FW 法国 · I组" [ref=e185] [cursor=pointer]:
+              - /url: /players/488
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - img "登贝莱" [ref=e190]
+                  - generic [ref=e191]: "57"
+                - generic [ref=e192]:
+                  - generic [ref=e193]: 登贝莱
+                  - generic [ref=e195]: FW
+                  - generic [ref=e196]: 法国 · I组
+            - link "加克波 55 加克波 FW 荷兰 · F组" [ref=e197] [cursor=pointer]:
+              - /url: /players/776
+              - generic [ref=e200]:
+                - generic [ref=e201]:
+                  - img "加克波" [ref=e202]
+                  - generic [ref=e203]: "55"
+                - generic [ref=e204]:
+                  - generic [ref=e205]: 加克波
+                  - generic [ref=e207]: FW
+                  - generic [ref=e208]: 荷兰 · F组
+            - link "奥亚萨瓦尔 53 奥亚萨瓦尔 FW 西班牙 · H组" [ref=e209] [cursor=pointer]:
+              - /url: /players/1064
+              - generic [ref=e212]:
+                - generic [ref=e213]:
+                  - img "奥亚萨瓦尔" [ref=e214]
+                  - generic [ref=e215]: "53"
+                - generic [ref=e216]:
+                  - generic [ref=e217]: 奥亚萨瓦尔
+                  - generic [ref=e219]: FW
+                  - generic [ref=e220]: 西班牙 · H组
+            - link "Ruben Vargas 50 Ruben Vargas FW 瑞士 · B组" [ref=e221] [cursor=pointer]:
+              - /url: /players/1115
+              - generic [ref=e224]:
+                - generic [ref=e225]:
+                  - img "Ruben Vargas" [ref=e226]
+                  - generic [ref=e227]: "50"
+                - generic [ref=e228]:
+                  - generic [ref=e229]: Ruben Vargas
+                  - generic [ref=e231]: FW
+                  - generic [ref=e232]: 瑞士 · B组
+            - link "曼赞比 40 曼赞比 MF 瑞士 · B组" [ref=e233] [cursor=pointer]:
+              - /url: /players/1106
+              - generic [ref=e236]:
+                - generic [ref=e237]:
+                  - img "曼赞比" [ref=e238]
+                  - generic [ref=e239]: "40"
+                - generic [ref=e240]:
+                  - generic [ref=e241]: 曼赞比
+                  - generic [ref=e243]: MF
+                  - generic [ref=e244]: 瑞士 · B组
+            - link "Maxi Araujo 44 Maxi Araujo MF 乌拉圭 · H组" [ref=e245] [cursor=pointer]:
+              - /url: /players/1214
+              - generic [ref=e248]:
+                - generic [ref=e249]:
+                  - img "Maxi Araujo" [ref=e250]
+                  - generic [ref=e251]: "44"
+                - generic [ref=e252]:
+                  - generic [ref=e253]: Maxi Araujo
+                  - generic [ref=e255]: MF
+                  - generic [ref=e256]: 乌拉圭 · H组
+            - link "Riyad Mahrez 51 Riyad Mahrez FW 阿尔及利亚 · J组" [ref=e257] [cursor=pointer]:
+              - /url: /players/20
+              - generic [ref=e260]:
+                - generic [ref=e261]:
+                  - img "Riyad Mahrez" [ref=e262]
+                  - generic [ref=e263]: "51"
+                - generic [ref=e264]:
+                  - generic [ref=e265]: Riyad Mahrez
+                  - generic [ref=e267]: FW
+                  - generic [ref=e268]: 阿尔及利亚 · J组
+            - link "Viktor Gyokeres 52 Viktor Gyokeres FW 瑞典 · F组" [ref=e269] [cursor=pointer]:
+              - /url: /players/1090
+              - generic [ref=e272]:
+                - generic [ref=e273]:
+                  - img "Viktor Gyokeres" [ref=e274]
+                  - generic [ref=e275]: "52"
+                - generic [ref=e276]:
+                  - generic [ref=e277]: Viktor Gyokeres
+                  - generic [ref=e279]: FW
+                  - generic [ref=e280]: 瑞典 · F组
+            - link "凯恩 59 凯恩 FW 英格兰 · L组" [ref=e281] [cursor=pointer]:
+              - /url: /players/463
+              - generic [ref=e284]:
+                - generic [ref=e285]:
+                  - img "凯恩" [ref=e286]
+                  - generic [ref=e287]: "59"
+                - generic [ref=e288]:
+                  - generic [ref=e289]: 凯恩
+                  - generic [ref=e291]: FW
+                  - generic [ref=e292]: 英格兰 · L组
+            - link "乔纳森·戴维 60 乔纳森·戴维 FW 加拿大 · B组" [ref=e293] [cursor=pointer]:
+              - /url: /players/229
+              - generic [ref=e296]:
+                - generic [ref=e297]:
+                  - img "乔纳森·戴维" [ref=e298]
+                  - generic [ref=e299]: "60"
+                - generic [ref=e300]:
+                  - generic [ref=e301]: 乔纳森·戴维
+                  - generic [ref=e303]: FW
+                  - generic [ref=e304]: 加拿大 · B组
+            - link "梅西 71 梅西 FW 阿根廷 · J组" [ref=e305] [cursor=pointer]:
+              - /url: /players/47
+              - generic [ref=e308]:
+                - generic [ref=e309]:
+                  - img "梅西" [ref=e310]
+                  - generic [ref=e311]: "71"
+                - generic [ref=e312]:
+                  - generic [ref=e313]: 梅西
+                  - generic [ref=e315]: FW
+                  - generic [ref=e316]: 阿根廷 · J组
+            - link "哈兰德 55 哈兰德 FW 挪威 · I组" [ref=e317] [cursor=pointer]:
+              - /url: /players/829
+              - generic [ref=e320]:
+                - generic [ref=e321]:
+                  - img "哈兰德" [ref=e322]
+                  - generic [ref=e323]: "55"
+                - generic [ref=e324]:
+                  - generic [ref=e325]: 哈兰德
+                  - generic [ref=e327]: FW
+                  - generic [ref=e328]: 挪威 · I组
+            - link "Ramin Rezaeian 40 Ramin Rezaeian DF 伊朗 · G组" [ref=e329] [cursor=pointer]:
+              - /url: /players/583
+              - generic [ref=e332]:
+                - generic [ref=e333]:
+                  - img "Ramin Rezaeian" [ref=e334]
+                  - generic [ref=e335]: "40"
+                - generic [ref=e336]:
+                  - generic [ref=e337]: Ramin Rezaeian
+                  - generic [ref=e339]: DF
+                  - generic [ref=e340]: 伊朗 · G组
+            - link "Elijah Just 46 Elijah Just MF 新西兰 · G组" [ref=e341] [cursor=pointer]:
+              - /url: /players/796
+              - generic [ref=e344]:
+                - generic [ref=e345]:
+                  - img "Elijah Just" [ref=e346]
+                  - generic [ref=e347]: "46"
+                - generic [ref=e348]:
+                  - generic [ref=e349]: Elijah Just
+                  - generic [ref=e351]: MF
+                  - generic [ref=e352]: 新西兰 · G组
+            - link "Yoane Wissa 54 Yoane Wissa FW 刚果（金） · K组" [ref=e353] [cursor=pointer]:
+              - /url: /players/285
+              - generic [ref=e356]:
+                - generic [ref=e357]:
+                  - img "Yoane Wissa" [ref=e358]
+                  - generic [ref=e359]: "54"
+                - generic [ref=e360]:
+                  - generic [ref=e361]: Yoane Wissa
+                  - generic [ref=e363]: FW
+                  - generic [ref=e364]: 刚果（金） · K组
+            - link "Breel Embolo 51 Breel Embolo FW 瑞士 · B组" [ref=e365] [cursor=pointer]:
+              - /url: /players/1112
+              - generic [ref=e368]:
+                - generic [ref=e369]:
+                  - img "Breel Embolo" [ref=e370]
+                  - generic [ref=e371]: "51"
+                - generic [ref=e372]:
+                  - generic [ref=e373]: Breel Embolo
+                  - generic [ref=e375]: FW
+                  - generic [ref=e376]: 瑞士 · B组
+          - generic [ref=e377]:
+            - button "上一页" [disabled]
+            - button "1" [ref=e378] [cursor=pointer]
+            - button "2" [ref=e379] [cursor=pointer]
+            - button "3" [ref=e380] [cursor=pointer]
+            - button "4" [ref=e381] [cursor=pointer]
+            - button "5" [ref=e382] [cursor=pointer]
+            - button "下一页" [ref=e383] [cursor=pointer]

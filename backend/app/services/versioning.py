@@ -78,6 +78,7 @@ class VersioningService:
         if existing is None:
             # 新记录 → 插入
             instance = self._build_instance(model_class, data, new_hash)
+            instance.source_id = str(source_id)  # 补上源端 ID，供后续 upsert 定位
             db.add(instance)
             db.commit()
             logger.info("[%s] 新增记录 source_id=%s", model_class.__tablename__, source_id)

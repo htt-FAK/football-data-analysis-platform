@@ -1,0 +1,182 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: SPORTSDATA
+        - generic [ref=e15]: Football Analytics
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "仪表盘" [ref=e19] [cursor=pointer]:
+        - /url: /
+        - img [ref=e20]
+        - generic [ref=e25]: 仪表盘
+      - link "联赛" [ref=e26] [cursor=pointer]:
+        - /url: /leagues
+        - img [ref=e27]
+        - generic [ref=e33]: 联赛
+      - link "球队" [ref=e34] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e35]
+        - generic [ref=e40]: 球队
+      - link "球员" [ref=e41] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e42]
+        - generic [ref=e45]: 球员
+      - link "比赛" [ref=e46] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e47]
+        - generic [ref=e49]: 比赛
+      - link "世界杯" [ref=e50] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e51]
+        - generic [ref=e56]: 世界杯
+      - link "AI预测" [ref=e57] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e58]
+        - generic [ref=e61]: AI预测
+    - generic [ref=e62]:
+      - generic [ref=e63]: 数据概览
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: "2"
+          - generic [ref=e67]: 联赛
+        - generic [ref=e68]:
+          - generic [ref=e69]: "80"
+          - generic [ref=e70]: 球队
+        - generic [ref=e71]:
+          - generic [ref=e72]: "100"
+          - generic [ref=e73]: 比赛
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - button "设置" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "帮助" [ref=e80] [cursor=pointer]:
+          - img [ref=e81]
+      - generic [ref=e84]: v1.0.0
+  - main [ref=e85]:
+    - generic [ref=e412]:
+      - generic [ref=e413]:
+        - link "返回球员列表" [ref=e414] [cursor=pointer]:
+          - /url: /players
+          - img [ref=e415]
+          - text: 返回球员列表
+        - navigation [ref=e417]:
+          - link [ref=e418] [cursor=pointer]:
+            - /url: /
+            - img [ref=e419]
+          - generic [ref=e422]:
+            - img [ref=e423]
+            - link "球员中心" [ref=e425] [cursor=pointer]:
+              - /url: /players
+          - generic [ref=e426]:
+            - img [ref=e427]
+            - generic [ref=e429]: Lionel MESSI
+        - generic [ref=e432]:
+          - generic [ref=e435]: Sports Analytics
+          - heading "Lionel MESSI" [level=1] [ref=e436]
+          - paragraph [ref=e437]: Argentina · 前锋
+      - generic [ref=e438]:
+        - generic [ref=e443]:
+          - generic [ref=e444]:
+            - img "Lionel MESSI" [ref=e445]
+            - heading "Lionel MESSI" [level=2] [ref=e446]
+            - generic [ref=e447]:
+              - generic [ref=e448]: 前锋
+              - generic [ref=e449]:
+                - img [ref=e450]
+                - text: 10号
+          - generic [ref=e453]:
+            - generic [ref=e454]: "71.25"
+            - generic [ref=e455]: 总评
+          - generic [ref=e456]:
+            - generic [ref=e457]:
+              - img [ref=e459]
+              - generic [ref=e462]:
+                - generic [ref=e463]: 国籍
+                - generic [ref=e464]: ARG
+            - generic [ref=e465]:
+              - img [ref=e467]
+              - generic [ref=e469]:
+                - generic [ref=e470]: 出生日期
+                - generic [ref=e471]: 1987/06/24
+            - generic [ref=e472]:
+              - img [ref=e474]
+              - generic [ref=e480]:
+                - generic [ref=e481]: 身高
+                - generic [ref=e482]: 170 cm
+            - generic [ref=e483]:
+              - img [ref=e485]
+              - generic [ref=e488]:
+                - generic [ref=e489]: 体重
+                - generic [ref=e490]: 68 kg
+          - link "所属球队 Argentina" [ref=e492] [cursor=pointer]:
+            - /url: /teams/60
+            - img [ref=e494]
+            - generic [ref=e500]:
+              - generic [ref=e501]: 所属球队
+              - generic [ref=e502]: Argentina
+            - img [ref=e503]
+        - generic [ref=e506]:
+          - generic [ref=e507]:
+            - button "概览" [ref=e508] [cursor=pointer]
+            - button "赛季统计" [ref=e509] [cursor=pointer]
+            - button "能力雷达" [ref=e510] [cursor=pointer]
+            - button "位置排名" [ref=e511] [cursor=pointer]
+          - generic [ref=e513]:
+            - generic [ref=e514]:
+              - generic [ref=e518]:
+                - heading "基本信息" [level=2] [ref=e519]
+                - paragraph [ref=e520]: 球员个人档案
+              - generic [ref=e523]:
+                - generic [ref=e524]:
+                  - generic [ref=e525]: 姓名
+                  - generic [ref=e526]: Lionel MESSI
+                - generic [ref=e527]:
+                  - generic [ref=e528]: 位置
+                  - generic [ref=e529]: 前锋
+                - generic [ref=e530]:
+                  - generic [ref=e531]: 国籍
+                  - generic [ref=e532]: ARG
+                - generic [ref=e533]:
+                  - generic [ref=e534]: 出生日期
+                  - generic [ref=e535]: 1987/06/24
+                - generic [ref=e536]:
+                  - generic [ref=e537]: 身高
+                  - generic [ref=e538]: 170 cm
+                - generic [ref=e539]:
+                  - generic [ref=e540]: 体重
+                  - generic [ref=e541]: 68 kg
+            - generic [ref=e542]:
+              - generic [ref=e546]:
+                - heading "赛季概览" [level=2] [ref=e547]
+                - paragraph [ref=e548]: 本赛季核心数据
+              - generic [ref=e549]:
+                - generic [ref=e552]:
+                  - generic [ref=e553]:
+                    - paragraph [ref=e554]: 出场
+                    - paragraph [ref=e555]: "3"
+                  - img [ref=e557]
+                - generic [ref=e562]:
+                  - generic [ref=e563]:
+                    - paragraph [ref=e564]: 进球
+                    - paragraph [ref=e565]: "6"
+                  - img [ref=e567]
+                - generic [ref=e574]:
+                  - generic [ref=e575]:
+                    - paragraph [ref=e576]: 助攻
+                    - paragraph [ref=e577]: "0"
+                  - img [ref=e579]
+                - generic [ref=e584]:
+                  - generic [ref=e585]:
+                    - paragraph [ref=e586]: 评分
+                    - paragraph [ref=e587]: "8.00"
+                  - img [ref=e589]
+            - generic [ref=e593]:
+              - generic [ref=e597]:
+                - heading "近期事件" [level=2] [ref=e598]
+                - paragraph [ref=e599]: 最近比赛动态
+              - generic [ref=e601]:
+                - img [ref=e602]
+                - paragraph [ref=e605]: 近期比赛事件数据即将上线

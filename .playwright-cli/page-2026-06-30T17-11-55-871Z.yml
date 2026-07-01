@@ -1,0 +1,164 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: 世界杯
+        - generic [ref=e15]: 足球数据专题
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "世界杯" [ref=e19] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e20]
+        - generic [ref=e25]: 世界杯
+      - link "球队" [ref=e26] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e27]
+        - generic [ref=e32]: 球队
+      - link "球员" [ref=e33] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e34]
+        - generic [ref=e37]: 球员
+      - link "比赛" [ref=e38] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e39]
+        - generic [ref=e41]: 比赛
+      - link "AI预测" [ref=e42] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e43]
+        - generic [ref=e46]: AI预测
+    - generic [ref=e47]:
+      - generic [ref=e48]: 数据概览
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]: "1"
+          - generic [ref=e52]: 赛事
+        - generic [ref=e53]:
+          - generic [ref=e54]: "48"
+          - generic [ref=e55]: 球队
+        - generic [ref=e56]:
+          - generic [ref=e57]: "89"
+          - generic [ref=e58]: 比赛
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - button "设置" [ref=e61] [cursor=pointer]:
+          - img [ref=e62]
+        - button "帮助" [ref=e65] [cursor=pointer]:
+          - img [ref=e66]
+      - generic [ref=e69]: v1.0.0
+  - main [ref=e70]:
+    - generic [ref=e72]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - img [ref=e76]
+            - text: 2026 世界杯 · AI 预测中心
+          - heading "赛前前瞻 · 多模型深度预测" [level=1] [ref=e79]
+          - paragraph [ref=e80]: 未开赛比赛支持生成预测；已结束比赛只展示历史预测结果与分析。触发预测后，切换页面不会打断后台任务。
+        - button "刷新" [ref=e81] [cursor=pointer]:
+          - img [ref=e82]
+          - text: 刷新
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e90]: 可预测比赛
+          - button "7月1日 09:00 待生成 墨西哥 墨西哥 VS 厄瓜多尔 厄瓜多尔 Mexico City Stadium - Mexico City 32强" [ref=e92] [cursor=pointer]:
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - img [ref=e95]
+                - text: 7月1日 09:00
+              - generic [ref=e98]: 待生成
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - img "墨西哥" [ref=e102]
+                - generic [ref=e103]: 墨西哥
+              - generic [ref=e104]: VS
+              - generic [ref=e105]:
+                - generic [ref=e106]: 厄瓜多尔
+                - img "厄瓜多尔" [ref=e108]
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - img [ref=e111]
+                - generic [ref=e114]: Mexico City Stadium - Mexico City
+              - generic [ref=e115]:
+                - img [ref=e116]
+                - text: 32强
+          - generic [ref=e121]: 历史预测结果
+          - generic [ref=e122]:
+            - button "6月30日 04:30 历史结果 德国 德国 1:1 巴拉圭 巴拉圭 32强" [ref=e123] [cursor=pointer]:
+              - generic [ref=e124]:
+                - generic [ref=e125]:
+                  - img [ref=e126]
+                  - text: 6月30日 04:30
+                - generic [ref=e129]: 历史结果
+              - generic [ref=e130]:
+                - generic [ref=e131]:
+                  - img "德国" [ref=e133]
+                  - generic [ref=e134]: 德国
+                - generic [ref=e135]: 1:1
+                - generic [ref=e136]:
+                  - generic [ref=e137]: 巴拉圭
+                  - img "巴拉圭" [ref=e139]
+              - generic [ref=e141]:
+                - img [ref=e142]
+                - text: 32强
+            - button "6月30日 09:00 历史结果 荷兰 荷兰 2:1 摩洛哥 摩洛哥 32强" [ref=e146] [cursor=pointer]:
+              - generic [ref=e147]:
+                - generic [ref=e148]:
+                  - img [ref=e149]
+                  - text: 6月30日 09:00
+                - generic [ref=e152]: 历史结果
+              - generic [ref=e153]:
+                - generic [ref=e154]:
+                  - img "荷兰" [ref=e156]
+                  - generic [ref=e157]: 荷兰
+                - generic [ref=e158]: 2:1
+                - generic [ref=e159]:
+                  - generic [ref=e160]: 摩洛哥
+                  - img "摩洛哥" [ref=e162]
+              - generic [ref=e164]:
+                - img [ref=e165]
+                - text: 32强
+            - button "7月1日 05:00 历史结果 法国 法国 3:1 瑞典 瑞典 32强" [ref=e169] [cursor=pointer]:
+              - generic [ref=e170]:
+                - generic [ref=e171]:
+                  - img [ref=e172]
+                  - text: 7月1日 05:00
+                - generic [ref=e175]: 历史结果
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - img "法国" [ref=e179]
+                  - generic [ref=e180]: 法国
+                - generic [ref=e181]: 3:1
+                - generic [ref=e182]:
+                  - generic [ref=e183]: 瑞典
+                  - img "瑞典" [ref=e185]
+              - generic [ref=e187]:
+                - img [ref=e188]
+                - text: 32强
+        - generic [ref=e192]:
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e196]: AI 赛前前瞻
+              - paragraph [ref=e197]: 7月1日 09:00
+            - generic [ref=e198]: 32强
+          - generic [ref=e199]:
+            - generic [ref=e200]:
+              - generic [ref=e201]:
+                - img "墨西哥" [ref=e203]
+                - generic [ref=e204]: 墨西哥
+              - generic [ref=e205]: VS
+              - generic [ref=e206]:
+                - generic [ref=e207]: 厄瓜多尔
+                - img "厄瓜多尔" [ref=e209]
+            - generic [ref=e210]:
+              - generic [ref=e212]: 暂时无法读取预测结果
+              - paragraph [ref=e214]: 请稍后刷新，或切换到其他比赛。
+            - generic [ref=e215]:
+              - img [ref=e216]
+              - generic [ref=e224]:
+                - paragraph [ref=e225]: 这场比赛还没有生成预测
+                - paragraph [ref=e226]: 你可以立即触发，后台会持续运行，即使切换到其他页面也不会中断。
+              - button "立即生成预测" [ref=e227] [cursor=pointer]:
+                - img [ref=e228]
+                - text: 立即生成预测

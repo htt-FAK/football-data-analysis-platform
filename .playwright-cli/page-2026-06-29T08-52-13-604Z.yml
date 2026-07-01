@@ -1,0 +1,555 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: SPORTSDATA
+        - generic [ref=e15]: Football Analytics
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "仪表盘" [ref=e19] [cursor=pointer]:
+        - /url: /
+        - img [ref=e20]
+        - generic [ref=e25]: 仪表盘
+      - link "联赛" [ref=e26] [cursor=pointer]:
+        - /url: /leagues
+        - img [ref=e27]
+        - generic [ref=e33]: 联赛
+      - link "球队" [ref=e34] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e35]
+        - generic [ref=e40]: 球队
+      - link "球员" [ref=e41] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e42]
+        - generic [ref=e45]: 球员
+      - link "比赛" [ref=e46] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e47]
+        - generic [ref=e49]: 比赛
+      - link "世界杯" [ref=e50] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e51]
+        - generic [ref=e56]: 世界杯
+      - link "AI预测" [ref=e57] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e58]
+        - generic [ref=e61]: AI预测
+    - generic [ref=e62]:
+      - generic [ref=e63]: 数据概览
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: "2"
+          - generic [ref=e67]: 联赛
+        - generic [ref=e68]:
+          - generic [ref=e69]: "80"
+          - generic [ref=e70]: 球队
+        - generic [ref=e71]:
+          - generic [ref=e72]: "100"
+          - generic [ref=e73]: 比赛
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - button "设置" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "帮助" [ref=e80] [cursor=pointer]:
+          - img [ref=e81]
+      - generic [ref=e84]: v1.0.0
+  - main [ref=e85]:
+    - generic [ref=e87]:
+      - generic [ref=e90]:
+        - generic [ref=e93]: Sports Analytics
+        - heading "球队中心" [level=1] [ref=e94]
+        - paragraph [ref=e95]: 浏览所有球队
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - img [ref=e98]
+          - textbox "搜索球队名称..." [ref=e101]
+        - combobox [ref=e103]:
+          - option "全部联赛" [selected]
+          - option "英超"
+          - option "世界杯"
+        - generic [ref=e104]:
+          - img [ref=e105]
+          - text: 共 80 支球队
+      - generic [ref=e110]:
+        - link "A Algeria" [ref=e111] [cursor=pointer]:
+          - /url: /teams/61
+          - generic [ref=e113]:
+            - generic [ref=e114]: A
+            - heading "Algeria" [level=3] [ref=e116]
+            - img [ref=e117]
+        - link "A Argentina" [ref=e119] [cursor=pointer]:
+          - /url: /teams/60
+          - generic [ref=e121]:
+            - generic [ref=e122]: A
+            - heading "Argentina" [level=3] [ref=e124]
+            - img [ref=e125]
+        - link "A Aston Villa" [ref=e127] [cursor=pointer]:
+          - /url: /teams/14
+          - generic [ref=e129]:
+            - generic [ref=e130]: A
+            - heading "Aston Villa" [level=3] [ref=e132]
+            - img [ref=e133]
+        - link "A Australia" [ref=e135] [cursor=pointer]:
+          - /url: /teams/38
+          - generic [ref=e137]:
+            - generic [ref=e138]: A
+            - heading "Australia" [level=3] [ref=e140]
+            - img [ref=e141]
+        - link "A Austria" [ref=e143] [cursor=pointer]:
+          - /url: /teams/62
+          - generic [ref=e145]:
+            - generic [ref=e146]: A
+            - heading "Austria" [level=3] [ref=e148]
+            - img [ref=e149]
+        - link "B Belgium" [ref=e151] [cursor=pointer]:
+          - /url: /teams/50
+          - generic [ref=e153]:
+            - generic [ref=e154]: B
+            - heading "Belgium" [level=3] [ref=e156]
+            - img [ref=e157]
+        - link "B Bosnia and Herzegovina" [ref=e159] [cursor=pointer]:
+          - /url: /teams/29
+          - generic [ref=e161]:
+            - generic [ref=e162]: B
+            - heading "Bosnia and Herzegovina" [level=3] [ref=e164]
+            - img [ref=e165]
+        - link "B Bournemouth" [ref=e167] [cursor=pointer]:
+          - /url: /teams/12
+          - generic [ref=e169]:
+            - generic [ref=e170]: B
+            - heading "Bournemouth" [level=3] [ref=e172]
+            - img [ref=e173]
+        - link "B Brazil" [ref=e175] [cursor=pointer]:
+          - /url: /teams/34
+          - generic [ref=e177]:
+            - generic [ref=e178]: B
+            - heading "Brazil" [level=3] [ref=e180]
+            - img [ref=e181]
+        - link "B Brentford" [ref=e183] [cursor=pointer]:
+          - /url: /teams/15
+          - generic [ref=e185]:
+            - generic [ref=e186]: B
+            - heading "Brentford" [level=3] [ref=e188]
+            - img [ref=e189]
+        - link "B Brighton" [ref=e191] [cursor=pointer]:
+          - /url: /teams/8
+          - generic [ref=e193]:
+            - generic [ref=e194]: B
+            - heading "Brighton" [level=3] [ref=e196]
+            - img [ref=e197]
+        - link "B Burnley" [ref=e199] [cursor=pointer]:
+          - /url: /teams/22
+          - generic [ref=e201]:
+            - generic [ref=e202]: B
+            - heading "Burnley" [level=3] [ref=e204]
+            - img [ref=e205]
+        - link "C Cabo Verde" [ref=e207] [cursor=pointer]:
+          - /url: /teams/49
+          - generic [ref=e209]:
+            - generic [ref=e210]: C
+            - heading "Cabo Verde" [level=3] [ref=e212]
+            - img [ref=e213]
+        - link "C Cameroon" [ref=e215] [cursor=pointer]:
+          - /url: /teams/75
+          - generic [ref=e217]:
+            - generic [ref=e218]: C
+            - heading "Cameroon" [level=3] [ref=e220]
+            - img [ref=e221]
+        - link "C Canada" [ref=e223] [cursor=pointer]:
+          - /url: /teams/28
+          - generic [ref=e225]:
+            - generic [ref=e226]: C
+            - heading "Canada" [level=3] [ref=e228]
+            - img [ref=e229]
+        - link "C Colombia" [ref=e231] [cursor=pointer]:
+          - /url: /teams/71
+          - generic [ref=e233]:
+            - generic [ref=e234]: C
+            - heading "Colombia" [level=3] [ref=e236]
+            - img [ref=e237]
+        - link "C Congo DR" [ref=e239] [cursor=pointer]:
+          - /url: /teams/65
+          - generic [ref=e241]:
+            - generic [ref=e242]: C
+            - heading "Congo DR" [level=3] [ref=e244]
+            - img [ref=e245]
+        - link "C Costa Rica" [ref=e247] [cursor=pointer]:
+          - /url: /teams/78
+          - generic [ref=e249]:
+            - generic [ref=e250]: C
+            - heading "Costa Rica" [level=3] [ref=e252]
+            - img [ref=e253]
+        - link "C Côte d'Ivoire" [ref=e255] [cursor=pointer]:
+          - /url: /teams/44
+          - generic [ref=e257]:
+            - generic [ref=e258]: C
+            - heading "Côte d'Ivoire" [level=3] [ref=e260]
+            - img [ref=e261]
+        - link "C Croatia" [ref=e263] [cursor=pointer]:
+          - /url: /teams/67
+          - generic [ref=e265]:
+            - generic [ref=e266]: C
+            - heading "Croatia" [level=3] [ref=e268]
+            - img [ref=e269]
+        - link "C Crystal Palace" [ref=e271] [cursor=pointer]:
+          - /url: /teams/16
+          - generic [ref=e273]:
+            - generic [ref=e274]: C
+            - heading "Crystal Palace" [level=3] [ref=e276]
+            - img [ref=e277]
+        - link "C Curaçao" [ref=e279] [cursor=pointer]:
+          - /url: /teams/41
+          - generic [ref=e281]:
+            - generic [ref=e282]: C
+            - heading "Curaçao" [level=3] [ref=e284]
+            - img [ref=e285]
+        - link "C Czechia" [ref=e287] [cursor=pointer]:
+          - /url: /teams/27
+          - generic [ref=e289]:
+            - generic [ref=e290]: C
+            - heading "Czechia" [level=3] [ref=e292]
+            - img [ref=e293]
+        - link "D Denmark" [ref=e295] [cursor=pointer]:
+          - /url: /teams/77
+          - generic [ref=e297]:
+            - generic [ref=e298]: D
+            - heading "Denmark" [level=3] [ref=e300]
+            - img [ref=e301]
+        - link "E Ecuador" [ref=e303] [cursor=pointer]:
+          - /url: /teams/45
+          - generic [ref=e305]:
+            - generic [ref=e306]: E
+            - heading "Ecuador" [level=3] [ref=e308]
+            - img [ref=e309]
+        - link "E Egypt" [ref=e311] [cursor=pointer]:
+          - /url: /teams/51
+          - generic [ref=e313]:
+            - generic [ref=e314]: E
+            - heading "Egypt" [level=3] [ref=e316]
+            - img [ref=e317]
+        - link "E England" [ref=e319] [cursor=pointer]:
+          - /url: /teams/66
+          - generic [ref=e321]:
+            - generic [ref=e322]: E
+            - heading "England" [level=3] [ref=e324]
+            - img [ref=e325]
+        - link "E Everton" [ref=e327] [cursor=pointer]:
+          - /url: /teams/7
+          - generic [ref=e329]:
+            - generic [ref=e330]: E
+            - heading "Everton" [level=3] [ref=e332]
+            - img [ref=e333]
+        - link "F France" [ref=e335] [cursor=pointer]:
+          - /url: /teams/56
+          - generic [ref=e337]:
+            - generic [ref=e338]: F
+            - heading "France" [level=3] [ref=e340]
+            - img [ref=e341]
+        - link "F Fulham" [ref=e343] [cursor=pointer]:
+          - /url: /teams/2
+          - generic [ref=e345]:
+            - generic [ref=e346]: F
+            - heading "Fulham" [level=3] [ref=e348]
+            - img [ref=e349]
+        - link "G Germany" [ref=e351] [cursor=pointer]:
+          - /url: /teams/40
+          - generic [ref=e353]:
+            - generic [ref=e354]: G
+            - heading "Germany" [level=3] [ref=e356]
+            - img [ref=e357]
+        - link "G Ghana" [ref=e359] [cursor=pointer]:
+          - /url: /teams/68
+          - generic [ref=e361]:
+            - generic [ref=e362]: G
+            - heading "Ghana" [level=3] [ref=e364]
+            - img [ref=e365]
+        - link "H Haiti" [ref=e367] [cursor=pointer]:
+          - /url: /teams/36
+          - generic [ref=e369]:
+            - generic [ref=e370]: H
+            - heading "Haiti" [level=3] [ref=e372]
+            - img [ref=e373]
+        - link "I Ipswich" [ref=e375] [cursor=pointer]:
+          - /url: /teams/3
+          - generic [ref=e377]:
+            - generic [ref=e378]: I
+            - heading "Ipswich" [level=3] [ref=e380]
+            - img [ref=e381]
+        - link "I IR Iran" [ref=e383] [cursor=pointer]:
+          - /url: /teams/54
+          - generic [ref=e385]:
+            - generic [ref=e386]: I
+            - heading "IR Iran" [level=3] [ref=e388]
+            - img [ref=e389]
+        - link "I Iran" [ref=e391] [cursor=pointer]:
+          - /url: /teams/72
+          - generic [ref=e393]:
+            - generic [ref=e394]: I
+            - heading "Iran" [level=3] [ref=e396]
+            - img [ref=e397]
+        - link "I Iraq" [ref=e399] [cursor=pointer]:
+          - /url: /teams/58
+          - generic [ref=e401]:
+            - generic [ref=e402]: I
+            - heading "Iraq" [level=3] [ref=e404]
+            - img [ref=e405]
+        - link "J Japan" [ref=e407] [cursor=pointer]:
+          - /url: /teams/43
+          - generic [ref=e409]:
+            - generic [ref=e410]: J
+            - heading "Japan" [level=3] [ref=e412]
+            - img [ref=e413]
+        - link "J Jordan" [ref=e415] [cursor=pointer]:
+          - /url: /teams/63
+          - generic [ref=e417]:
+            - generic [ref=e418]: J
+            - heading "Jordan" [level=3] [ref=e420]
+            - img [ref=e421]
+        - link "K Korea Republic" [ref=e423] [cursor=pointer]:
+          - /url: /teams/26
+          - generic [ref=e425]:
+            - generic [ref=e426]: K
+            - heading "Korea Republic" [level=3] [ref=e428]
+            - img [ref=e429]
+        - link "L Leeds" [ref=e431] [cursor=pointer]:
+          - /url: /teams/23
+          - generic [ref=e433]:
+            - generic [ref=e434]: L
+            - heading "Leeds" [level=3] [ref=e436]
+            - img [ref=e437]
+        - link "L Leicester" [ref=e439] [cursor=pointer]:
+          - /url: /teams/19
+          - generic [ref=e441]:
+            - generic [ref=e442]: L
+            - heading "Leicester" [level=3] [ref=e444]
+            - img [ref=e445]
+        - link "M Mexico" [ref=e447] [cursor=pointer]:
+          - /url: /teams/24
+          - generic [ref=e449]:
+            - generic [ref=e450]: M
+            - heading "Mexico" [level=3] [ref=e452]
+            - img [ref=e453]
+        - link "M Morocco" [ref=e455] [cursor=pointer]:
+          - /url: /teams/35
+          - generic [ref=e457]:
+            - generic [ref=e458]: M
+            - heading "Morocco" [level=3] [ref=e460]
+            - img [ref=e461]
+        - link "N Netherlands" [ref=e463] [cursor=pointer]:
+          - /url: /teams/42
+          - generic [ref=e465]:
+            - generic [ref=e466]: "N"
+            - heading "Netherlands" [level=3] [ref=e468]
+            - img [ref=e469]
+        - link "N New Zealand" [ref=e471] [cursor=pointer]:
+          - /url: /teams/55
+          - generic [ref=e473]:
+            - generic [ref=e474]: "N"
+            - heading "New Zealand" [level=3] [ref=e476]
+            - img [ref=e477]
+        - link "N Newcastle" [ref=e479] [cursor=pointer]:
+          - /url: /teams/9
+          - generic [ref=e481]:
+            - generic [ref=e482]: "N"
+            - heading "Newcastle" [level=3] [ref=e484]
+            - img [ref=e485]
+        - link "N Norway" [ref=e487] [cursor=pointer]:
+          - /url: /teams/59
+          - generic [ref=e489]:
+            - generic [ref=e490]: "N"
+            - heading "Norway" [level=3] [ref=e492]
+            - img [ref=e493]
+        - link "N Nott'm Forest" [ref=e495] [cursor=pointer]:
+          - /url: /teams/11
+          - generic [ref=e497]:
+            - generic [ref=e498]: "N"
+            - heading "Nott'm Forest" [level=3] [ref=e500]
+            - img [ref=e501]
+        - link "P Panama" [ref=e503] [cursor=pointer]:
+          - /url: /teams/69
+          - generic [ref=e505]:
+            - generic [ref=e506]: P
+            - heading "Panama" [level=3] [ref=e508]
+            - img [ref=e509]
+        - link "P Paraguay" [ref=e511] [cursor=pointer]:
+          - /url: /teams/31
+          - generic [ref=e513]:
+            - generic [ref=e514]: P
+            - heading "Paraguay" [level=3] [ref=e516]
+            - img [ref=e517]
+        - link "P Poland" [ref=e519] [cursor=pointer]:
+          - /url: /teams/76
+          - generic [ref=e521]:
+            - generic [ref=e522]: P
+            - heading "Poland" [level=3] [ref=e524]
+            - img [ref=e525]
+        - link "P Portugal" [ref=e527] [cursor=pointer]:
+          - /url: /teams/64
+          - generic [ref=e529]:
+            - generic [ref=e530]: P
+            - heading "Portugal" [level=3] [ref=e532]
+            - img [ref=e533]
+        - link "Q Qatar" [ref=e535] [cursor=pointer]:
+          - /url: /teams/32
+          - generic [ref=e537]:
+            - generic [ref=e538]: Q
+            - heading "Qatar" [level=3] [ref=e540]
+            - img [ref=e541]
+        - link "S Saudi Arabia" [ref=e543] [cursor=pointer]:
+          - /url: /teams/52
+          - generic [ref=e545]:
+            - generic [ref=e546]: S
+            - heading "Saudi Arabia" [level=3] [ref=e548]
+            - img [ref=e549]
+        - link "S Scotland" [ref=e551] [cursor=pointer]:
+          - /url: /teams/37
+          - generic [ref=e553]:
+            - generic [ref=e554]: S
+            - heading "Scotland" [level=3] [ref=e556]
+            - img [ref=e557]
+        - link "S Senegal" [ref=e559] [cursor=pointer]:
+          - /url: /teams/57
+          - generic [ref=e561]:
+            - generic [ref=e562]: S
+            - heading "Senegal" [level=3] [ref=e564]
+            - img [ref=e565]
+        - link "S Serbia" [ref=e567] [cursor=pointer]:
+          - /url: /teams/79
+          - generic [ref=e569]:
+            - generic [ref=e570]: S
+            - heading "Serbia" [level=3] [ref=e572]
+            - img [ref=e573]
+        - link "S South Africa" [ref=e575] [cursor=pointer]:
+          - /url: /teams/25
+          - generic [ref=e577]:
+            - generic [ref=e578]: S
+            - heading "South Africa" [level=3] [ref=e580]
+            - img [ref=e581]
+        - link "S South Korea" [ref=e583] [cursor=pointer]:
+          - /url: /teams/80
+          - generic [ref=e585]:
+            - generic [ref=e586]: S
+            - heading "South Korea" [level=3] [ref=e588]
+            - img [ref=e589]
+        - link "S Southampton" [ref=e591] [cursor=pointer]:
+          - /url: /teams/10
+          - generic [ref=e593]:
+            - generic [ref=e594]: S
+            - heading "Southampton" [level=3] [ref=e596]
+            - img [ref=e597]
+        - link "S Spain" [ref=e599] [cursor=pointer]:
+          - /url: /teams/48
+          - generic [ref=e601]:
+            - generic [ref=e602]: S
+            - heading "Spain" [level=3] [ref=e604]
+            - img [ref=e605]
+        - link "S Sunderland" [ref=e607] [cursor=pointer]:
+          - /url: /teams/21
+          - generic [ref=e609]:
+            - generic [ref=e610]: S
+            - heading "Sunderland" [level=3] [ref=e612]
+            - img [ref=e613]
+        - link "S Sweden" [ref=e615] [cursor=pointer]:
+          - /url: /teams/46
+          - generic [ref=e617]:
+            - generic [ref=e618]: S
+            - heading "Sweden" [level=3] [ref=e620]
+            - img [ref=e621]
+        - link "S Switzerland" [ref=e623] [cursor=pointer]:
+          - /url: /teams/33
+          - generic [ref=e625]:
+            - generic [ref=e626]: S
+            - heading "Switzerland" [level=3] [ref=e628]
+            - img [ref=e629]
+        - link "T Tunisia" [ref=e631] [cursor=pointer]:
+          - /url: /teams/47
+          - generic [ref=e633]:
+            - generic [ref=e634]: T
+            - heading "Tunisia" [level=3] [ref=e636]
+            - img [ref=e637]
+        - link "T Türkiye" [ref=e639] [cursor=pointer]:
+          - /url: /teams/39
+          - generic [ref=e641]:
+            - generic [ref=e642]: T
+            - heading "Türkiye" [level=3] [ref=e644]
+            - img [ref=e645]
+        - link "U United States" [ref=e647] [cursor=pointer]:
+          - /url: /teams/73
+          - generic [ref=e649]:
+            - generic [ref=e650]: U
+            - heading "United States" [level=3] [ref=e652]
+            - img [ref=e653]
+        - link "U Uruguay" [ref=e655] [cursor=pointer]:
+          - /url: /teams/53
+          - generic [ref=e657]:
+            - generic [ref=e658]: U
+            - heading "Uruguay" [level=3] [ref=e660]
+            - img [ref=e661]
+        - link "U USA" [ref=e663] [cursor=pointer]:
+          - /url: /teams/30
+          - generic [ref=e665]:
+            - generic [ref=e666]: U
+            - heading "USA" [level=3] [ref=e668]
+            - img [ref=e669]
+        - link "U Uzbekistan" [ref=e671] [cursor=pointer]:
+          - /url: /teams/70
+          - generic [ref=e673]:
+            - generic [ref=e674]: U
+            - heading "Uzbekistan" [level=3] [ref=e676]
+            - img [ref=e677]
+        - link "W Wales" [ref=e679] [cursor=pointer]:
+          - /url: /teams/74
+          - generic [ref=e681]:
+            - generic [ref=e682]: W
+            - heading "Wales" [level=3] [ref=e684]
+            - img [ref=e685]
+        - link "W West Ham" [ref=e687] [cursor=pointer]:
+          - /url: /teams/13
+          - generic [ref=e689]:
+            - generic [ref=e690]: W
+            - heading "West Ham" [level=3] [ref=e692]
+            - img [ref=e693]
+        - link "W Wolves" [ref=e695] [cursor=pointer]:
+          - /url: /teams/6
+          - generic [ref=e697]:
+            - generic [ref=e698]: W
+            - heading "Wolves" [level=3] [ref=e700]
+            - img [ref=e701]
+        - link "切 切尔西" [ref=e703] [cursor=pointer]:
+          - /url: /teams/17
+          - generic [ref=e705]:
+            - generic [ref=e706]: 切
+            - heading "切尔西" [level=3] [ref=e708]
+            - img [ref=e709]
+        - link "利 利物浦" [ref=e711] [cursor=pointer]:
+          - /url: /teams/4
+          - generic [ref=e713]:
+            - generic [ref=e714]: 利
+            - heading "利物浦" [level=3] [ref=e716]
+            - img [ref=e717]
+        - link "曼 曼城" [ref=e719] [cursor=pointer]:
+          - /url: /teams/18
+          - generic [ref=e721]:
+            - generic [ref=e722]: 曼
+            - heading "曼城" [level=3] [ref=e724]
+            - img [ref=e725]
+        - link "曼 曼联" [ref=e727] [cursor=pointer]:
+          - /url: /teams/1
+          - generic [ref=e729]:
+            - generic [ref=e730]: 曼
+            - heading "曼联" [level=3] [ref=e732]
+            - img [ref=e733]
+        - link "热 热刺" [ref=e735] [cursor=pointer]:
+          - /url: /teams/20
+          - generic [ref=e737]:
+            - generic [ref=e738]: 热
+            - heading "热刺" [level=3] [ref=e740]
+            - img [ref=e741]
+        - link "阿 阿森纳" [ref=e743] [cursor=pointer]:
+          - /url: /teams/5
+          - generic [ref=e745]:
+            - generic [ref=e746]: 阿
+            - heading "阿森纳" [level=3] [ref=e748]
+            - img [ref=e749]

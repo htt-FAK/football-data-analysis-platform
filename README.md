@@ -202,3 +202,13 @@ uvicorn app.main:app --reload
 ## License
 
 本项目为课程设计与个人学习实践项目，仅供学习、交流与作品展示使用。
+## World Cup strategy
+
+This repository now follows a task-oriented World Cup delivery strategy:
+
+- Match-level World Cup data is the P0 path.
+- Player contribution summaries are guaranteed before advanced radar views.
+- Advanced player analytics are rendered only when data completeness is high enough.
+- API-Football is the primary structured source for live and basic player tasks.
+- FBref and Understat remain advanced enrichment sources.
+

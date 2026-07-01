@@ -1,309 +1,482 @@
-"""定时调度任务 — APScheduler
+"""Scheduled background jobs for crawling and exporting."""
 
-对应方案 4.3 调度策略：
-- 实时高频（每 30s）：仅当有比赛进行中时，拉取实时比分 → Redis 缓存 → WebSocket 推送
-- 日常全量（每天 06:00）：刷新赛程/积分榜/球员统计
-- 日报导出（每天 02:00）：导出 Excel 报告
-"""
+from __future__ import annotations
 
-import asyncio
 import logging
 import time
+from datetime import datetime
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 
-from app.config import LIVE_CRAWL_INTERVAL, EXPORT_CRON
+from app.config import (
+    AI_PREDICTION_SCAN_SECONDS,
+    EXPORT_CRON,
+    LIVE_CRAWL_INTERVAL,
+)
 from app.database import SessionLocal
-from app.models.data_source import DataSource
 from app.models.crawl_log import CrawlLog
+from app.models.data_source import DataSource
 from app.models.match import Match
+from app.services.data_source_bootstrap import ensure_builtin_data_sources
+from app.services.source_strategy import resolve_crawl_target, sort_sources_for_task, supports_task
 
 logger = logging.getLogger(__name__)
 scheduler = AsyncIOScheduler()
+FIFA_DEFAULT_LEAGUE_NAME = "世界杯"
+FIFA_DEFAULT_SEASON_NAME = "2026"
+WORLD_CUP_SCHEDULE_REFRESH_SECONDS = 900
 
 
 def setup_jobs():
-    """注册所有定时任务"""
-    # 实时比赛数据 — 每 30 秒
+    """Register all scheduler jobs."""
+
     scheduler.add_job(
         crawl_live_matches,
         IntervalTrigger(seconds=LIVE_CRAWL_INTERVAL),
         id="live_crawl",
-        name="实时比赛抓取",
+        name="live-match-crawl",
         replace_existing=True,
         max_instances=1,
         coalesce=True,
     )
 
-    # 日常全量采集 — 每天 06:00
     scheduler.add_job(
         daily_full_crawl,
         CronTrigger(hour=6, minute=0),
         id="daily_crawl",
-        name="日常全量采集",
+        name="daily-full-crawl",
         replace_existing=True,
     )
 
-    # Excel 报告导出 — 每天凌晨 02:00
+    scheduler.add_job(
+        refresh_worldcup_schedule,
+        IntervalTrigger(seconds=WORLD_CUP_SCHEDULE_REFRESH_SECONDS),
+        id="worldcup_schedule_refresh",
+        name="worldcup-schedule-refresh",
+        replace_existing=True,
+        max_instances=1,
+        coalesce=True,
+    )
+
     scheduler.add_job(
         export_daily_report,
         CronTrigger.from_crontab(EXPORT_CRON),
         id="daily_export",
-        name="日报导出",
+        name="daily-export",
         replace_existing=True,
     )
 
-    logger.info("定时任务已注册：实时抓取(%ds) / 日常采集(06:00) / 日报导出(%s)",
-                LIVE_CRAWL_INTERVAL, EXPORT_CRON)
+    scheduler.add_job(
+        scan_and_predict_matches,
+        IntervalTrigger(seconds=AI_PREDICTION_SCAN_SECONDS),
+        id="ai_prediction_scan",
+        name="ai-prediction-scan",
+        replace_existing=True,
+        max_instances=1,
+        coalesce=True,
+    )
+
+    logger.info(
+        "Scheduler jobs registered: live(%ss), worldcup schedule(%ss), daily crawl(06:00), export(%s), ai-prediction(%ss)",
+        LIVE_CRAWL_INTERVAL,
+        WORLD_CUP_SCHEDULE_REFRESH_SECONDS,
+        EXPORT_CRON,
+        AI_PREDICTION_SCAN_SECONDS,
+    )
 
 
 def start_scheduler():
-    """启动调度器（在 FastAPI lifespan 中调用）"""
+    """Start the scheduler during FastAPI lifespan."""
+
+    db = SessionLocal()
+    try:
+        created = ensure_builtin_data_sources(db)
+        if created:
+            logger.info("Seeded %d built-in data sources before scheduler start", created)
+    finally:
+        db.close()
+
     setup_jobs()
     scheduler.start()
-    logger.info("APScheduler 已启动")
+    logger.info("APScheduler started")
 
 
 def shutdown_scheduler():
-    """关闭调度器"""
+    """Stop the scheduler."""
+
     if scheduler.running:
         scheduler.shutdown(wait=False)
-        logger.info("APScheduler 已关闭")
+        logger.info("APScheduler stopped")
 
-
-# ── 任务实现 ──
 
 async def crawl_live_matches():
-    """抓取进行中比赛数据
+    """Poll live matches using task-specific source ordering."""
 
-    流程：
-    1. 查询 MySQL 中 status='playing' 的比赛
-    2. 无进行中比赛则直接返回（降频，节省 API 配额）
-    3. 有比赛时，按优先级调用数据源（api_football 优先，dongqiudi 兜底）
-    4. upsert 到 MySQL + 写 Redis 缓存
-    5. 通过 WebSocket 推送给订阅了对应联赛的前端连接
-    """
     db = SessionLocal()
     try:
-        # 检查是否有进行中比赛
-        playing = db.query(Match).filter(Match.status == "playing").count()
-        if playing == 0:
-            logger.debug("无进行中比赛，跳过实时抓取")
-            return
-
-        logger.info("发现 %d 场进行中比赛，开始实时抓取", playing)
-
-        # 按优先级取启用的实时数据源
+        ensure_builtin_data_sources(db)
         sources = (
             db.query(DataSource)
             .filter(DataSource.enabled == True, DataSource.status != "error")
             .order_by(DataSource.priority.asc())
             .all()
         )
-        for source in sources:
+        for source in sort_sources_for_task(sources, "live_match"):
             try:
                 await _crawl_source_live(source, db)
-            except Exception as e:
-                logger.error("数据源 %s 实时抓取失败: %s", source.source_code, e)
+            except Exception as exc:
+                logger.error("Live crawl failed for %s: %s", source.source_code, exc)
                 _mark_source_error(source, db)
     finally:
         db.close()
 
 
 async def _crawl_source_live(source: DataSource, db):
-    """调用单个数据源的实时抓取并入库 + 推送
+    """Run one live crawl source and broadcast updates."""
 
-    流程：爬虫 crawl() → ingest_service.ingest_matches() → push_live_update()
-    """
     from app.services.ingest_service import ingest_matches, push_live_update
 
     log = CrawlLog(
         source_id=source.id,
         target="live",
-        start_time=time.strftime("%Y-%m-%d %H:%M:%S"),
+        start_time=datetime.now(),
         status="running",
     )
     db.add(log)
     db.commit()
     db.refresh(log)
 
-    fetched, updated_count, failed = 0, 0, 0
+    fetched = 0
+    updated_count = 0
+    failed = 0
     start = time.time()
     try:
-        data = await _dispatch_crawl(source, "live")  # 复用派发器
+        data = await _dispatch_crawl(source, "live")
         fetched = len(data) if data else 0
-
-        # 入库（标准化 + 实体解析 + upsert）
         if data:
-            ingest_stats = ingest_matches(db, data, source=source.source_code)
+            ingest_stats = ingest_matches(
+                db,
+                data,
+                source=source.source_code,
+                **_ingest_context(source.source_code),
+            )
             updated_count = ingest_stats.get("created", 0) + ingest_stats.get("updated", 0)
             failed = ingest_stats.get("failed", 0)
 
-            # 对状态为 playing 的比赛推送实时更新
-            from app.models.match import Match
-            playing = db.query(Match).filter(Match.status == "playing").all()
-            for m in playing:
-                await push_live_update(m.id, m.league_id, {
-                    "home_score": m.home_score,
-                    "away_score": m.away_score,
-                    "status": m.status,
-                })
+            source_match_ids = [str(item.get("match_id")) for item in data if item.get("match_id")]
+            live_matches = (
+                db.query(Match).filter(Match.source_id.in_(source_match_ids)).all()
+                if source_match_ids
+                else []
+            )
+            match_by_source_id = {str(match.source_id): match for match in live_matches if match.source_id}
+
+            for item in data:
+                match = match_by_source_id.get(str(item.get("match_id")))
+                if not match or not match.league_id:
+                    continue
+                await push_live_update(
+                    match.id,
+                    match.league_id,
+                    {
+                        "source": source.source_code,
+                        "match_id": match.id,
+                        "source_match_id": match.source_id,
+                        "home_score": match.home_score,
+                        "away_score": match.away_score,
+                        "status": match.status,
+                        "match_date": match.match_date.isoformat() if match.match_date else None,
+                        "stage": match.stage,
+                        "group": match.group_name,
+                    },
+                )
 
         log.fetched = fetched
         log.updated = updated_count
         log.failed = failed
         log.cost_ms = int((time.time() - start) * 1000)
-        log.end_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        log.status = "success"
-        source.status = "active"
-        source.last_crawl_at = time.strftime("%Y-%m-%d %H:%M:%S")
+        log.end_time = datetime.now()
+        log.status = _derive_crawl_status(fetched, updated_count, failed)
+        source.status = _derive_source_status(log.status)
+        source.last_crawl_at = datetime.now()
+        if log.status == "success":
+            source.error_count = 0
         db.commit()
-    except Exception as e:
+    except Exception as exc:
         log.status = "failed"
-        log.error_msg = str(e)
-        log.end_time = time.strftime("%Y-%m-%d %H:%M:%S")
+        log.error_msg = str(exc)
+        log.end_time = datetime.now()
         log.cost_ms = int((time.time() - start) * 1000)
         db.commit()
         raise
 
 
 async def daily_full_crawl():
-    """日常全量采集：遍历所有启用的数据源执行采集"""
+    """Run full daily crawl using task-specific source ordering."""
+
     db = SessionLocal()
     try:
+        ensure_builtin_data_sources(db)
         sources = (
             db.query(DataSource)
             .filter(DataSource.enabled == True)
             .order_by(DataSource.priority.asc())
             .all()
         )
-        logger.info("日常全量采集开始，共 %d 个数据源", len(sources))
-        for source in sources:
+
+        from app.services.ingest_service import (
+            ingest_matches,
+            ingest_player_stats,
+            ingest_standings,
+            ingest_team_stats,
+        )
+        from app.services.worldcup_player_rating_service import WorldCupPlayerRatingService
+
+        target_pipeline = [
+            ("schedule", "schedule", ingest_matches, "match_catalog"),
+            ("standings", "standings", ingest_standings, "match_catalog"),
+            ("players", "player_stats", ingest_player_stats, "player_basic"),
+        ]
+
+        for target, crawl_target, ingest_fn, task in target_pipeline:
+            eligible_sources = [source for source in sources if supports_task(source.source_code, task)]
+            for source in sort_sources_for_task(eligible_sources, task):
+                try:
+                    await _crawl_source_target(source, db, target, crawl_target, ingest_fn)
+                    if source.source_code == "fifa_official" and target == "players":
+                        rating_result = WorldCupPlayerRatingService().refresh(
+                            db,
+                            season_name=FIFA_DEFAULT_SEASON_NAME,
+                        )
+                        logger.info(
+                            "World Cup player ratings refreshed after scheduled FIFA crawl: %s",
+                            rating_result,
+                        )
+                except Exception as exc:
+                    logger.error("Daily crawl failed for %s target=%s: %s", source.source_code, target, exc)
+                    _mark_source_error(source, db)
+
+        fifa_source = next((source for source in sources if source.source_code == "fifa_official" and source.enabled), None)
+        if fifa_source:
             try:
-                await _crawl_source_full(source, db)
-            except Exception as e:
-                logger.error("数据源 %s 全量采集失败: %s", source.source_code, e)
-                _mark_source_error(source, db)
-        logger.info("日常全量采集完成")
+                await _crawl_source_target(
+                    fifa_source,
+                    db,
+                    "statistics",
+                    "statistics",
+                    ingest_team_stats,
+                )
+            except Exception as exc:
+                logger.error("Daily crawl failed for fifa_official target=statistics: %s", exc)
+                _mark_source_error(fifa_source, db)
     finally:
         db.close()
 
 
-async def _crawl_source_full(source: DataSource, db):
-    """单个数据源的全量采集（赛程/积分榜/球员统计等），每步入库"""
-    from app.services.ingest_service import (
-        ingest_matches, ingest_standings, ingest_player_stats,
-    )
-    # target → (爬虫target, 入库函数) 映射
-    target_pipeline = [
-        ("schedule", "schedule", ingest_matches),
-        ("standings", "standings", ingest_standings),
-        ("players", "player_stats", ingest_player_stats),
-    ]
-    for target, crawl_target, ingest_fn in target_pipeline:
-        log = CrawlLog(
-            source_id=source.id,
-            target=target,
-            start_time=time.strftime("%Y-%m-%d %H:%M:%S"),
-            status="running",
+async def refresh_worldcup_schedule():
+    """Refresh FIFA World Cup schedule frequently during the tournament."""
+
+    db = SessionLocal()
+    source = None
+    try:
+        ensure_builtin_data_sources(db)
+        source = (
+            db.query(DataSource)
+            .filter(DataSource.source_code == "fifa_official", DataSource.enabled == True)
+            .first()
         )
-        db.add(log)
+        if not source:
+            logger.info("Skipping world cup schedule refresh: fifa_official source not available")
+            return
+
+        from app.services.ingest_service import ingest_matches
+
+        await _crawl_source_target(source, db, "worldcup_schedule", "schedule", ingest_matches)
+    except Exception as exc:
+        logger.error("World Cup schedule refresh failed: %s", exc)
+        if source:
+            _mark_source_error(source, db)
+    finally:
+        db.close()
+
+
+async def _crawl_source_target(source: DataSource, db, target: str, crawl_target: str, ingest_fn):
+    """Run one scheduled target for one source."""
+    concrete_target = resolve_crawl_target(source.source_code, crawl_target)
+    if concrete_target is None:
+        logger.info(
+            "Skipping source=%s target=%s because no concrete crawler target is supported",
+            source.source_code,
+            crawl_target,
+        )
+        return
+
+    log = CrawlLog(
+        source_id=source.id,
+        target=target,
+        start_time=datetime.now(),
+        status="running",
+    )
+    db.add(log)
+    db.commit()
+    db.refresh(log)
+    start = time.time()
+
+    try:
+        data = await _dispatch_crawl(source, concrete_target)
+        fetched = len(data) if data else 0
+        updated_count = 0
+        failed_count = 0
+
+        if data:
+            ingest_stats = ingest_fn(db, data, source=source.source_code, **_ingest_context(source.source_code))
+            updated_count = ingest_stats.get("created", 0) + ingest_stats.get("updated", 0)
+            failed_count = ingest_stats.get("failed", 0)
+
+        log.fetched = fetched
+        log.updated = updated_count
+        log.failed = failed_count
+        log.cost_ms = int((time.time() - start) * 1000)
+        log.end_time = datetime.now()
+        log.status = _derive_crawl_status(fetched, updated_count, failed_count)
+        source.status = _derive_source_status(log.status)
+        source.last_crawl_at = datetime.now()
+        if log.status == "success":
+            source.error_count = 0
         db.commit()
-        db.refresh(log)
-        start = time.time()
-        try:
-            data = await _dispatch_crawl(source, crawl_target)
-            fetched = len(data) if data else 0
-            updated_count, failed_count = 0, 0
-
-            # 入库
-            if data:
-                ingest_stats = ingest_fn(db, data, source=source.source_code)
-                updated_count = ingest_stats.get("created", 0) + ingest_stats.get("updated", 0)
-                failed_count = ingest_stats.get("failed", 0)
-
-            log.fetched = fetched
-            log.updated = updated_count
-            log.failed = failed_count
-            log.cost_ms = int((time.time() - start) * 1000)
-            log.end_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            log.status = "success"
-            db.commit()
-        except Exception as e:
-            log.status = "failed"
-            log.error_msg = str(e)
-            log.end_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            log.cost_ms = int((time.time() - start) * 1000)
-            db.commit()
-            logger.warning("数据源 %s 目标 %s 采集失败: %s", source.source_code, target, e)
+    except Exception as exc:
+        log.status = "failed"
+        log.error_msg = str(exc)
+        log.end_time = datetime.now()
+        log.cost_ms = int((time.time() - start) * 1000)
+        db.commit()
+        raise
 
 
 async def _dispatch_crawl(source: DataSource, target: str) -> list:
-    """根据 source_code 派发到对应爬虫，返回原始数据列表
+    """Dispatch to the concrete crawler by source code."""
 
-    Args:
-        source: 数据源配置
-        target: 采集目标（schedule/standings/players/live 等）
-    Returns:
-        list[dict]: 爬虫返回的原始数据列表，失败返回空列表
-    """
     code = source.source_code
-    data: list = []
-    try:
-        # 延迟导入，避免循环依赖
-        if code == "dongqiudi":
-            from app.crawlers.dongqiudi import DongqiudiCrawler
-            data = DongqiudiCrawler().crawl(target=target) or []
-        elif code == "fbref":
-            from app.crawlers.fbref import FBrefCrawler
-            data = FBrefCrawler().crawl(target=target) or []
-        elif code == "understat":
-            from app.crawlers.understat import UnderstatCrawler
-            data = UnderstatCrawler().crawl(target=target) or []
-        elif code == "api_football":
-            from app.crawlers.api_football import APIFootballCrawler
-            # 实时采集用 fixtures 端点
-            crawl_target = "fixtures" if target == "live" else target
-            data = APIFootballCrawler().crawl(target=crawl_target) or []
-        elif code == "thesportsdb":
-            from app.crawlers.thesportsdb import TheSportsDBCrawler
-            data = TheSportsDBCrawler().crawl(target=target) or []
-        elif code == "openligadb":
-            from app.crawlers.openligadb import OpenLigaDBCrawler
-            data = OpenLigaDBCrawler().crawl(target=target) or []
-        elif code == "teamrankings":
-            from app.crawlers.teamrankings import TeamRankingsCrawler
-            data = TeamRankingsCrawler().crawl(target=target) or []
-        elif code == "football_data":
-            from app.crawlers.football_data import FootballDataCrawler
-            data = FootballDataCrawler().crawl(target=target) or []
-        else:
-            logger.warning("未知数据源编码: %s", code)
-    except Exception as e:
-        logger.error("派发爬虫 %s(target=%s) 失败: %s", code, target, e)
-    return data
+    if code == "fifa_official":
+        from app.crawlers.fifa_official import FIFAOfficialCrawler
+
+        return FIFAOfficialCrawler().crawl(target=target) or []
+    if code == "dongqiudi":
+        from app.crawlers.dongqiudi import DongqiudiCrawler
+
+        return DongqiudiCrawler().crawl(target=target) or []
+    if code == "fbref":
+        from app.crawlers.fbref import FBrefCrawler
+
+        return FBrefCrawler().crawl(target=target) or []
+    if code == "understat":
+        from app.crawlers.understat import UnderstatCrawler
+
+        return UnderstatCrawler().crawl(target=target) or []
+    if code == "api_football":
+        from app.crawlers.api_football import APIFootballCrawler
+
+        crawl_target = "fixtures" if target == "live" else target
+        return APIFootballCrawler().crawl(target=crawl_target) or []
+    if code == "thesportsdb":
+        from app.crawlers.thesportsdb import TheSportsDBCrawler
+
+        return TheSportsDBCrawler().crawl(target=target) or []
+    if code == "openligadb":
+        from app.crawlers.openligadb import OpenLigaDBCrawler
+
+        return OpenLigaDBCrawler().crawl(target=target) or []
+    if code == "teamrankings":
+        from app.crawlers.teamrankings import TeamRankingsCrawler
+
+        return TeamRankingsCrawler().crawl(target=target) or []
+    if code == "statsbomb":
+        from app.crawlers.statsbomb import StatsBombCrawler
+
+        return StatsBombCrawler().crawl(target=target) or []
+    if code == "football_data":
+        from app.crawlers.football_data import FootballDataCrawler
+
+        return FootballDataCrawler().crawl(target=target) or []
+
+    logger.warning("Unknown source code: %s", code)
+    return []
 
 
 async def export_daily_report():
-    """导出每日数据报告（Excel）"""
+    """Export the daily Excel report."""
+
     db = SessionLocal()
     try:
         from app.config import EXPORT_DIR
         from app.export.excel_exporter import ExcelExporter
+
         exporter = ExcelExporter(db=db, export_dir=EXPORT_DIR)
         path = exporter.export_all()
-        logger.info("日报已导出: %s", path)
-    except Exception as e:
-        logger.error("日报导出失败: %s", e)
+        logger.info("Daily report exported: %s", path)
+    except Exception as exc:
+        logger.error("Daily report export failed: %s", exc)
+    finally:
+        db.close()
+
+
+async def scan_and_predict_matches():
+    """扫描赛前触发窗口内待预测的比赛并逐场执行 AI 预测。
+
+    每隔 AI_PREDICTION_SCAN_SECONDS（默认 900s）运行一次。对处于
+    [现在 + (H-tol), 现在 + (H+tol)] 窗口内、status=scheduled、主客队齐全、
+    且尚无 completed 预测记录的比赛，调用多模型编排器生成预测并落库。
+    """
+    from app.config import ENABLE_AI_PREDICTION
+    from app.services.prediction_service import scan_and_predict_async
+
+    if not ENABLE_AI_PREDICTION:
+        return
+
+    db = SessionLocal()
+    try:
+        result = await scan_and_predict_async(db)
+        if result.get("scanned", 0) > 0:
+            logger.info(
+                "AI prediction scan: scanned=%d predicted=%d failed=%d details=%s",
+                result["scanned"], result["predicted"], result["failed"], result["details"],
+            )
+    except Exception as exc:
+        logger.error("AI prediction scan failed: %s", exc)
     finally:
         db.close()
 
 
 def _mark_source_error(source: DataSource, db):
-    """标记数据源出错，累加错误计数"""
+    """Increment source error counters."""
+
     source.error_count = (source.error_count or 0) + 1
-    if source.error_count >= 5:
-        source.status = "error"
+    source.status = "error" if source.error_count >= 5 else "warning"
     db.commit()
+
+
+def _ingest_context(source_code: str) -> dict:
+    if source_code != "fifa_official":
+        return {}
+    return {
+        "league_name": FIFA_DEFAULT_LEAGUE_NAME,
+        "season_name": FIFA_DEFAULT_SEASON_NAME,
+    }
+
+
+def _derive_crawl_status(fetched: int, updated: int, failed: int) -> str:
+    if failed > 0:
+        return "partial"
+    if fetched <= 0 and updated <= 0:
+        return "partial"
+    return "success"
+
+
+def _derive_source_status(crawl_status: str) -> str:
+    if crawl_status == "success":
+        return "active"
+    if crawl_status == "partial":
+        return "warning"
+    return "idle"

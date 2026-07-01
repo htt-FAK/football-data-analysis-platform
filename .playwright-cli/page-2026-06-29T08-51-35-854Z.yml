@@ -1,0 +1,250 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: SPORTSDATA
+        - generic [ref=e15]: Football Analytics
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "仪表盘" [ref=e19] [cursor=pointer]:
+        - /url: /
+        - img [ref=e20]
+        - generic [ref=e25]: 仪表盘
+      - link "联赛" [ref=e26] [cursor=pointer]:
+        - /url: /leagues
+        - img [ref=e27]
+        - generic [ref=e33]: 联赛
+      - link "球队" [ref=e34] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e35]
+        - generic [ref=e40]: 球队
+      - link "球员" [ref=e41] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e42]
+        - generic [ref=e45]: 球员
+      - link "比赛" [ref=e46] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e47]
+        - generic [ref=e49]: 比赛
+      - link "世界杯" [ref=e50] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e51]
+        - generic [ref=e56]: 世界杯
+      - link "AI预测" [ref=e57] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e58]
+        - generic [ref=e61]: AI预测
+    - generic [ref=e62]:
+      - generic [ref=e63]: 数据概览
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: "2"
+          - generic [ref=e67]: 联赛
+        - generic [ref=e68]:
+          - generic [ref=e69]: "80"
+          - generic [ref=e70]: 球队
+        - generic [ref=e71]:
+          - generic [ref=e72]: "100"
+          - generic [ref=e73]: 比赛
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - button "设置" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "帮助" [ref=e80] [cursor=pointer]:
+          - img [ref=e81]
+      - generic [ref=e84]: v1.0.0
+  - main [ref=e85]:
+    - generic [ref=e87]:
+      - generic [ref=e90]:
+        - generic [ref=e93]: Sports Analytics
+        - heading "比赛中心" [level=1] [ref=e94]
+        - paragraph [ref=e95]: 浏览所有比赛
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - img [ref=e99]
+          - generic [ref=e101]: 筛选条件
+        - generic [ref=e102]:
+          - combobox [ref=e103]:
+            - option "全部联赛" [selected]
+            - option "英超"
+            - option "世界杯"
+          - combobox [ref=e104]:
+            - option "全部状态" [selected]
+            - option "未开始"
+            - option "进行中"
+            - option "已结束"
+          - generic [ref=e105]:
+            - img
+            - textbox [ref=e106]
+          - generic [ref=e107]:
+            - img
+            - textbox "阶段（小组赛/淘汰赛...）" [ref=e108]
+        - button "重置筛选" [ref=e110] [cursor=pointer]:
+          - img [ref=e111]
+          - text: 重置筛选
+      - generic [ref=e114]:
+        - link "未开始 Round of 32 -- Colombia VS Ghana Kansas City Stadium - Kansas City" [ref=e115] [cursor=pointer]:
+          - /url: /matches/1608
+          - generic [ref=e116]:
+            - generic [ref=e118]:
+              - generic [ref=e119]:
+                - generic [ref=e120]: 未开始
+                - generic [ref=e121]: Round of 32
+              - generic [ref=e122]: "--"
+            - generic [ref=e123]:
+              - generic [ref=e125]: Colombia
+              - generic [ref=e127]: VS
+              - generic [ref=e129]: Ghana
+            - generic [ref=e130]: Kansas City Stadium - Kansas City
+        - link "未开始 Round of 32 -- Argentina VS Cabo Verde Miami Stadium - Miami" [ref=e132] [cursor=pointer]:
+          - /url: /matches/1607
+          - generic [ref=e133]:
+            - generic [ref=e135]:
+              - generic [ref=e136]:
+                - generic [ref=e137]: 未开始
+                - generic [ref=e138]: Round of 32
+              - generic [ref=e139]: "--"
+            - generic [ref=e140]:
+              - generic [ref=e142]: Argentina
+              - generic [ref=e144]: VS
+              - generic [ref=e146]: Cabo Verde
+            - generic [ref=e147]: Miami Stadium - Miami
+        - link "未开始 Round of 32 -- Australia VS Egypt Dallas Stadium - Dallas" [ref=e149] [cursor=pointer]:
+          - /url: /matches/1606
+          - generic [ref=e150]:
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - generic [ref=e154]: 未开始
+                - generic [ref=e155]: Round of 32
+              - generic [ref=e156]: "--"
+            - generic [ref=e157]:
+              - generic [ref=e159]: Australia
+              - generic [ref=e161]: VS
+              - generic [ref=e163]: Egypt
+            - generic [ref=e164]: Dallas Stadium - Dallas
+        - link "未开始 Round of 32 -- Switzerland VS Algeria BC Place Vancouver - Vancouver" [ref=e166] [cursor=pointer]:
+          - /url: /matches/1605
+          - generic [ref=e167]:
+            - generic [ref=e169]:
+              - generic [ref=e170]:
+                - generic [ref=e171]: 未开始
+                - generic [ref=e172]: Round of 32
+              - generic [ref=e173]: "--"
+            - generic [ref=e174]:
+              - generic [ref=e176]: Switzerland
+              - generic [ref=e178]: VS
+              - generic [ref=e180]: Algeria
+            - generic [ref=e181]: BC Place Vancouver - Vancouver
+        - link "未开始 Round of 32 -- Portugal VS Croatia Toronto Stadium - Toronto" [ref=e183] [cursor=pointer]:
+          - /url: /matches/1604
+          - generic [ref=e184]:
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: 未开始
+                - generic [ref=e189]: Round of 32
+              - generic [ref=e190]: "--"
+            - generic [ref=e191]:
+              - generic [ref=e193]: Portugal
+              - generic [ref=e195]: VS
+              - generic [ref=e197]: Croatia
+            - generic [ref=e198]: Toronto Stadium - Toronto
+        - link "未开始 Round of 32 -- Spain VS Austria Los Angeles Stadium - Los Angeles" [ref=e200] [cursor=pointer]:
+          - /url: /matches/1603
+          - generic [ref=e201]:
+            - generic [ref=e203]:
+              - generic [ref=e204]:
+                - generic [ref=e205]: 未开始
+                - generic [ref=e206]: Round of 32
+              - generic [ref=e207]: "--"
+            - generic [ref=e208]:
+              - generic [ref=e210]: Spain
+              - generic [ref=e212]: VS
+              - generic [ref=e214]: Austria
+            - generic [ref=e215]: Los Angeles Stadium - Los Angeles
+        - link "未开始 Round of 32 -- USA VS Bosnia and Herzegovina San Francisco Bay Area Stadium - San Francisco Bay Area" [ref=e217] [cursor=pointer]:
+          - /url: /matches/1602
+          - generic [ref=e218]:
+            - generic [ref=e220]:
+              - generic [ref=e221]:
+                - generic [ref=e222]: 未开始
+                - generic [ref=e223]: Round of 32
+              - generic [ref=e224]: "--"
+            - generic [ref=e225]:
+              - generic [ref=e227]: USA
+              - generic [ref=e229]: VS
+              - generic [ref=e231]: Bosnia and Herzegovina
+            - generic [ref=e232]: San Francisco Bay Area Stadium - San Francisco Bay Area
+        - link "未开始 Round of 32 -- Belgium VS Senegal Seattle Stadium - Seattle" [ref=e234] [cursor=pointer]:
+          - /url: /matches/1601
+          - generic [ref=e235]:
+            - generic [ref=e237]:
+              - generic [ref=e238]:
+                - generic [ref=e239]: 未开始
+                - generic [ref=e240]: Round of 32
+              - generic [ref=e241]: "--"
+            - generic [ref=e242]:
+              - generic [ref=e244]: Belgium
+              - generic [ref=e246]: VS
+              - generic [ref=e248]: Senegal
+            - generic [ref=e249]: Seattle Stadium - Seattle
+        - link "未开始 Round of 32 -- England VS Congo DR Atlanta Stadium - Atlanta" [ref=e251] [cursor=pointer]:
+          - /url: /matches/1600
+          - generic [ref=e252]:
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - generic [ref=e256]: 未开始
+                - generic [ref=e257]: Round of 32
+              - generic [ref=e258]: "--"
+            - generic [ref=e259]:
+              - generic [ref=e261]: England
+              - generic [ref=e263]: VS
+              - generic [ref=e265]: Congo DR
+            - generic [ref=e266]: Atlanta Stadium - Atlanta
+        - link "未开始 Round of 32 -- Mexico VS Ecuador Mexico City Stadium - Mexico City" [ref=e268] [cursor=pointer]:
+          - /url: /matches/1599
+          - generic [ref=e269]:
+            - generic [ref=e271]:
+              - generic [ref=e272]:
+                - generic [ref=e273]: 未开始
+                - generic [ref=e274]: Round of 32
+              - generic [ref=e275]: "--"
+            - generic [ref=e276]:
+              - generic [ref=e278]: Mexico
+              - generic [ref=e280]: VS
+              - generic [ref=e282]: Ecuador
+            - generic [ref=e283]: Mexico City Stadium - Mexico City
+        - link "未开始 Round of 32 -- France VS Sweden New York/New Jersey Stadium - New Jersey" [ref=e285] [cursor=pointer]:
+          - /url: /matches/1598
+          - generic [ref=e286]:
+            - generic [ref=e288]:
+              - generic [ref=e289]:
+                - generic [ref=e290]: 未开始
+                - generic [ref=e291]: Round of 32
+              - generic [ref=e292]: "--"
+            - generic [ref=e293]:
+              - generic [ref=e295]: France
+              - generic [ref=e297]: VS
+              - generic [ref=e299]: Sweden
+            - generic [ref=e300]: New York/New Jersey Stadium - New Jersey
+        - link "未开始 Round of 32 -- Côte d'Ivoire VS Norway Dallas Stadium - Dallas" [ref=e302] [cursor=pointer]:
+          - /url: /matches/1597
+          - generic [ref=e303]:
+            - generic [ref=e305]:
+              - generic [ref=e306]:
+                - generic [ref=e307]: 未开始
+                - generic [ref=e308]: Round of 32
+              - generic [ref=e309]: "--"
+            - generic [ref=e310]:
+              - generic [ref=e312]: Côte d'Ivoire
+              - generic [ref=e314]: VS
+              - generic [ref=e316]: Norway
+            - generic [ref=e317]: Dallas Stadium - Dallas
+      - generic [ref=e319]:
+        - button "上一页" [disabled]
+        - button "1" [ref=e320] [cursor=pointer]
+        - button "2" [ref=e321] [cursor=pointer]
+        - generic [ref=e322]: ...
+        - button "9" [ref=e323] [cursor=pointer]
+        - button "下一页" [ref=e324] [cursor=pointer]

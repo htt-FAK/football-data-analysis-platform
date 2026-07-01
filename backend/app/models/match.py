@@ -29,6 +29,8 @@ class Match(Base):
     status: Mapped[str] = mapped_column(String(20), default="scheduled", comment="比赛状态")
     match_date: Mapped[Optional[datetime]] = mapped_column(DateTime, comment="比赛时间")
     venue: Mapped[Optional[str]] = mapped_column(String(100), comment="比赛场地")
+    stage: Mapped[Optional[str]] = mapped_column(String(50), comment="比赛阶段")
+    group_name: Mapped[Optional[str]] = mapped_column(String(50), comment="分组")
 
     # 增量字段
     data_source: Mapped[Optional[str]] = mapped_column(String(50), comment="来源标识")

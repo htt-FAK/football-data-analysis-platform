@@ -122,7 +122,15 @@ async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
         while True:
-            data = await websocket.receive_json()
+            try:
+                data = await asyncio.wait_for(
+                    websocket.receive_json(),
+                    timeout=WS_HEARTBEAT_INTERVAL,
+                )
+            except asyncio.TimeoutError:
+                logger.info("WebSocket 心跳超时，主动断开连接")
+                await websocket.close(code=1001, reason="heartbeat timeout")
+                break
             action = data.get("action")
             manager.touch(websocket)
 
@@ -145,4 +153,6 @@ async def websocket_endpoint(websocket: WebSocket):
                     {"type": "error", "message": f"未知操作: {action}"}
                 )
     except WebSocketDisconnect:
+        pass
+    finally:
         manager.disconnect(websocket)

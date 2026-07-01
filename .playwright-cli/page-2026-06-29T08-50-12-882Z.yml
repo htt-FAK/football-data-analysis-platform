@@ -1,0 +1,360 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]:
+      - img [ref=e8]:
+        - generic [ref=e12]: SD
+      - generic [ref=e13]:
+        - generic [ref=e14]: SPORTSDATA
+        - generic [ref=e15]: Football Analytics
+    - generic [ref=e17]: 导航
+    - navigation [ref=e18]:
+      - link "仪表盘" [ref=e19] [cursor=pointer]:
+        - /url: /
+        - img [ref=e20]
+        - generic [ref=e25]: 仪表盘
+      - link "联赛" [ref=e26] [cursor=pointer]:
+        - /url: /leagues
+        - img [ref=e27]
+        - generic [ref=e33]: 联赛
+      - link "球队" [ref=e34] [cursor=pointer]:
+        - /url: /teams
+        - img [ref=e35]
+        - generic [ref=e40]: 球队
+      - link "球员" [ref=e41] [cursor=pointer]:
+        - /url: /players
+        - img [ref=e42]
+        - generic [ref=e45]: 球员
+      - link "比赛" [ref=e46] [cursor=pointer]:
+        - /url: /matches
+        - img [ref=e47]
+        - generic [ref=e49]: 比赛
+      - link "世界杯" [ref=e50] [cursor=pointer]:
+        - /url: /worldcup
+        - img [ref=e51]
+        - generic [ref=e56]: 世界杯
+      - link "AI预测" [ref=e57] [cursor=pointer]:
+        - /url: /ai-predict
+        - img [ref=e58]
+        - generic [ref=e61]: AI预测
+    - generic [ref=e62]:
+      - generic [ref=e63]: 数据概览
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: "2"
+          - generic [ref=e67]: 联赛
+        - generic [ref=e68]:
+          - generic [ref=e69]: "80"
+          - generic [ref=e70]: 球队
+        - generic [ref=e71]:
+          - generic [ref=e72]: "100"
+          - generic [ref=e73]: 比赛
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - button "设置" [ref=e76] [cursor=pointer]:
+          - img [ref=e77]
+        - button "帮助" [ref=e80] [cursor=pointer]:
+          - img [ref=e81]
+      - generic [ref=e84]: v1.0.0
+  - main [ref=e85]:
+    - generic [ref=e87]:
+      - generic [ref=e90]:
+        - generic [ref=e93]: Sports Analytics
+        - heading "球员中心" [level=1] [ref=e94]
+        - paragraph [ref=e95]: 浏览球员数据、排行榜与能力对比
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - button "球员列表" [ref=e98] [cursor=pointer]:
+            - img [ref=e99]
+            - text: 球员列表
+          - button "排行榜" [ref=e100] [cursor=pointer]:
+            - img [ref=e101]
+            - text: 排行榜
+          - button "球员对比" [ref=e107] [cursor=pointer]:
+            - img [ref=e108]
+            - text: 球员对比
+        - generic [ref=e112]:
+          - generic [ref=e114]:
+            - generic [ref=e115]:
+              - img [ref=e116]
+              - generic [ref=e118]: 筛选条件
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - img
+                - textbox "搜索球员姓名..." [ref=e121]
+              - combobox [ref=e122]:
+                - option "全部位置" [selected]
+                - option "门将 (GK)"
+                - option "后卫 (DF)"
+                - option "中场 (MF)"
+                - option "前锋 (FW)"
+              - combobox [ref=e123]:
+                - option "全部球队" [selected]
+                - option "Algeria"
+                - option "Argentina"
+                - option "Aston Villa"
+                - option "Australia"
+                - option "Austria"
+                - option "Belgium"
+                - option "Bosnia and Herzegovina"
+                - option "Bournemouth"
+                - option "Brazil"
+                - option "Brentford"
+                - option "Brighton"
+                - option "Burnley"
+                - option "Cabo Verde"
+                - option "Cameroon"
+                - option "Canada"
+                - option "Colombia"
+                - option "Congo DR"
+                - option "Costa Rica"
+                - option "Côte d'Ivoire"
+                - option "Croatia"
+                - option "Crystal Palace"
+                - option "Curaçao"
+                - option "Czechia"
+                - option "Denmark"
+                - option "Ecuador"
+                - option "Egypt"
+                - option "England"
+                - option "Everton"
+                - option "France"
+                - option "Fulham"
+                - option "Germany"
+                - option "Ghana"
+                - option "Haiti"
+                - option "Ipswich"
+                - option "IR Iran"
+                - option "Iran"
+                - option "Iraq"
+                - option "Japan"
+                - option "Jordan"
+                - option "Korea Republic"
+                - option "Leeds"
+                - option "Leicester"
+                - option "Mexico"
+                - option "Morocco"
+                - option "Netherlands"
+                - option "New Zealand"
+                - option "Newcastle"
+                - option "Norway"
+                - option "Nott'm Forest"
+                - option "Panama"
+                - option "Paraguay"
+                - option "Poland"
+                - option "Portugal"
+                - option "Qatar"
+                - option "Saudi Arabia"
+                - option "Scotland"
+                - option "Senegal"
+                - option "Serbia"
+                - option "South Africa"
+                - option "South Korea"
+                - option "Southampton"
+                - option "Spain"
+                - option "Sunderland"
+                - option "Sweden"
+                - option "Switzerland"
+                - option "Tunisia"
+                - option "Türkiye"
+                - option "United States"
+                - option "Uruguay"
+                - option "USA"
+                - option "Uzbekistan"
+                - option "Wales"
+                - option "West Ham"
+                - option "Wolves"
+                - option "切尔西"
+                - option "利物浦"
+                - option "曼城"
+                - option "曼联"
+                - option "热刺"
+                - option "阿森纳"
+          - generic [ref=e124]:
+            - generic [ref=e128]:
+              - heading "球员列表" [level=2] [ref=e129]
+              - paragraph [ref=e130]: 共 100 名球员
+            - generic [ref=e131]:
+              - img [ref=e132]
+              - text: "100"
+          - generic [ref=e137]:
+            - link "Aaron HICKEY 23 Aaron HICKEY DF Scotland" [ref=e138] [cursor=pointer]:
+              - /url: /players/966
+              - generic [ref=e141]:
+                - generic [ref=e142]:
+                  - img "Aaron HICKEY" [ref=e143]
+                  - generic [ref=e144]: "23"
+                - generic [ref=e145]:
+                  - generic [ref=e146]: Aaron HICKEY
+                  - generic [ref=e148]: DF
+                  - generic [ref=e149]: Scotland
+            - link "Aaron Mooy Aaron Mooy Australia" [ref=e150] [cursor=pointer]:
+              - /url: /players/2155
+              - generic [ref=e153]:
+                - img "Aaron Mooy" [ref=e155]
+                - generic [ref=e156]:
+                  - generic [ref=e157]: Aaron Mooy
+                  - generic [ref=e158]: Australia
+            - link "Aaron Ramsey Aaron Ramsey Wales" [ref=e159] [cursor=pointer]:
+              - /url: /players/1976
+              - generic [ref=e162]:
+                - img "Aaron Ramsey" [ref=e164]
+                - generic [ref=e165]:
+                  - generic [ref=e166]: Aaron Ramsey
+                  - generic [ref=e167]: Wales
+            - link "Aaron TSHIBOLA 10 Aaron TSHIBOLA MF Congo DR" [ref=e168] [cursor=pointer]:
+              - /url: /players/277
+              - generic [ref=e171]:
+                - generic [ref=e172]:
+                  - img "Aaron TSHIBOLA" [ref=e173]
+                  - generic [ref=e174]: "10"
+                - generic [ref=e175]:
+                  - generic [ref=e176]: Aaron TSHIBOLA
+                  - generic [ref=e178]: MF
+                  - generic [ref=e179]: Congo DR
+            - link "Aaron WAN-BISSAKA 31 Aaron WAN-BISSAKA DF Congo DR" [ref=e180] [cursor=pointer]:
+              - /url: /players/264
+              - generic [ref=e183]:
+                - generic [ref=e184]:
+                  - img "Aaron WAN-BISSAKA" [ref=e185]
+                  - generic [ref=e186]: "31"
+                - generic [ref=e187]:
+                  - generic [ref=e188]: Aaron WAN-BISSAKA
+                  - generic [ref=e190]: DF
+                  - generic [ref=e191]: Congo DR
+            - link "Abbosbek FAYZULLAEV 31 Abbosbek FAYZULLAEV MF Uzbekistan" [ref=e192] [cursor=pointer]:
+              - /url: /players/1244
+              - generic [ref=e195]:
+                - generic [ref=e196]:
+                  - img "Abbosbek FAYZULLAEV" [ref=e197]
+                  - generic [ref=e198]: "31"
+                - generic [ref=e199]:
+                  - generic [ref=e200]: Abbosbek FAYZULLAEV
+                  - generic [ref=e202]: MF
+                  - generic [ref=e203]: Uzbekistan
+            - link "ABDALLAH ALFAKHORI 15 ABDALLAH ALFAKHORI GK Jordan" [ref=e204] [cursor=pointer]:
+              - /url: /players/653
+              - generic [ref=e207]:
+                - generic [ref=e208]:
+                  - img "ABDALLAH ALFAKHORI" [ref=e209]
+                  - generic [ref=e210]: "15"
+                - generic [ref=e211]:
+                  - generic [ref=e212]: ABDALLAH ALFAKHORI
+                  - generic [ref=e214]: GK
+                  - generic [ref=e215]: Jordan
+            - link "ABDALLAH NASIB 29 ABDALLAH NASIB DF Jordan" [ref=e216] [cursor=pointer]:
+              - /url: /players/655
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - img "ABDALLAH NASIB" [ref=e221]
+                  - generic [ref=e222]: "29"
+                - generic [ref=e223]:
+                  - generic [ref=e224]: ABDALLAH NASIB
+                  - generic [ref=e226]: DF
+                  - generic [ref=e227]: Jordan
+            - link "Abdelhamid Sabiri Abdelhamid Sabiri Morocco" [ref=e228] [cursor=pointer]:
+              - /url: /players/1921
+              - generic [ref=e231]:
+                - img "Abdelhamid Sabiri" [ref=e233]
+                - generic [ref=e234]:
+                  - generic [ref=e235]: Abdelhamid Sabiri
+                  - generic [ref=e236]: Morocco
+            - link "Abdelkarim Hassan Al Haj Fadlalla Abdelkarim Hassan Al Haj Fadlalla Qatar" [ref=e237] [cursor=pointer]:
+              - /url: /players/2039
+              - generic [ref=e240]:
+                - img "Abdelkarim Hassan Al Haj Fadlalla" [ref=e242]
+                - generic [ref=e243]:
+                  - generic [ref=e244]: Abdelkarim Hassan Al Haj Fadlalla
+                  - generic [ref=e245]: Qatar
+            - link "Abderrazak Hamdallah Abderrazak Hamdallah Morocco" [ref=e246] [cursor=pointer]:
+              - /url: /players/2205
+              - generic [ref=e249]:
+                - img "Abderrazak Hamdallah" [ref=e251]
+                - generic [ref=e252]:
+                  - generic [ref=e253]: Abderrazak Hamdallah
+                  - generic [ref=e254]: Morocco
+            - link "Abdessamad Ezzalzouli Abdessamad Ezzalzouli Morocco" [ref=e255] [cursor=pointer]:
+              - /url: /players/2204
+              - generic [ref=e258]:
+                - img "Abdessamad Ezzalzouli" [ref=e260]
+                - generic [ref=e261]:
+                  - generic [ref=e262]: Abdessamad Ezzalzouli
+                  - generic [ref=e263]: Morocco
+            - link "Abdou Diallo Abdou Diallo Senegal" [ref=e264] [cursor=pointer]:
+              - /url: /players/2159
+              - generic [ref=e267]:
+                - img "Abdou Diallo" [ref=e269]
+                - generic [ref=e270]:
+                  - generic [ref=e271]: Abdou Diallo
+                  - generic [ref=e272]: Senegal
+            - link "Abdoulaye Seck 25 Abdoulaye Seck DF Senegal" [ref=e273] [cursor=pointer]:
+              - /url: /players/994
+              - generic [ref=e276]:
+                - generic [ref=e277]:
+                  - img "Abdoulaye Seck" [ref=e278]
+                  - generic [ref=e279]: "25"
+                - generic [ref=e280]:
+                  - generic [ref=e281]: Abdoulaye Seck
+                  - generic [ref=e283]: DF
+                  - generic [ref=e284]: Senegal
+            - link "Abdukodir KHUSANOV 30 Abdukodir KHUSANOV DF Uzbekistan" [ref=e285] [cursor=pointer]:
+              - /url: /players/1226
+              - generic [ref=e288]:
+                - generic [ref=e289]:
+                  - img "Abdukodir KHUSANOV" [ref=e290]
+                  - generic [ref=e291]: "30"
+                - generic [ref=e292]:
+                  - generic [ref=e293]: Abdukodir KHUSANOV
+                  - generic [ref=e295]: DF
+                  - generic [ref=e296]: Uzbekistan
+            - link "Abdul FATAWU 27 Abdul FATAWU FW Ghana" [ref=e297] [cursor=pointer]:
+              - /url: /players/539
+              - generic [ref=e300]:
+                - generic [ref=e301]:
+                  - img "Abdul FATAWU" [ref=e302]
+                  - generic [ref=e303]: "27"
+                - generic [ref=e304]:
+                  - generic [ref=e305]: Abdul FATAWU
+                  - generic [ref=e307]: FW
+                  - generic [ref=e308]: Ghana
+            - link "Abdul MUMIN 10 Abdul MUMIN DF Ghana" [ref=e309] [cursor=pointer]:
+              - /url: /players/526
+              - generic [ref=e312]:
+                - generic [ref=e313]:
+                  - img "Abdul MUMIN" [ref=e314]
+                  - generic [ref=e315]: "10"
+                - generic [ref=e316]:
+                  - generic [ref=e317]: Abdul MUMIN
+                  - generic [ref=e319]: DF
+                  - generic [ref=e320]: Ghana
+            - link "ABDULAZIZ HATEM 21 ABDULAZIZ HATEM MF Qatar" [ref=e321] [cursor=pointer]:
+              - /url: /players/923
+              - generic [ref=e324]:
+                - generic [ref=e325]:
+                  - img "ABDULAZIZ HATEM" [ref=e326]
+                  - generic [ref=e327]: "21"
+                - generic [ref=e328]:
+                  - generic [ref=e329]: ABDULAZIZ HATEM
+                  - generic [ref=e331]: MF
+                  - generic [ref=e332]: Qatar
+            - link "Abdulaziz Hatem Mohammed Abdullah Abdulaziz Hatem Mohammed Abdullah Qatar" [ref=e333] [cursor=pointer]:
+              - /url: /players/2041
+              - generic [ref=e336]:
+                - img "Abdulaziz Hatem Mohammed Abdullah" [ref=e338]
+                - generic [ref=e339]:
+                  - generic [ref=e340]: Abdulaziz Hatem Mohammed Abdullah
+                  - generic [ref=e341]: Qatar
+            - link "Abdulelah Al Amri Abdulelah Al Amri Saudi Arabia" [ref=e342] [cursor=pointer]:
+              - /url: /players/2190
+              - generic [ref=e345]:
+                - img "Abdulelah Al Amri" [ref=e347]
+                - generic [ref=e348]:
+                  - generic [ref=e349]: Abdulelah Al Amri
+                  - generic [ref=e350]: Saudi Arabia
+          - generic [ref=e351]:
+            - button "上一页" [disabled]
+            - button "1" [ref=e352] [cursor=pointer]
+            - button "2" [ref=e353] [cursor=pointer]
+            - button "3" [ref=e354] [cursor=pointer]
+            - button "4" [ref=e355] [cursor=pointer]
+            - button "5" [ref=e356] [cursor=pointer]
+            - button "下一页" [ref=e357] [cursor=pointer]
