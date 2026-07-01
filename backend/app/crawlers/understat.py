@@ -52,6 +52,14 @@ class UnderstatCrawler(BaseCrawler):
             logger.warning("不支持的目标: %s", target)
             return []
 
+    @classmethod
+    def _resolve_league_id(cls, league: str) -> int:
+        league_id = cls.LEAGUE_ID.get(league)
+        if league_id is None:
+            supported = ", ".join(sorted(cls.LEAGUE_ID))
+            raise ValueError(f"Understat does not support league '{league}'. Supported leagues: {supported}")
+        return league_id
+
     @staticmethod
     def _parse_jsonp(text: str, var_name: str) -> list | dict:
         """从 Understat 返回的 JSONP-like 字符串中提取 JSON 数据
@@ -108,7 +116,7 @@ class UnderstatCrawler(BaseCrawler):
             a_team    → away_team
             shotType  → shot_type
         """
-        league_id = self.LEAGUE_ID.get(league, 1)
+        league_id = self._resolve_league_id(league)
         url = f"{self.base_url}league/shots/{league_id}/{season}"
         try:
             resp = self._fetch(url)

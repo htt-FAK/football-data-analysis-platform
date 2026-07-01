@@ -1,7 +1,14 @@
 """Redis 客户端封装 — 异步缓存 + Pub/Sub + 实时比分"""
 
 import redis.asyncio as aioredis
-from app.config import REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD
+from app.config import (
+    REDIS_CONNECT_TIMEOUT,
+    REDIS_DB,
+    REDIS_HOST,
+    REDIS_PASSWORD,
+    REDIS_PORT,
+    REDIS_SOCKET_TIMEOUT,
+)
 
 _redis = aioredis.Redis(
     host=REDIS_HOST,
@@ -9,6 +16,8 @@ _redis = aioredis.Redis(
     db=REDIS_DB,
     password=REDIS_PASSWORD,
     decode_responses=True,
+    socket_connect_timeout=REDIS_CONNECT_TIMEOUT,
+    socket_timeout=REDIS_SOCKET_TIMEOUT,
 )
 
 

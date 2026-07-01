@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import Float, ForeignKey, Integer
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -33,6 +34,11 @@ class PlayerStat(Base):
     tackles: Mapped[int] = mapped_column(Integer, default=0, comment="抢断数")
     interceptions: Mapped[int] = mapped_column(Integer, default=0, comment="拦截数")
     rating: Mapped[float] = mapped_column(Float, default=0, comment="评分")
+    data_source: Mapped[Optional[str]] = mapped_column(String(50), comment="来源标识")
+    source_id: Mapped[Optional[str]] = mapped_column(String(100), comment="源端ID")
+    last_updated_at: Mapped[Optional[datetime]] = mapped_column(DateTime, comment="最后更新时间")
+    version: Mapped[int] = mapped_column(Integer, default=1, comment="版本号")
+    data_hash: Mapped[Optional[str]] = mapped_column(String(64), comment="内容指纹")
 
     # 关联关系
     player: Mapped[Optional["Player"]] = relationship("Player")

@@ -1,104 +1,154 @@
-"""实时比赛服务层 — 异步读写 Redis 缓存，支持降级检测
+"""Live match service backed by Redis with graceful degradation."""
 
-对应方案 3.9：进行中比赛的高频字段（比分/事件/控球率）先写 Redis（TTL 5 分钟），
-前端首屏直接读缓存，减轻 MySQL 压力。
-"""
+from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import time
 
+from app.config import REDIS_DEGRADE_TIMEOUT, REDIS_LIVE_TTL
 from app.redis_client import get_redis, live_key
-from app.config import REDIS_LIVE_TTL
 
 logger = logging.getLogger(__name__)
 
 
 class LiveService:
-    """实时比分相关业务逻辑（异步，基于 Redis）"""
-
-    def __init__(self):
-        pass
+    """Async Redis helpers for live match cache and status reporting."""
 
     async def get_live_matches(self) -> list:
-        """获取所有进行中比赛
-
-        使用 SCAN 匹配 "live:*" 的 key，逐个读取并反序列化。
-        Returns:
-            list[dict]: 进行中比赛列表
-        """
         redis = get_redis()
-        results: list = []
-        async for k in redis.scan_iter(match="live:*", count=100):
-            raw = await redis.get(k)
-            if raw:
+
+        async def _fetch_matches():
+            results: list[dict] = []
+            async for key in redis.scan_iter(match="live:*", count=100):
+                raw = await redis.get(key)
+                if not raw:
+                    continue
                 try:
-                    results.append(json.loads(raw))
+                    results.append(self._normalize_live_payload(json.loads(raw)))
                 except (ValueError, TypeError):
                     continue
-        return results
+            results.sort(
+                key=lambda row: (
+                    -int(row.get("cache_updated_at") or 0),
+                    int(row.get("match_id") or 0),
+                )
+            )
+            return results
+
+        try:
+            return await asyncio.wait_for(_fetch_matches(), timeout=REDIS_DEGRADE_TIMEOUT)
+        except Exception as exc:
+            logger.warning("Live list fallback to empty result because Redis is unavailable: %s", exc)
+            return []
 
     async def get_live_match(self, match_id: int) -> dict:
-        """获取单场进行中比赛
-
-        Args:
-            match_id: 比赛 ID
-        Returns:
-            dict: 比赛实时数据，未命中缓存返回空字典
-        """
         redis = get_redis()
-        raw = await redis.get(live_key(match_id))
-        if raw:
-            return json.loads(raw)
-        return {}
+
+        async def _fetch_match():
+            raw = await redis.get(live_key(match_id))
+            if raw:
+                return self._normalize_live_payload(json.loads(raw))
+            return {}
+
+        try:
+            return await asyncio.wait_for(_fetch_match(), timeout=REDIS_DEGRADE_TIMEOUT)
+        except Exception as exc:
+            logger.warning("Live match fallback to empty result because Redis is unavailable: %s", exc)
+            return {}
 
     async def update_live_cache(self, match_id: int, data: dict) -> None:
-        """更新实时比赛缓存
-
-        将比赛数据写入 Redis，并设置 TTL（REDIS_LIVE_TTL）。
-        Args:
-            match_id: 比赛 ID
-            data: 比赛实时数据字典
-        """
         redis = get_redis()
+        payload = self._normalize_live_payload({"match_id": match_id, **data})
         await redis.set(
             live_key(match_id),
-            json.dumps(data, ensure_ascii=False),
+            json.dumps(payload, ensure_ascii=False),
             ex=REDIS_LIVE_TTL,
         )
 
-    async def check_degradation(self) -> dict:
-        """检查降级状态
+    async def clear_live_cache(self, match_id: int) -> None:
+        redis = get_redis()
+        await redis.delete(live_key(match_id))
 
-        检测 Redis 连接与缓存新鲜度：
-        - Redis 连接失败 → degraded=True，前端应回退到 MySQL 查询
-        - 缓存为空（无 live:* key）→ degraded=True，提示"暂无进行中比赛"
-        Returns:
-            dict: 降级状态信息
-        """
+    async def check_degradation(self) -> dict:
         redis = get_redis()
         try:
-            await redis.ping()
-        except Exception as e:
-            logger.warning("Redis 连接失败，进入降级模式: %s", e)
+            await asyncio.wait_for(redis.ping(), timeout=REDIS_DEGRADE_TIMEOUT)
+        except Exception as exc:
+            logger.warning("Redis unavailable, entering degraded live mode: %s", exc)
             return {
                 "degraded": True,
                 "reason": "redis_unavailable",
                 "last_update": "",
+                "redis_available": False,
+                "environment_ready": False,
+                "cache_state": "unavailable",
+                "live_match_count": 0,
+                "active_match_ids": [],
             }
 
-        # 检查是否有 live 缓存
-        live_keys: list = []
-        async for k in redis.scan_iter(match="live:*", count=10):
-            live_keys.append(k)
-            if live_keys:
-                break  # 只要有一个就够判断了
+        async def _load_live_payloads():
+            live_payloads: list[dict] = []
+            async for key in redis.scan_iter(match="live:*", count=50):
+                raw = await redis.get(key)
+                if not raw:
+                    continue
+                try:
+                    live_payloads.append(self._normalize_live_payload(json.loads(raw)))
+                except (ValueError, TypeError):
+                    continue
+            return live_payloads
 
-        if not live_keys:
+        try:
+            live_payloads = await asyncio.wait_for(_load_live_payloads(), timeout=REDIS_DEGRADE_TIMEOUT)
+        except Exception as exc:
+            logger.warning("Redis live-key scan failed, entering degraded mode: %s", exc)
+            return {
+                "degraded": True,
+                "reason": "redis_unavailable",
+                "last_update": "",
+                "redis_available": False,
+                "environment_ready": False,
+                "cache_state": "unavailable",
+                "live_match_count": 0,
+                "active_match_ids": [],
+            }
+
+        if not live_payloads:
             return {
                 "degraded": False,
                 "reason": "no_live_matches",
                 "last_update": "",
+                "redis_available": True,
+                "environment_ready": True,
+                "cache_state": "empty",
+                "live_match_count": 0,
+                "active_match_ids": [],
             }
 
-        return {"degraded": False, "reason": "", "last_update": str(int(time.time()))}
+        latest_update = max(int(payload.get("cache_updated_at") or 0) for payload in live_payloads)
+        return {
+            "degraded": False,
+            "reason": "",
+            "last_update": str(latest_update) if latest_update else str(int(time.time())),
+            "redis_available": True,
+            "environment_ready": True,
+            "cache_state": "ready",
+            "live_match_count": len(live_payloads),
+            "active_match_ids": [payload.get("match_id") for payload in live_payloads if payload.get("match_id") is not None],
+        }
+
+    @staticmethod
+    def _normalize_status(status: str | None) -> str | None:
+        if status is None:
+            return None
+        normalized = str(status).strip().lower()
+        return normalized or None
+
+    def _normalize_live_payload(self, payload: dict) -> dict:
+        normalized = dict(payload)
+        normalized["status"] = self._normalize_status(normalized.get("status"))
+        normalized["cache_updated_at"] = int(normalized.get("cache_updated_at") or time.time())
+        normalized["cache_state"] = "live"
+        return normalized

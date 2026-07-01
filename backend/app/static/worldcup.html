@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>世界杯专区</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(7, 18, 35, 0.82);
+      --panel-soft: rgba(255, 255, 255, 0.04);
+      --line: rgba(148, 195, 255, 0.18);
+      --text: #f6f7fb;
+      --muted: #9fb4d1;
+      --gold: #f5c96b;
+      --cyan: #7ee6ff;
+      --green: #84f0b4;
+      --amber: #ffd27a;
+      --red: #ff9f95;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Noto Sans SC", sans-serif;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(34, 123, 255, 0.22), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(245, 201, 107, 0.18), transparent 24%),
+        radial-gradient(circle at 70% 70%, rgba(126, 230, 255, 0.14), transparent 28%),
+        linear-gradient(135deg, #06101c 0%, #09172a 46%, #07131f 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.16;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    .shell {
+      width: min(1320px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 20px 0 54px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero,
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero {
+      position: relative;
+      padding: 34px;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -10% -35% auto;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 201, 107, 0.2), transparent 68%);
+      filter: blur(10px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 201, 107, 0.28);
+      background: rgba(245, 201, 107, 0.1);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 26px;
+      margin-top: 24px;
+      align-items: end;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(48px, 8vw, 88px);
+      line-height: 0.92;
+      letter-spacing: 0.01em;
+      max-width: 8ch;
+    }
+
+    .lead {
+      max-width: 58ch;
+      margin: 18px 0 0;
+      color: var(--muted);
+      line-height: 1.85;
+      font-size: 15px;
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(126, 230, 255, 0.08);
+      border: 1px solid rgba(126, 230, 255, 0.18);
+      color: #d7f6ff;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .hero-stats,
+    .player-kpis {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric,
+    .coverage-card,
+    .leader-card,
+    .player-card,
+    .mini-card,
+    .match-card {
+      background: var(--panel-soft);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .metric,
+    .coverage-card,
+    .leader-card,
+    .player-card,
+    .mini-card {
+      padding: 18px;
+      border-radius: 22px;
+    }
+
+    .metric-label,
+    .section-subtitle,
+    .player-team,
+    .metric-note,
+    .coverage-detail,
+    .player-sub,
+    .footer-note {
+      color: var(--muted);
+    }
+
+    .metric-label { font-size: 13px; margin-bottom: 10px; }
+    .metric-value { font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.03em; }
+    .metric-note { margin-top: 6px; font-size: 12px; }
+
+    .section { margin-top: 22px; padding: 24px; }
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 24px;
+      font-family: "Cormorant Garamond", serif;
+      letter-spacing: 0.02em;
+    }
+
+    .section-subtitle { margin: 6px 0 0; font-size: 13px; }
+    .group-strip { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(126, 230, 255, 0.08);
+      border: 1px solid rgba(126, 230, 255, 0.18);
+      color: #dff8ff;
+      font-size: 13px;
+    }
+
+    .leaders,
+    .coverage-grid,
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .leader-title {
+      margin: 0 0 12px;
+      font-size: 15px;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .leader-row {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: center;
+    }
+
+    .leader-row:last-child { border-bottom: 0; }
+    .rank {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(245, 201, 107, 0.14);
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .player-name { font-size: 14px; font-weight: 600; }
+    .player-sub { margin-top: 4px; font-size: 12px; }
+    .leader-value { font-size: 18px; font-weight: 700; color: #fff; }
+
+    .coverage-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .badge-ready { color: #062616; background: var(--green); }
+    .badge-partial { color: #332100; background: var(--amber); }
+    .badge-missing { color: #3b0a06; background: var(--red); }
+    .coverage-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .coverage-detail { font-size: 13px; line-height: 1.7; }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px;
+    }
+
+    th, td {
+      padding: 13px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: rgba(6, 17, 31, 0.96);
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    tbody tr:hover { background: rgba(255,255,255,0.04); }
+    .qualify { color: var(--green); font-weight: 600; }
+
+    .match-card-list {
+      display: grid;
+      gap: 14px;
+      max-height: 720px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .match-card { padding: 18px; border-radius: 20px; }
+    .match-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .scoreline {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .team { font-size: 16px; font-weight: 600; }
+    .team.away { text-align: right; }
+    .score {
+      min-width: 96px;
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--gold);
+    }
+
+    .venue { margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.62); }
+
+    .player-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .player-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      align-items: start;
+    }
+
+    .player-team { font-size: 12px; margin-top: 4px; }
+    .player-rating {
+      min-width: 58px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(245, 201, 107, 0.12);
+      border: 1px solid rgba(245, 201, 107, 0.2);
+      color: var(--gold);
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .kpi {
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      text-align: center;
+    }
+
+    .kpi-label { color: var(--muted); font-size: 11px; }
+    .kpi-value { margin-top: 6px; font-size: 18px; font-weight: 700; }
+
+    .radar-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .radar-pill {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(126, 230, 255, 0.08);
+      border: 1px solid rgba(126, 230, 255, 0.14);
+      font-size: 11px;
+      color: #d6f7ff;
+    }
+
+    .player-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: rgba(255,255,255,0.74);
+      font-size: 12px;
+      margin-top: 14px;
+    }
+
+    .footer-note { margin-top: 18px; font-size: 12px; text-align: right; }
+    .loading, .error { padding: 40px 20px; text-align: center; color: var(--muted); }
+    .error { color: var(--red); }
+
+    @media (max-width: 1180px) {
+      .leaders, .coverage-grid, .mini-grid, .player-grid, .board-grid, .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell { width: min(100vw - 16px, 100%); padding-top: 10px; }
+      .hero, .section { padding: 18px; border-radius: 22px; }
+      h1 { max-width: none; }
+      .hero-stats, .player-kpis { grid-template-columns: 1fr 1fr; }
+      .scoreline { grid-template-columns: 1fr; }
+      .team.away, .team, .score { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">FIFA World Cup 2026 · Group Stage Hub</div>
+      <div class="hero-grid">
+        <div>
+          <h1>世界杯 小组赛 专区</h1>
+          <p class="lead">
+            这一页直接读取后端世界杯数据，集中展示小组赛的积分榜、赛程、球员榜单、
+            球员评分与项目方案覆盖情况，适合本地联调，也适合作为课程设计最终演示页。
+          </p>
+          <div class="hero-note" id="hero-note">
+            当前页面中的“球员评分”同时展示两层结果：
+            一层是 FIFA 原始统计里的 `rating`，
+            另一层是我们基于世界杯小组赛数据回填得到的六维能力分与 `overall_rating`，
+            现在已经可以用于雷达式讲解。
+          </div>
+        </div>
+        <div class="hero-stats" id="summary-metrics">
+          <div class="metric"><div class="metric-label">加载中</div><div class="metric-value">...</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">小组概览</h2>
+          <p class="section-subtitle">按世界杯 2026 小组赛数据自动生成</p>
+        </div>
+      </div>
+      <div class="group-strip" id="group-strip"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">球员领跑榜</h2>
+          <p class="section-subtitle">射手、助攻、评分三条榜单一屏展示</p>
+        </div>
+      </div>
+      <div class="leaders" id="leaders">
+        <div class="loading">正在加载榜单...</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">球员评分矩阵</h2>
+          <p class="section-subtitle">展示当前最值得答辩时重点讲的世界杯球员样本</p>
+        </div>
+      </div>
+      <div class="mini-grid" id="player-matrix-summary">
+        <div class="mini-card"><div class="loading">正在汇总评分样本...</div></div>
+      </div>
+      <div class="player-grid" id="player-grid">
+        <div class="loading">正在加载球员评分矩阵...</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">方案覆盖度</h2>
+          <p class="section-subtitle">直接对照项目方案，区分“已可展示 / 仅部分支持 / 仍缺数据”</p>
+        </div>
+      </div>
+      <div class="coverage-grid" id="coverage-grid">
+        <div class="loading">正在分析方案覆盖度...</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">积分榜与赛程</h2>
+          <p class="section-subtitle">左侧按小组展示积分，右侧展示全部小组赛赛程</p>
+        </div>
+      </div>
+      <div class="board-grid">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>组别</th>
+                <th>排名</th>
+                <th>球队</th>
+                <th>赛</th>
+                <th>胜</th>
+                <th>平</th>
+                <th>负</th>
+                <th>得失</th>
+                <th>积分</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody id="standings-body">
+              <tr><td colspan="10" class="loading">正在加载积分榜...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="match-card-list" id="matches-list">
+          <div class="loading">正在加载赛程...</div>
+        </div>
+      </div>
+      <div class="footer-note" id="footer-note"></div>
+    </section>
+  </main>
+
+  <script>
+    const season = "2026";
+
+    async function fetchJson(url) {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      return response.json();
+    }
+
+    function metricCard(label, value, note = "") {
+      return `<div class="metric"><div class="metric-label">${label}</div><div class="metric-value">${value}</div><div class="metric-note">${note}</div></div>`;
+    }
+
+    function renderSummary(summary) {
+      document.getElementById("summary-metrics").innerHTML = [
+        metricCard("小组数量", summary.group_count, summary.group_names.join(" · ")),
+        metricCard("比赛场次", summary.match_count, `已完赛 ${summary.finished_match_count} 场`),
+        metricCard("球队数量", summary.team_count, `确认出线 ${summary.qualified_team_count} 队`),
+        metricCard("球员数量", summary.player_count, `有评分样本 ${summary.rated_player_count} 人`)
+      ].join("");
+
+      document.getElementById("group-strip").innerHTML = summary.group_names
+        .map((name) => `<span class="chip">${name}</span>`).join("");
+
+      document.getElementById("footer-note").textContent =
+        `当前数据集：${summary.league_name} ${summary.season} · 页面由内置 API 实时生成`;
+    }
+
+    function renderLeaders(leaders) {
+      const blocks = [
+        { title: "Top Scorers", rows: leaders.top_scorers, key: "goals", suffix: "球" },
+        { title: "Top Assists", rows: leaders.top_assists, key: "assists", suffix: "次" },
+        { title: "Top Ratings", rows: leaders.top_ratings, key: "rating", suffix: "分" },
+      ];
+
+      document.getElementById("leaders").innerHTML = blocks.map((block) => `
+        <div class="leader-card">
+          <h3 class="leader-title">${block.title}</h3>
+          ${block.rows.map((row, index) => `
+            <div class="leader-row">
+              <div class="rank">${index + 1}</div>
+              <div class="player-meta">
+                <div class="player-name">${row.name}</div>
+                <div class="player-sub">${row.team_name || "未知球队"} · ${row.position || "—"}</div>
+              </div>
+              <div class="leader-value">${Number(row[block.key]).toFixed(block.key === "rating" ? 2 : 0)}${block.suffix}</div>
+            </div>
+          `).join("")}
+        </div>
+      `).join("");
+    }
+
+    function renderPlayerMatrix(payload) {
+      const rows = payload.players || [];
+      const overallRows = rows.filter((row) => (row.overall_rating || 0) > 0).length;
+      const avgOverall = rows.length
+        ? (rows.reduce((sum, row) => sum + (row.overall_rating || 0), 0) / rows.length).toFixed(2)
+        : "0.00";
+      const avgRaw = rows.length
+        ? (rows.reduce((sum, row) => sum + (row.rating || 0), 0) / rows.length).toFixed(2)
+        : "0.00";
+
+      document.getElementById("player-matrix-summary").innerHTML = [
+        `<div class="mini-card"><div class="metric-label">当前排序</div><div class="metric-value">${payload.sort_by}</div><div class="metric-note">默认按原始 rating 降序</div></div>`,
+        `<div class="mini-card"><div class="metric-label">模型评分人数</div><div class="metric-value">${overallRows}</div><div class="metric-note">当前列表中已生成 overall_rating 的人数</div></div>`,
+        `<div class="mini-card"><div class="metric-label">均值对比</div><div class="metric-value">${avgOverall}</div><div class="metric-note">六维 overall 均值，原始 rating 均值 ${avgRaw}</div></div>`
+      ].join("");
+
+      document.getElementById("player-grid").innerHTML = rows.map((row) => `
+        <article class="player-card">
+          <div class="player-top">
+            <div>
+              <div class="player-name">${row.name}</div>
+              <div class="player-team">${row.team_name || "未知球队"} · ${row.group || "未分组"} · ${row.position || "—"}</div>
+            </div>
+            <div class="player-rating">${Number(row.overall_rating || 0).toFixed(2)}</div>
+          </div>
+          <div class="player-kpis">
+            <div class="kpi"><div class="kpi-label">进球</div><div class="kpi-value">${row.goals || 0}</div></div>
+            <div class="kpi"><div class="kpi-label">助攻</div><div class="kpi-value">${row.assists || 0}</div></div>
+            <div class="kpi"><div class="kpi-label">出场分钟</div><div class="kpi-value">${row.minutes_played || 0}</div></div>
+          </div>
+          <div class="radar-strip">
+            <div class="radar-pill">进攻 ${Number(row.atk_score || 0).toFixed(1)}</div>
+            <div class="radar-pill">组织 ${Number(row.org_score || 0).toFixed(1)}</div>
+            <div class="radar-pill">防守 ${Number(row.def_score || 0).toFixed(1)}</div>
+            <div class="radar-pill">门将 ${Number(row.gk_score || 0).toFixed(1)}</div>
+            <div class="radar-pill">身体 ${Number(row.phy_score || 0).toFixed(1)}</div>
+            <div class="radar-pill">纪律 ${Number(row.dis_score || 0).toFixed(1)}</div>
+          </div>
+          <div class="player-foot">
+            <span>原始 rating ${Number(row.rating || 0).toFixed(2)}</span>
+            <span>xG ${Number(row.xg || 0).toFixed(2)}</span>
+            <span>${row.qualification_status || "小组赛阶段"}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function badgeClass(status) {
+      if (status === "ready") return "badge-ready";
+      if (status === "partial") return "badge-partial";
+      return "badge-missing";
+    }
+
+    function statusLabel(status) {
+      if (status === "ready") return "Ready";
+      if (status === "partial") return "Partial";
+      return "Missing";
+    }
+
+    function renderCoverage(payload) {
+      document.getElementById("coverage-grid").innerHTML = payload.coverage.map((item) => `
+        <div class="coverage-card">
+          <span class="coverage-badge ${badgeClass(item.status)}">${statusLabel(item.status)}</span>
+          <div class="coverage-title">${item.module}</div>
+          <div class="coverage-detail">${item.detail}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderStandings(standings) {
+      document.getElementById("standings-body").innerHTML = standings.standings.map((row) => `
+        <tr>
+          <td>${row.group || "—"}</td>
+          <td>${row.position ?? "—"}</td>
+          <td>${row.team_name || "—"}</td>
+          <td>${row.played ?? 0}</td>
+          <td>${row.won ?? 0}</td>
+          <td>${row.drawn ?? 0}</td>
+          <td>${row.lost ?? 0}</td>
+          <td>${row.goals_for ?? 0}/${row.goals_against ?? 0}</td>
+          <td>${row.points ?? 0}</td>
+          <td class="${row.qualification_status ? "qualify" : ""}">${row.qualification_status || "—"}</td>
+        </tr>
+      `).join("");
+    }
+
+    function renderMatches(schedule) {
+      document.getElementById("matches-list").innerHTML = schedule.matches.map((match) => `
+        <article class="match-card">
+          <div class="match-top">
+            <span>${match.group || "小组赛"}</span>
+            <span>${match.match_date ? new Date(match.match_date).toLocaleString("zh-CN") : "时间待定"}</span>
+          </div>
+          <div class="scoreline">
+            <div class="team">${match.home_team_name || "TBD"}</div>
+            <div class="score">${match.home_score ?? "-"} : ${match.away_score ?? "-"}</div>
+            <div class="team away">${match.away_team_name || "TBD"}</div>
+          </div>
+          <div class="venue">${match.stage || "First Stage"} · ${match.venue || "场地待补充"}</div>
+        </article>
+      `).join("");
+    }
+
+    function renderErrorHtml(message) {
+      return `<div class="error">${message}</div>`;
+    }
+
+    async function boot() {
+      try {
+        const summary = await fetchJson(`/api/v1/worldcup/summary?season=${season}`);
+        renderSummary(summary);
+
+        const [leaders, standings, schedule, players, coverage] = await Promise.all([
+          fetchJson(`/api/v1/worldcup/leaders?season=${season}&limit=10`),
+          fetchJson(`/api/v1/leagues/${summary.league_id}/standings?season=${season}`),
+          fetchJson(`/api/v1/leagues/${summary.league_id}/schedule?season=${season}`),
+          fetchJson(`/api/v1/worldcup/players?season=${season}&sort_by=rating&limit=12`),
+          fetchJson(`/api/v1/worldcup/coverage?season=${season}`),
+        ]);
+
+        renderLeaders(leaders);
+        renderStandings(standings);
+        renderMatches(schedule);
+        renderPlayerMatrix(players);
+        renderCoverage(coverage);
+      } catch (error) {
+        console.error(error);
+        document.getElementById("leaders").innerHTML = renderErrorHtml("世界杯榜单加载失败，请检查后端接口或数据库连接。");
+        document.getElementById("player-grid").innerHTML = renderErrorHtml("球员评分矩阵加载失败。");
+        document.getElementById("player-matrix-summary").innerHTML = renderErrorHtml("评分统计加载失败。");
+        document.getElementById("coverage-grid").innerHTML = renderErrorHtml("方案覆盖度分析失败。");
+        document.getElementById("standings-body").innerHTML = `<tr><td colspan="10" class="error">世界杯积分榜加载失败。</td></tr>`;
+        document.getElementById("matches-list").innerHTML = renderErrorHtml("世界杯赛程加载失败。");
+      }
+    }
+
+    boot();
+  </script>
+</body>
+</html>

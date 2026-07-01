@@ -1,38 +1,53 @@
-"""FastAPI 应用入口"""
+"""FastAPI application entrypoint."""
 
+import json
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import APP_HOST, APP_PORT, DEBUG
+from fastapi.responses import FileResponse, Response
+from fastapi.staticfiles import StaticFiles
+
 from app.api import (
-    leagues_router,
-    teams_router,
-    players_router,
-    matches_router,
-    live_router,
-    data_sources_router,
     crawl_router,
+    data_sources_router,
+    leagues_router,
+    live_router,
+    matches_router,
+    players_router,
+    predict_router,
+    teams_router,
+    worldcup_router,
 )
 from app.api.websocket import ws_router
+from app.config import APP_HOST, APP_PORT, DEBUG, ENABLE_SCHEDULER
+from app.services.text_repair import repair_payload
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """应用生命周期：启动时初始化调度器，关闭时清理"""
-    from app.scheduler.jobs import start_scheduler, shutdown_scheduler
-    start_scheduler()
+    """Start and stop background scheduler with the app lifecycle."""
+    if ENABLE_SCHEDULER:
+        from app.scheduler.jobs import shutdown_scheduler, start_scheduler
+
+        start_scheduler()
+        yield
+        shutdown_scheduler()
+        return
+
     yield
-    shutdown_scheduler()
 
 
 app = FastAPI(
-    title="09 体育赛事数据采集与分析 API",
-    description="自动化全域采集 · 数据清洗标准化 · 多维度价值分析 · 可视化报告输出",
+    title="Football Data Analysis Platform API",
+    description="Automated football data collection, normalization, analysis, and reporting API.",
     version="1.0.0",
     lifespan=lifespan,
 )
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -41,29 +56,84 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 注册路由
-app.include_router(leagues_router, prefix="/api/v1/leagues", tags=["联赛"])
-app.include_router(teams_router, prefix="/api/v1/teams", tags=["球队"])
-app.include_router(players_router, prefix="/api/v1/players", tags=["球员"])
-app.include_router(matches_router, prefix="/api/v1/matches", tags=["比赛"])
-app.include_router(live_router, prefix="/api/v1/live", tags=["实时比赛"])
-app.include_router(data_sources_router, prefix="/api/v1/data-sources", tags=["数据源"])
-app.include_router(crawl_router, prefix="/api/v1/crawl", tags=["爬虫"])
-app.include_router(ws_router, tags=["WebSocket"])
+
+@app.middleware("http")
+async def repair_json_text_middleware(request, call_next):
+    response = await call_next(request)
+    content_type = response.headers.get("content-type", "")
+    if "application/json" not in content_type:
+        return response
+
+    body = b""
+    async for chunk in response.body_iterator:
+        body += chunk
+
+    if not body:
+        return Response(
+            content=body,
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            media_type=response.media_type,
+        )
+
+    try:
+        payload = json.loads(body)
+    except Exception:
+        return Response(
+            content=body,
+            status_code=response.status_code,
+            headers=dict(response.headers),
+            media_type=response.media_type,
+        )
+
+    repaired = repair_payload(payload)
+    content = json.dumps(repaired, ensure_ascii=False).encode("utf-8")
+    headers = dict(response.headers)
+    headers.pop("content-length", None)
+    return Response(
+        content=content,
+        status_code=response.status_code,
+        headers=headers,
+        media_type="application/json",
+    )
+
+# Resource prefixes are mounted here to keep endpoint paths stable and explicit.
+app.include_router(leagues_router, prefix="/api/v1/leagues")
+app.include_router(teams_router, prefix="/api/v1/teams")
+app.include_router(players_router, prefix="/api/v1/players")
+app.include_router(matches_router, prefix="/api/v1/matches")
+app.include_router(live_router, prefix="/api/v1/live")
+app.include_router(data_sources_router, prefix="/api/v1/data-sources")
+app.include_router(crawl_router, prefix="/api/v1/crawl")
+app.include_router(worldcup_router, prefix="/api/v1/worldcup")
+app.include_router(predict_router, prefix="/api/v1/predict")
+app.include_router(ws_router)
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
-@app.get("/api/v1/health", tags=["系统"])
+@app.get("/api/v1/health", tags=["system"])
 async def health_check():
-    """健康检查"""
+    """Application health check."""
     return {"status": "ok", "service": "sports-analytics", "version": "1.0.0"}
 
 
-@app.get("/", tags=["系统"])
+@app.get("/", tags=["system"])
 async def root():
-    """根路径"""
-    return {"message": "09 体育赛事数据采集与分析 API", "docs": "/docs"}
+    """Root endpoint."""
+    return {
+        "message": "Football Data Analysis Platform API",
+        "docs": "/docs",
+        "worldcup": "/worldcup",
+    }
+
+
+@app.get("/worldcup", tags=["system"])
+async def worldcup_page():
+    """Serve the built-in World Cup presentation page."""
+    return FileResponse(STATIC_DIR / "worldcup.html")
 
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("app.main:app", host=APP_HOST, port=APP_PORT, reload=DEBUG)

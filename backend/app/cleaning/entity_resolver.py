@@ -40,7 +40,7 @@ LEAGUE_ALIASES = {
     "意甲": ["Serie A"],
     "德甲": ["Bundesliga"],
     "法甲": ["Ligue 1", "L1"],
-    "世界杯": ["World Cup", "WC"],
+    "世界杯": ["World Cup", "WC", "FIFA World Cup", "FIFA World Cup™"],
     "欧冠": ["Champions League", "UCL"],
     "欧联": ["Europa League", "UEL"],
 }
