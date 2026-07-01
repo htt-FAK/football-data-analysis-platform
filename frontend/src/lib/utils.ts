@@ -451,7 +451,9 @@ type CountryMeta = {
   code?: string;
 };
 
-const FLAG_BASE_URL = "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3";
+// 国旗图源：优先使用国内访问稳定的镜像，避免 jsDelivr 境外源导致图片加载缓慢。
+// flagcdn.com 在国内有节点，加载 4x3 SVG 通常比 jsDelivr 快很多。
+const FLAG_BASE_URL = "https://flagcdn.com";
 
 const COUNTRY_META_MAP: Record<string, CountryMeta> = {
   world: { label: "国际" },
@@ -614,7 +616,8 @@ export function getCountryLabel(value: string | null | undefined): string {
 export function getCountryFlagUrl(value: string | null | undefined): string | undefined {
   const code = getCountryMeta(value)?.code;
   if (!code) return undefined;
-  return `${FLAG_BASE_URL}/${code.toLowerCase()}.svg`;
+  // flagcdn.com 的标准路径：/flags/{尺寸}/{code}.png（PNG 在国内 CDN 命中率更高、加载更快）
+  return `${FLAG_BASE_URL}/flags/4x3/${code.toLowerCase()}.png`;
 }
 
 export function getLeagueTypeLabel(type: string | null | undefined): string {
