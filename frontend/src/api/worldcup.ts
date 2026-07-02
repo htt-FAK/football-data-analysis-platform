@@ -90,6 +90,8 @@ function normalizeLeaderItem(
     type,
     position: row.position ?? undefined,
     photo_url: row.photo_url ?? undefined,
+    appearances: row.appearances ?? undefined,
+    matches_played: row.matches_played ?? undefined,
   };
 }
 

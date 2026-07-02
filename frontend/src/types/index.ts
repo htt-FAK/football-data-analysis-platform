@@ -452,6 +452,8 @@ export interface WorldCupLeaderItem {
   type: string;
   position?: string;
   photo_url?: string;
+  appearances?: number;
+  matches_played?: number;
 }
 
 export interface WorldCupLeaders {
