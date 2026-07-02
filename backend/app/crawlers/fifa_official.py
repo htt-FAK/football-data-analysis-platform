@@ -153,6 +153,10 @@ class FIFAOfficialCrawler(BaseCrawler):
             squad_by_merge_key=squad_by_merge_key,
             staff_records=staff_records,
         )
+        # 用 FDH 逐场比赛累加的进球/助攻覆盖 staff 快照，保证赛后立即反映最新累计。
+        # staff 的 total_competition_goals_scored 由 FIFA 后端预聚合，刷新有延迟；
+        # FDH 比赛级数据在比赛结束即有最终值，逐场累加更及时。
+        records = self._overlay_fdh_aggregated_stats(records, squad_by_player_id, language=language)
         logger.info(
             "[%s] built FIFA player snapshot squad=%d staff=%d merged=%d",
             self.source_code,
@@ -162,6 +166,84 @@ class FIFAOfficialCrawler(BaseCrawler):
         )
         self._persist_raw_snapshot("player_stats", records, self.COMPETITION_ID, self.SEASON_ID, "snapshot")
         return records
+
+    def _overlay_fdh_aggregated_stats(
+        self,
+        records: list[dict[str, Any]],
+        squad_by_player_id: dict[str, dict[str, Any]],
+        language: str = "en",
+    ) -> list[dict[str, Any]]:
+        """拉取所有已完赛比赛的 FDH 球员统计，逐场累加后覆盖 records 里的进球/助攻等字段。
+
+        FDH 比赛级数据在比赛结束即有最终值，比 FIFA staff 快照的赛事级总计更及时，
+        能让姆巴佩这种球员在比赛结束后立刻反映最新累计进球。
+        """
+        try:
+            schedule = self._crawl_schedule(language=language)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("[%s] FDH 覆盖跳过：赛程拉取失败 %s", self.source_code, exc)
+            return records
+
+        finished_matches = [m for m in schedule if m.get("status") == "finished" and m.get("fdh_match_id")]
+        if not finished_matches:
+            return records
+
+        aggregated = self._aggregate_player_stats(finished_matches, squad_by_player_id)
+        if not aggregated:
+            return records
+
+        # 用累加结果覆盖核心计数字段（进球/助攻/出场/射门/传球等）
+        overlay_fields = (
+            "appearances", "goals", "assists", "yellow_cards", "red_cards",
+            "minutes_played", "shots", "shots_on_target", "xg", "xa",
+            "passes", "pass_accuracy", "tackles", "interceptions", "rating",
+        )
+        updated = 0
+        for record in records:
+            agg = aggregated.get(str(record.get("player_source_id") or ""))
+            if not agg:
+                continue
+            for field in overlay_fields:
+                if agg.get(field) is not None:
+                    record[field] = agg[field]
+            updated += 1
+        logger.info(
+            "[%s] FDH 逐场累加覆盖球员统计：完赛 %d 场，更新 %d 名球员",
+            self.source_code, len(finished_matches), updated,
+        )
+        return records
+
+    def crawl_player_stats_for_match(self, fdh_match_id: str, match_id: str | None = None) -> dict[str, dict[str, Any]]:
+        """针对单场比赛拉取 FDH 球员统计（实时刷新用）。
+
+        返回 {player_source_id: {goals, assists, ...}}，供 ingest 层在比赛结束时
+        增量更新对应球员的累计统计，不必等每日 6 点全量刷新。
+        """
+        payload = self._fetch_fdh_player_stats(str(fdh_match_id), match_id)
+        if not payload:
+            return {}
+        result: dict[str, dict[str, Any]] = {}
+        for player_id, stat_rows in payload.items():
+            metric_map = self._stat_rows_to_map(stat_rows)
+            passes = self._to_number(metric_map.get("Passes"))
+            passes_completed = self._to_number(metric_map.get("PassesCompleted"))
+            pass_accuracy = (passes_completed / passes * 100) if passes > 0 else 0.0
+            result[str(player_id)] = {
+                "goals": int(round(self._to_number(metric_map.get("Goals")))),
+                "assists": int(round(self._to_number(metric_map.get("Assists")))),
+                "yellow_cards": int(round(self._to_number(metric_map.get("YellowCards")))),
+                "red_cards": int(round(self._to_number(metric_map.get("RedCards")))),
+                "minutes_played": int(round(self._to_number(metric_map.get("TimePlayed")))),
+                "shots": int(round(self._to_number(metric_map.get("AttemptAtGoal")))),
+                "shots_on_target": int(round(self._to_number(metric_map.get("AttemptAtGoalOnTarget")))),
+                "xg": round(float(self._to_number(metric_map.get("XG"))), 4),
+                "passes": int(round(passes)),
+                "pass_accuracy": round(pass_accuracy, 2),
+                "tackles": int(round(self._to_number(metric_map.get("DefensivePressuresApplied")))),
+                "interceptions": int(round(self._to_number(metric_map.get("ForcedTurnovers")))),
+                "rating": self._derive_rating(metric_map),
+            }
+        return result
 
     def _crawl_statistics(self, **kwargs):
         language = kwargs.get("language", "en")
