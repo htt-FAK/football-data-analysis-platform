@@ -129,6 +129,104 @@ async def crawl_live_matches():
             except Exception as exc:
                 logger.error("Live crawl failed for %s: %s", source.source_code, exc)
                 _mark_source_error(source, db)
+
+        # 比赛结束后尽快刷新球员统计（解决"比赛结束但进球数不更新"的问题）。
+        # daily 全量刷新要等到次日 6 点，这里在实时轮询里检测刚结束的比赛并立即触发。
+        try:
+            await refresh_player_stats_for_finished_matches()
+        except Exception as exc:  # noqa: BLE001
+            logger.error("Post-match player stats refresh failed: %s", exc)
+    finally:
+        db.close()
+
+
+# 已刷新过球员统计的比赛 source_id 集合（进程内去重，避免重复刷新）
+_REFRESHED_MATCH_SOURCE_IDS: set[str] = set()
+# 去重集合上限，避免无限增长
+_REFRESH_DEDUP_MAX = 500
+
+
+async def refresh_player_stats_for_finished_matches():
+    """检测刚结束的世界杯比赛，立即刷新球员统计（进球/助攻等）。
+
+    实时比分任务每 30s 跑一次，这里扫描赛程里 status=finished 且还没刷新过球员的比赛，
+    触发一次 FIFA 球员数据全量采集（含 FDH 逐场累加覆盖），让姆巴佩这类球员的进球数
+    在比赛结束后几分钟内就更新，而不必等到次日 6 点的 daily crawl。
+    """
+    db = SessionLocal()
+    try:
+        from app.crawlers.fifa_official import FIFAOfficialCrawler
+        from app.services.ingest_service import ingest_player_stats
+        from app.services.worldcup_player_rating_service import WorldCupPlayerRatingService
+
+        crawler = FIFAOfficialCrawler()
+        try:
+            schedule = crawler.crawl(target="schedule")
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Player stats refresh skipped: schedule crawl failed: %s", exc)
+            return
+        if not schedule:
+            return
+
+        # 找出刚结束、且尚未刷新球员的比赛（用 source_id 去重）
+        newly_finished = []
+        for match in schedule:
+            if match.get("status") != "finished":
+                continue
+            source_id = str(match.get("match_id") or "")
+            if not source_id or source_id in _REFRESHED_MATCH_SOURCE_IDS:
+                continue
+            newly_finished.append(match)
+
+        if not newly_finished:
+            return
+
+        # 有刚结束的比赛 → 触发一次全量球员采集（_crawl_players 内部已启用 FDH 逐场累加覆盖）
+        try:
+            records = crawler.crawl(target="players")
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Player stats refresh skipped: players crawl failed: %s", exc)
+            return
+        if not records:
+            return
+
+        ingest_stats = ingest_player_stats(
+            db,
+            records,
+            source="fifa_official",
+            league_name=FIFA_DEFAULT_LEAGUE_NAME,
+            season_name=FIFA_DEFAULT_SEASON_NAME,
+        )
+        updated = ingest_stats.get("created", 0) + ingest_stats.get("updated", 0)
+
+        # 重算球员评分（依赖最新进球数据）
+        try:
+            rating_result = WorldCupPlayerRatingService().refresh(
+                db, season_name=FIFA_DEFAULT_SEASON_NAME
+            )
+            logger.info(
+                "Post-match player ratings refreshed: %s",
+                rating_result,
+            )
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Post-match player rating refresh failed: %s", exc)
+
+        # 标记这些比赛已刷新过球员，避免重复触发
+        for match in newly_finished:
+            source_id = str(match.get("match_id") or "")
+            _REFRESHED_MATCH_SOURCE_IDS.add(source_id)
+
+        # 控制去重集合大小：超过上限清掉最早的一半
+        if len(_REFRESHED_MATCH_SOURCE_IDS) > _REFRESH_DEDUP_MAX:
+            keep = list(_REFRESHED_MATCH_SOURCE_IDS)[-_REFRESH_DEDUP_MAX // 2:]
+            _REFRESHED_MATCH_SOURCE_IDS.clear()
+            _REFRESHED_MATCH_SOURCE_IDS.update(keep)
+
+        logger.info(
+            "Post-match player stats refreshed for %d finished match(es): %d player rows updated",
+            len(newly_finished),
+            updated,
+        )
     finally:
         db.close()
 

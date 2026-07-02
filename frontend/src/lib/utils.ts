@@ -639,12 +639,7 @@ export function getTeamIdentity(teamName: string | null | undefined, country?: s
   const countryMeta = getCountryMeta(repairedCountry);
   const fallbackMeta = countryMeta ?? teamMeta;
   const isNationalTeam = !repairedCountry && !!teamMeta;
-  const flagInput = repairedCountry || repairedTeamName;
-  const flagUrl = getCountryFlagUrl(flagInput);
-  // 临时调试：定位国旗不渲染的根因（确认后移除）
-  if (typeof console !== "undefined") {
-    console.log("[getTeamIdentity]", { teamName, country, repairedTeamName, repairedCountry, flagInput, flagUrl });
-  }
+  const flagUrl = getCountryFlagUrl(repairedCountry || repairedTeamName);
 
   return {
     displayName: isNationalTeam ? fallbackMeta?.label ?? repairedTeamName ?? "--" : repairedTeamName ?? "--",
