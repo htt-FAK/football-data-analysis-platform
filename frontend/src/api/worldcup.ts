@@ -29,6 +29,7 @@ interface RawWorldCupLeaderRow {
   team_name?: string | null;
   photo_url?: string | null;
   appearances?: number | null;
+  matches_played?: number | null;
   goals?: number | null;
   assists?: number | null;
   minutes_played?: number | null;
