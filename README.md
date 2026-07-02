@@ -1,214 +1,288 @@
-# Football Data Analysis Platform
+# ⚽ Football Data Analysis Platform
 
-> 体育赛事数据采集与分析平台 · 课程设计作品集项目
+> **多源体育赛事数据采集与智能分析平台**
 
-一个面向足球/体育赛事场景的数据平台原型：从多源数据采集、清洗标准化、结构化存储，到分析建模、实时推送与可视化展示，形成相对完整的数据产品闭环。
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)
+![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi&logoColor=white)
+![ECharts](https://img.shields.io/badge/ECharts-5-AA344D?logo=apacheecharts&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-## 项目亮点
+🚀 **在线演示**：[http://118.126.102.143:4173/worldcup](http://118.126.102.143:4173/worldcup)
 
-- **多源数据采集**：整合懂球帝、FBref、Understat、Football-Data 等多个数据源
-- **数据治理闭环**：包含字段映射、去重、缺失值处理、异常值检测、多源合并
-- **分析能力**：支持球队评分、球员能力分析、xG 模型、联赛格局分析、关键事件影响评估
-- **工程化结构**：后端、前端、建表脚本、部署脚本、调度模块拆分清晰
-- **可扩展性**：已预留 HDFS、Redis、WebSocket、定时任务等能力接口
+面向足球/体育赛事场景的全栈数据平台：从**多源数据采集**、**智能清洗标准化**、**结构化存储**，到**深度分析建模**、**实时推送**与**可视化展示**，形成完整的数据产品闭环。
 
-## 适用场景
+---
 
-该项目适合作为以下方向的课程设计 / 作品集展示：
+## ✨ 项目亮点
 
-- 体育数据采集与分析
-- Web 全栈课程项目
-- 数据工程与数据治理实践
-- 数据产品原型设计
-- FastAPI + React 的前后端分离项目
+- **多源异构采集**：整合 10+ 主流体育数据源，支持 API 与 HTML 双模式采集，内置反爬策略与重试机制
+- **数据治理闭环**：字段映射 → 实体解析 → 去重 → 缺失值填补 → 异常值检测 → 多源融合，六层清洗管线
+- **深度分析引擎**：球队攻防评分、球员五维能力模型、xG 预期进球、联赛竞争格局、关键事件影响量化
+- **工程化架构**：前后端分离 · 微服务分层 · 定时调度 · 缓存加速 · WebSocket 实时推送
 
-## 系统架构
+---
 
-```text
-多源体育数据
-    ↓
-爬虫采集层（Crawlers）
-    ↓
-数据清洗层（映射 / 去重 / 缺失值 / 异常值 / 合并）
-    ↓
-存储层（MySQL / HDFS / Redis）
-    ↓
-分析层（球队 / 球员 / xG / 联赛 / 事件影响）
-    ↓
-服务层（FastAPI / WebSocket / Scheduler / Export）
-    ↓
-前端展示层（React + TypeScript + ECharts）
-```
+## 📸 项目预览
 
-## 核心功能
+| 世界杯积分榜 | 球员能力雷达 | xG 预期进球 |
+| :----------: | :----------: | :---------: |
+| ![世界杯积分榜](export/ppt_charts/07_世界杯小组赛积分榜总览.png) | ![球员能力雷达](export/ppt_charts/11_巨星五维能力雷达对比.png) | ![xG预期进球](export/ppt_charts/14_xG预期进球时间线.png) |
+
+| 球队攻防四象限 | 数据清洗流程 | AI 预测分析 |
+| :-----------: | :----------: | :---------: |
+| ![球队攻防](export/ppt_charts/09_球队攻防效率四象限.png) | ![数据清洗](export/ppt_charts/04_数据清洗与标准化流水线.png) | ![AI预测](export/ppt_charts/16_AI预测准确率分析.png) |
+
+> 更多可视化图表请查看 [export/ppt_charts/](export/ppt_charts/)
+
+---
+
+## 🎯 核心功能
 
 ### 1. 多源数据采集
-当前后端已按模块拆分多个数据源采集器，包括：
 
-- 懂球帝
-- FBref
-- Understat
-- Football-Data
-- API-Football
-- TheSportsDB
-- OpenLigaDB
-- TeamRankings
+内置 10+ 数据源采集器，覆盖赛程、赛果、积分榜、球员统计、射门事件等维度：
 
-### 2. 数据清洗与标准化
-项目提供较完整的数据治理流程：
+| 数据源 | 类型 | 覆盖内容 |
+|--------|------|---------|
+| FIFA Official | API | 世界杯官方数据 |
+| API-Football | API | 联赛/杯赛结构化数据 |
+| FBref | HTML | 高级球员统计 |
+| Understat | HTML | xG 预期进球数据 |
+| 懂球帝 | HTML | 中文赛程赛果 |
+| Football-Data | API | 欧洲五大联赛 |
+| TheSportsDB | API | 球队/球员元数据 |
+| OpenLigaDB | API | 德甲等联赛 |
+| TeamRankings | HTML | 排名数据 |
+| StatsBomb | Open Data | 高级事件数据 |
 
-- `field_mapping.py`：统一多源字段口径
-- `dedup.py`：去重处理
-- `missing_value.py`：缺失值填补
-- `outlier.py`：异常值检测
-- `merge.py`：多源数据合并
+**采集能力**：
+- 自动重试 + 指数退避（最多 5 次）
+- 随机延迟 + User-Agent 轮换
+- 多目标分发（live/schedule/standings/players）
+- HDFS 原始数据落盘
 
-### 3. 数据分析模块
-项目内置多个分析方向：
+### 2. 智能数据清洗
 
-- **team_rating.py**：球队攻防评分
-- **player_rating.py**：球员能力评估
-- **xg_model.py**：预期进球（xG）分析
-- **league_analysis.py**：联赛竞争格局分析
-- **event_impact.py**：关键事件影响分析
+六层数据治理管线，保障数据质量：
 
-### 4. 服务能力
-- REST API（FastAPI）
-- WebSocket 实时推送
-- Redis 缓存与消息能力
-- APScheduler 定时任务
-- Excel 报表导出
+```
+原始数据 → 字段映射 → 实体解析 → 去重 → 缺失值填补 → 异常值检测 → 多源融合 → 高质量数据
+```
 
-## 技术栈
+| 模块 | 说明 | 核心文件 |
+|------|------|---------|
+| 字段映射 | 统一多源字段口径与单位 | `field_mapping.py` |
+| 实体解析 | 球队/球员/联赛别名归一化 | `entity_resolver.py` |
+| 去重处理 | 多源重复数据智能合并 | `dedup.py` |
+| 缺失值填补 | 按字段类型智能填充 | `missing_value.py` |
+| 异常值检测 | 规则校验 + Z-Score + IQR 三法并行 | `outlier.py` |
+| 多源融合 | 按可信度优先级合并 | `merge.py` |
+
+### 3. 深度分析引擎
+
+五大分析维度，从宏观联赛到微观事件全覆盖：
+
+| 分析方向 | 说明 | 核心文件 |
+|---------|------|---------|
+| 联赛竞争格局 | 竞争激烈度、强弱分布、趋势分析 | `league_analysis.py` |
+| 球队攻防评分 | 进攻/防守/组织三维评分 | `team_rating.py` |
+| 球员能力模型 | 五维能力雷达 + 位置加权 | `player_rating.py` |
+| xG 预期进球 | 基于射门特征的进球概率 | `xg_model.py` |
+| 事件影响量化 | 进球/红牌/点球等事件影响力 | `event_impact.py` |
+
+### 4. 可视化平台
+
+React + TypeScript + ECharts 构建的交互式数据平台：
+
+- 🏆 **世界杯仪表板**：积分榜、射手榜、近期比赛、对阵图
+- ⚽ **比赛详情**：xG 时间线、阵容、事件流、统计对比
+- 👤 **球员详情**：五维雷达图、生涯数据、位置分布
+- 🏟️ **球队详情**：攻防数据、球员名单、比赛记录
+- 🤖 **AI 预测**：比赛结果预测 + 多轮分析 + 准确率统计
+- 📊 **联赛页面**：积分榜、赛程、球队列表
+
+---
+
+## 🏗️ 系统架构
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     多源体育数据（10+）                       │
+│  FIFA · API-Football · FBref · Understat · 懂球帝 · ...     │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                   爬虫采集层 (Crawlers)                      │
+│        基类封装 · 重试机制 · 反爬策略 · 多目标分发            │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                  数据清洗层 (Cleaning)                       │
+│   字段映射 · 实体解析 · 去重 · 缺失值 · 异常值 · 多源合并     │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                    存储层 (Storage)                          │
+│              MySQL · Redis · Hadoop HDFS                    │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                   分析层 (Analysis)                          │
+│   联赛格局 · 球队评分 · 球员能力 · xG模型 · 事件影响          │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                   服务层 (Services)                          │
+│    FastAPI · WebSocket · APScheduler · Excel导出            │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│                 前端展示层 (Frontend)                        │
+│           React · TypeScript · Vite · ECharts               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🛠️ 技术栈
 
 ### 后端
-- Python 3.9+
-- FastAPI
-- SQLAlchemy
-- pandas
-- scikit-learn
-- Redis
-- APScheduler
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?logo=sqlalchemy&logoColor=white)
+![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white)
+![APScheduler](https://img.shields.io/badge/APScheduler-336791?logo=clock&logoColor=white)
 
 ### 前端
-- React
-- TypeScript
-- Vite
-- ECharts
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+![ECharts](https://img.shields.io/badge/ECharts-AA344D?logo=apacheecharts&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)
 
 ### 数据与部署
-- MySQL
-- Hadoop HDFS
-- Linux / Shell 脚本部署
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+![Hadoop](https://img.shields.io/badge/Hadoop-66CCFF?logo=apachehadoop&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=white)
 
-## 项目结构
+---
 
-```text
-课设/
-├── backend/                 # FastAPI 后端核心代码
+## 📁 项目结构
+
+```
+football-data-analysis-platform/
+├── backend/                    # FastAPI 后端
 │   ├── app/
-│   │   ├── analysis/        # 分析模型
-│   │   ├── api/             # API 路由
-│   │   ├── cleaning/        # 数据清洗
-│   │   ├── crawlers/        # 多源采集器
-│   │   ├── export/          # 导出功能
-│   │   ├── models/          # 数据模型
-│   │   ├── scheduler/       # 定时任务
-│   │   └── services/        # 业务服务层
+│   │   ├── analysis/           # 分析模型（联赛/球队/球员/xG/事件）
+│   │   ├── api/                # API 路由（10+ 业务模块）
+│   │   ├── cleaning/           # 数据清洗（6层管线）
+│   │   ├── crawlers/           # 多源采集器（10+ 数据源）
+│   │   ├── models/             # SQLAlchemy 数据模型
+│   │   ├── prediction/         # AI 预测模块
+│   │   ├── scheduler/          # 定时任务调度
+│   │   ├── services/           # 业务服务层
+│   │   ├── export/             # Excel 导出
+│   │   ├── static/             # 静态页面
+│   │   ├── config.py           # 配置管理
+│   │   ├── database.py         # 数据库连接
+│   │   ├── redis_client.py     # Redis 客户端
+│   │   ├── hdfs_client.py      # HDFS 客户端
+│   │   └── main.py             # 应用入口
+│   ├── export_football_data.py
 │   └── requirements.txt
-├── frontend/                # 前端目录
-├── scripts/                 # 启动脚本
-├── deploy.sh                # 部署脚本
-├── init_database.sql        # 数据库初始化脚本
-├── .env.example             # 环境变量模板
+│
+├── frontend/                   # React 前端
+│   ├── src/
+│   │   ├── api/                # API 封装
+│   │   ├── components/         # 通用组件
+│   │   ├── pages/              # 页面组件
+│   │   ├── hooks/              # 自定义 Hooks
+│   │   ├── stores/             # 状态管理
+│   │   ├── types/              # TypeScript 类型
+│   │   └── ...
+│   └── 配置文件
+│
+├── scripts/                    # 工具脚本
+│   ├── generate_ppt_charts.py  # PPT 图表生成
+│   ├── run_fifa_worldcup_ingest.py  # FIFA 数据导入
+│   ├── visualize_player_radar.py    # 雷达图生成
+│   └── start_*.sh              # 启动脚本
+│
+├── export/
+│   ├── ppt_charts/             # 16 张可视化展示图表
+│   ├── sample_players/         # 示例球员数据
+│   └── worldcup_fifa/          # FIFA 世界杯示例数据
+│
+├── .env.example                # 环境变量模板
+├── .gitignore
+├── deploy.sh                   # 部署脚本
 └── README.md
 ```
 
-## 快速开始
+---
+
+## 🚀 快速开始
 
 ### 1. 克隆项目
 ```bash
-git clone git@github.com:htt-FAK/football-data-analysis-platform.git
+git clone https://github.com/htt-FAK/football-data-analysis-platform.git
 cd football-data-analysis-platform
 ```
 
-### 2. 安装后端依赖
+### 2. 后端启动
 ```bash
 cd backend
 pip install -r requirements.txt
+
+# 配置环境变量
+cp ../.env.example .env
+# 编辑 .env 填入数据库、Redis 等配置
+
+# 启动服务
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 3. 配置环境变量
-参考根目录下的 `.env.example` 补充数据库、Redis、HDFS 等配置。
-
-### 4. 初始化数据库
+### 3. 前端启动
 ```bash
-mysql -u root -p < ../init_database.sql
+cd frontend
+npm install
+npm run dev
 ```
 
-### 5. 启动后端
-```bash
-uvicorn app.main:app --reload
-```
+### 4. 访问
+- 前端页面：http://localhost:5173
+- API 文档：http://localhost:8000/docs
 
-如需完整启动链路，可进一步结合：
-- `scripts/start_backend.sh`
-- `scripts/start_frontend.sh`
-- `scripts/start_hadoop.sh`
-- `deploy.sh`
+---
 
-## API 与展示能力
+## 📄 API 模块
 
-项目后端已按业务拆分多个接口模块，例如：
+| 模块 | 路径 | 说明 |
+|------|------|------|
+| 联赛 | `/api/v1/leagues` | 联赛列表、详情、积分榜 |
+| 球队 | `/api/v1/teams` | 球队信息、阵容、统计 |
+| 球员 | `/api/v1/players` | 球员列表、详情、能力评分 |
+| 比赛 | `/api/v1/matches` | 赛程、赛果、比赛详情 |
+| 直播 | `/api/v1/live` | 实时比分、事件推送 |
+| 预测 | `/api/v1/predict` | AI 比赛预测 |
+| 爬虫 | `/api/v1/crawl` | 数据采集任务管理 |
+| 数据源 | `/api/v1/data-sources` | 数据源状态监控 |
+| 世界杯 | `/api/v1/worldcup` | 世界杯专属接口 |
+| WebSocket | `/ws` | 实时数据推送 |
 
-- `leagues.py`
-- `teams.py`
-- `players.py`
-- `matches.py`
-- `live.py`
-- `crawl.py`
-- `data_sources.py`
-- `websocket.py`
+---
 
-这意味着项目不仅是“采集脚本集合”，而是朝着**可交互平台**方向设计的完整原型。
-
-## 项目价值
-
-这个项目比较适合在 GitHub 上作为作品集展示，因为它覆盖了从“数据获取”到“数据服务”的完整链路：
-
-- 有明确业务场景：体育赛事数据分析
-- 有后端架构：FastAPI + 服务分层 + 数据模型
-- 有数据工程思路：采集、清洗、标准化、存储、分析
-- 有平台能力：接口、实时推送、调度、导出
-- 有进一步扩展空间：前端大屏、更多联赛、更多分析模型
-
-## 仓库说明
-
-当前仓库中仍保留了一些课程过程文档、参考 PDF、任务安排表等资料。这些文件主要用于课程交付与过程留档，不代表项目主体。
-
-如果后续要把仓库进一步打磨成更纯粹的作品集，可以继续做两步：
-
-1. 把课程模板/参考文档移动到 `docs/academic/` 或单独归档
-2. 继续补充项目截图、接口示例、页面预览与部署说明
-
-## 后续可优化方向
-
-- 增加首页截图 / 系统架构图 / 页面预览图
-- 增加接口示例与测试说明
-- 增加 Docker / Docker Compose 部署方式
-- 清理课程交付型附件，保留更纯粹的项目结构
-- 完善前端页面说明，提高作品集展示感
-
-## License
+## 📝 License
 
 本项目为课程设计与个人学习实践项目，仅供学习、交流与作品展示使用。
-## World Cup strategy
 
-This repository now follows a task-oriented World Cup delivery strategy:
+---
 
-- Match-level World Cup data is the P0 path.
-- Player contribution summaries are guaranteed before advanced radar views.
-- Advanced player analytics are rendered only when data completeness is high enough.
-- API-Football is the primary structured source for live and basic player tasks.
-- FBref and Understat remain advanced enrichment sources.
-
+<p align="center">
+  <sub>Built with ❤️ using Python & React</sub>
+</p>

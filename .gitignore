@@ -30,6 +30,15 @@ dist/
 .codex/
 .opencode/
 .qoder/
+.playwright-cli/
+
+# Temp and debug
+output/
+*.har
+*.tmp
+*.zip
+runtime-audit/
+runtime-audit-*/
 
 # Data
 export/*.xlsx
@@ -38,14 +47,10 @@ data/processed/
 *.log
 tmp/
 
-# Local docs and SQL not for GitHub
+# Local docs
 docs/
-6、S3017I-《网络数据采集实践》完整报告模板（学生提交） - 软件工程（大数据方向）.docx
-8、《网络数据采集实践》.pdf
-09体育赛事数据采集与分析-项目方案.md
-数据分析报告 - 参考.pdf
-课程设计报告 - 参考.pdf
-软工1B第三组任务安排表.docx
+*.docx
+*.pdf
 init_database.sql
 
 # OS
