@@ -337,6 +337,7 @@ function LeadersTab() {
         position: row.position,
         team_name: row.team_name,
         photo_url: row.photo_url,
+        appearances: row.appearances ?? row.matches_played,
         goals: tab === "goals" ? row.value : undefined,
         assists: tab === "assists" ? row.value : undefined,
         rating: tab === "rating" ? row.value : undefined,
