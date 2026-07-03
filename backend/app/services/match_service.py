@@ -206,8 +206,8 @@ class MatchService:
             "minute": None,
             "referee": None,
             "attendance": None,
-            "home_xg": None,
-            "away_xg": None,
+            "home_xg": match.home_xg,
+            "away_xg": match.away_xg,
         }
 
     def get_match_events(self, db: Session, match_id: int) -> dict | None:
@@ -273,7 +273,7 @@ class MatchService:
 
         shots = self._load_match_shots(db, match_id)
         teams_map = self._load_team_map(db, [match.home_team_id, match.away_team_id])
-        return self.xg_model.build_match_xg_timeline(
+        timeline = self.xg_model.build_match_xg_timeline(
             match_id=match_id,
             shots=shots,
             home_team_id=match.home_team_id,
@@ -283,6 +283,28 @@ class MatchService:
             home_goals=match.home_score,
             away_goals=match.away_score,
         )
+        # 当逐脚时间线不可用、但 Match 上有单场汇总 xG（如 Fotmob）时，
+        # 把汇总值透传到 final_xg，让前端能展示"主队/客队 xG"。
+        if timeline and not timeline.get("available"):
+            home_xg = match.home_xg
+            away_xg = match.away_xg
+            if (home_xg is not None or away_xg is not None) and timeline.get("home_team"):
+                timeline["home_team"]["final_xg"] = (
+                    round(float(home_xg), 3) if home_xg is not None else None
+                )
+                timeline["home_team"]["performance"] = self.xg_model.calculate_xg_performance(
+                    match.home_score, home_xg
+                )
+            if (home_xg is not None or away_xg is not None) and timeline.get("away_team"):
+                timeline["away_team"]["final_xg"] = (
+                    round(float(away_xg), 3) if away_xg is not None else None
+                )
+                timeline["away_team"]["performance"] = self.xg_model.calculate_xg_performance(
+                    match.away_score, away_xg
+                )
+            if (home_xg is not None or away_xg is not None):
+                timeline["source"] = "match_aggregate"
+        return timeline
 
     def get_match_shots(self, db: Session, match_id: int) -> dict | None:
         match = db.query(Match).filter(Match.id == match_id).first()

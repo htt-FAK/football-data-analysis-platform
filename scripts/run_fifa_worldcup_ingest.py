@@ -34,6 +34,8 @@ def ensure_worldcup_schema(db) -> None:
         "matches": {
             "stage": "ALTER TABLE matches ADD COLUMN stage VARCHAR(50) COMMENT '比赛阶段'",
             "group_name": "ALTER TABLE matches ADD COLUMN group_name VARCHAR(50) COMMENT '小组名称'",
+            "home_xg": "ALTER TABLE matches ADD COLUMN home_xg FLOAT COMMENT '主队预期进球（单场汇总，来源如 Fotmob）'",
+            "away_xg": "ALTER TABLE matches ADD COLUMN away_xg FLOAT COMMENT '客队预期进球（单场汇总，来源如 Fotmob）'",
         },
         "standings": {
             "group_name": "ALTER TABLE standings ADD COLUMN group_name VARCHAR(50) COMMENT '小组名称'",

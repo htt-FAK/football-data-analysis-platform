@@ -27,6 +27,7 @@ scheduler = AsyncIOScheduler()
 FIFA_DEFAULT_LEAGUE_NAME = "世界杯"
 FIFA_DEFAULT_SEASON_NAME = "2026"
 WORLD_CUP_SCHEDULE_REFRESH_SECONDS = 900
+WORLD_CUP_MATCH_XG_REFRESH_SECONDS = 900
 
 
 def setup_jobs():
@@ -61,6 +62,16 @@ def setup_jobs():
     )
 
     scheduler.add_job(
+        refresh_worldcup_match_xg,
+        IntervalTrigger(seconds=WORLD_CUP_MATCH_XG_REFRESH_SECONDS),
+        id="worldcup_match_xg_refresh",
+        name="worldcup-match-xg-refresh",
+        replace_existing=True,
+        max_instances=1,
+        coalesce=True,
+    )
+
+    scheduler.add_job(
         export_daily_report,
         CronTrigger.from_crontab(EXPORT_CRON),
         id="daily_export",
@@ -79,9 +90,10 @@ def setup_jobs():
     )
 
     logger.info(
-        "Scheduler jobs registered: live(%ss), worldcup schedule(%ss), daily crawl(06:00), export(%s), ai-prediction(%ss)",
+        "Scheduler jobs registered: live(%ss), worldcup schedule(%ss), worldcup xg(%ss), daily crawl(06:00), export(%s), ai-prediction(%ss)",
         LIVE_CRAWL_INTERVAL,
         WORLD_CUP_SCHEDULE_REFRESH_SECONDS,
+        WORLD_CUP_MATCH_XG_REFRESH_SECONDS,
         EXPORT_CRON,
         AI_PREDICTION_SCAN_SECONDS,
     )
@@ -400,6 +412,48 @@ async def refresh_worldcup_schedule():
         db.close()
 
 
+async def refresh_worldcup_match_xg():
+    """Refresh World Cup per-match xG from Fotmob.
+
+    只在有已结束但缺 xG 的世界杯比赛时才执行（避免无谓的浏览器抓取）。
+    Fotmob 每场都要单独开页面，比较慢，故放在独立任务里，不阻塞赛程刷新。
+    """
+
+    db = SessionLocal()
+    source = None
+    try:
+        # 前置检查：是否有已结束且缺 xG 的世界杯比赛；没有就直接跳过
+        pending = (
+            db.query(Match)
+            .filter(Match.status == "finished")
+            .filter((Match.home_xg.is_(None)) | (Match.away_xg.is_(None)))
+            .count()
+        )
+        if pending == 0:
+            logger.info("Skipping World Cup match xG refresh: no finished match missing xG")
+            return
+
+        ensure_builtin_data_sources(db)
+        source = (
+            db.query(DataSource)
+            .filter(DataSource.source_code == "fotmob", DataSource.enabled == True)
+            .first()
+        )
+        if not source:
+            logger.info("Skipping World Cup match xG refresh: fotmob source not available")
+            return
+
+        from app.services.ingest_service import ingest_match_xg
+
+        await _crawl_source_target(source, db, "worldcup_match_xg", "match_xg", ingest_match_xg)
+    except Exception as exc:
+        logger.error("World Cup match xG refresh failed: %s", exc)
+        if source:
+            _mark_source_error(source, db)
+    finally:
+        db.close()
+
+
 async def _crawl_source_target(source: DataSource, db, target: str, crawl_target: str, ingest_fn):
     """Run one scheduled target for one source."""
     concrete_target = resolve_crawl_target(source.source_code, crawl_target)
@@ -469,6 +523,10 @@ async def _dispatch_crawl(source: DataSource, target: str) -> list:
         from app.crawlers.fbref import FBrefCrawler
 
         return FBrefCrawler().crawl(target=target) or []
+    if code == "fotmob":
+        from app.crawlers.fotmob import FotmobCrawler
+
+        return FotmobCrawler().crawl(target=target) or []
     if code == "understat":
         from app.crawlers.understat import UnderstatCrawler
 

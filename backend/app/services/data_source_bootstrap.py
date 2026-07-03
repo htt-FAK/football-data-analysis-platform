@@ -14,6 +14,7 @@ DEFAULT_SOURCE_NAMES: dict[str, str] = {
     "api_football": "API-Football",
     "dongqiudi": "Dongqiudi",
     "fbref": "FBref",
+    "fotmob": "FotMob",
     "understat": "Understat",
     "statsbomb": "StatsBomb",
     "football_data": "Football-Data.co.uk",

@@ -14,6 +14,7 @@ DEFAULT_SOURCE_PRIORITY: dict[str, int] = {
     "api_football": 10,
     "dongqiudi": 30,
     "fbref": 40,
+    "fotmob": 45,
     "understat": 50,
     "statsbomb": 55,
     "football_data": 60,
@@ -27,6 +28,7 @@ SOURCE_SUPPORTED_TARGETS: dict[str, set[str]] = {
     "api_football": {"fixtures", "standings", "players"},
     "dongqiudi": {"schedule", "standings", "match_detail", "player_stats", "team_info"},
     "fbref": {"player_stats", "team_stats"},
+    "fotmob": {"match_xg"},
     "understat": {"shots", "xg_timeline"},
     "statsbomb": {"matches", "player_stats", "shots"},
     "football_data": {"matches"},
@@ -129,6 +131,12 @@ SOURCE_PROFILES: dict[str, dict[str, object]] = {
         "implemented": True,
         "recommended_tasks": ["player_advanced"],
         "coverage_note": "Advanced league analytics source; not the guaranteed World Cup player backbone.",
+    },
+    "fotmob": {
+        "role": "world_cup_xg_supplement",
+        "implemented": True,
+        "recommended_tasks": [],
+        "coverage_note": "Fotmob 单场汇总 xG（浏览器渲染抓取，绕过 x-fm-req 反爬）。仅提供主/客队最终 xG，逐脚时间线不可用。",
     },
     "understat": {
         "role": "xg_analytics",

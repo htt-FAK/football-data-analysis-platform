@@ -654,6 +654,94 @@ def _resolve_match_for_shot(db: Session, raw: dict) -> Match | None:
     )
 
 
+def ingest_match_xg(
+    db: Session,
+    raw_xg: list[dict],
+    source: str = "fotmob",
+    season_name: str | None = None,
+    league_name: str | None = None,
+) -> dict:
+    """入库单场 xG（主队/客队汇总值）。
+
+    与 ingest_matches 不同：xG 通常来自与赛程不同的源（如 Fotmob），
+    而比赛行由 fifa_official 写入。这里只做**定向更新** home_xg/away_xg，
+    不走完整 upsert，避免 data_hash 误判或冲掉其他源写入的字段。
+
+    定位 Match 行的逻辑复用 _resolve_match_for_shot（主客队 + 日期前缀）。
+    """
+    stats = {"updated": 0, "skipped": 0, "failed": 0}
+    _ = league_name, season_name
+
+    for raw in raw_xg:
+        try:
+            home_xg = raw.get("home_xg")
+            away_xg = raw.get("away_xg")
+            if home_xg is None and away_xg is None:
+                stats["skipped"] += 1
+                continue
+
+            # _resolve_match_for_shot 依赖 raw 里的 source 字段做球队解析
+            raw_with_source = {**raw, "source": source}
+            match_obj = _resolve_match_for_shot(db, raw_with_source)
+            if not match_obj:
+                logger.info(
+                    "[%s] 未定位到比赛，跳过 xG 更新: %s vs %s @ %s",
+                    source, raw.get("home_team"), raw.get("away_team"), raw.get("date"),
+                )
+                stats["skipped"] += 1
+                continue
+
+            changed = False
+            if home_xg is not None and match_obj.home_xg != home_xg:
+                match_obj.home_xg = float(home_xg)
+                changed = True
+            if away_xg is not None and match_obj.away_xg != away_xg:
+                match_obj.away_xg = float(away_xg)
+                changed = True
+
+            if not changed:
+                stats["skipped"] += 1
+                continue
+
+            # 定向更新：bump version + 重算 data_hash + 记录来源时间
+            match_obj.version = (match_obj.version or 1) + 1
+            match_obj.last_updated_at = datetime.now()
+            # data_hash 重新基于关键字段生成（与 versioning 一致的算法）
+            match_obj.data_hash = _match_xg_data_hash(match_obj)
+            db.commit()
+            stats["updated"] += 1
+        except Exception as e:
+            logger.error("[%s] 单场 xG 入库失败: %s | raw=%s", source, e, raw)
+            db.rollback()
+            stats["failed"] += 1
+
+    logger.info("[%s] 单场 xG 入库完成: %s", source, stats)
+    return stats
+
+
+def _match_xg_data_hash(match_obj: Match) -> str:
+    """基于比赛关键字段（含 xG）生成 data_hash，复用 versioning 的摘要算法。"""
+    import hashlib
+    import json
+
+    payload = json.dumps(
+        {
+            "home_team_id": match_obj.home_team_id,
+            "away_team_id": match_obj.away_team_id,
+            "home_score": match_obj.home_score,
+            "away_score": match_obj.away_score,
+            "home_xg": match_obj.home_xg,
+            "away_xg": match_obj.away_xg,
+            "match_date": match_obj.match_date.isoformat() if match_obj.match_date else None,
+            "status": match_obj.status,
+        },
+        sort_keys=True,
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+
 def _refresh_team_stat_ratings(db: Session, season_id: int):
     rows = db.query(TeamStat).filter(TeamStat.season_id == season_id).all()
     if not rows:

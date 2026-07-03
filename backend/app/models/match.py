@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -26,6 +26,8 @@ class Match(Base):
     away_score: Mapped[Optional[int]] = mapped_column(Integer, comment="客队得分")
     home_score_ht: Mapped[Optional[int]] = mapped_column(Integer, comment="主队半场得分")
     away_score_ht: Mapped[Optional[int]] = mapped_column(Integer, comment="客队半场得分")
+    home_xg: Mapped[Optional[float]] = mapped_column(Float, comment="主队预期进球（单场汇总，来源如 Fotmob）")
+    away_xg: Mapped[Optional[float]] = mapped_column(Float, comment="客队预期进球（单场汇总，来源如 Fotmob）")
     status: Mapped[str] = mapped_column(String(20), default="scheduled", comment="比赛状态")
     match_date: Mapped[Optional[datetime]] = mapped_column(DateTime, comment="比赛时间")
     venue: Mapped[Optional[str]] = mapped_column(String(100), comment="比赛场地")

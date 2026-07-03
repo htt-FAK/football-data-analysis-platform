@@ -18,6 +18,7 @@ from app.services.data_source_bootstrap import ensure_builtin_data_sources
 from app.services.data_source_service import DataSourceService
 from app.services.ingest_service import (
     ingest_matches,
+    ingest_match_xg,
     ingest_player_stats,
     ingest_shots,
     ingest_standings,
@@ -42,6 +43,7 @@ CRAWLER_REGISTRY = {
     "understat": {"module": "app.crawlers.understat", "class": "UnderstatCrawler", "name": "Understat"},
     "statsbomb": {"module": "app.crawlers.statsbomb", "class": "StatsBombCrawler", "name": "StatsBomb"},
     "teamrankings": {"module": "app.crawlers.teamrankings", "class": "TeamRankingsCrawler", "name": "TeamRankings"},
+    "fotmob": {"module": "app.crawlers.fotmob", "class": "FotmobCrawler", "name": "FotMob"},
 }
 
 TARGET_INGEST_MAP = {
@@ -52,9 +54,10 @@ TARGET_INGEST_MAP = {
     "statistics": "ingest_team_stats",
     "standings": "ingest_standings",
     "shots": "ingest_shots",
+    "match_xg": "ingest_match_xg",
 }
 
-LEAGUE_NAME_SOURCES = {"fbref", "understat", "dongqiudi", "fifa_official", "statsbomb"}
+LEAGUE_NAME_SOURCES = {"fbref", "understat", "dongqiudi", "fifa_official", "statsbomb", "fotmob"}
 FIFA_DEFAULT_LEAGUE_NAME = "世界杯"
 FIFA_DEFAULT_SEASON_NAME = "2026"
 
@@ -156,6 +159,8 @@ def _execute_crawl(
                 stats = ingest_team_stats(db, raw, source=source, season_name=season_name, league_name=league_name)
             elif ingest_func_name == "ingest_shots":
                 stats = ingest_shots(db, raw, source=source, season_name=season_name, league_name=league_name)
+            elif ingest_func_name == "ingest_match_xg":
+                stats = ingest_match_xg(db, raw, source=source, season_name=season_name, league_name=league_name)
             elif ingest_func_name == "ingest_standings":
                 stats = ingest_standings(db, raw, source=source, league_name=league_name, season_name=season_name)
             else:

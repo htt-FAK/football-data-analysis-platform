@@ -20,6 +20,9 @@ from app.models.season import Season
 logger = logging.getLogger(__name__)
 
 # 球队别名表：规范名 → 已知别名列表（解析时全部尝试匹配）
+# 俱乐部规范名用中文（dongqiudi 习惯），国家队规范名用 FIFA 官方英文名
+# （与 fifa_official 爬虫 _localized_text 抓取的 TeamName 一致），别名收录
+# Fotmob 等第三方源常见的异写，避免精确匹配失败时新建重复球队。
 TEAM_ALIASES = {
     "曼城": ["Manchester City", "Man City", "曼彻斯特城"],
     "阿森纳": ["Arsenal"],
@@ -31,6 +34,18 @@ TEAM_ALIASES = {
     "巴萨": ["Barcelona", "巴塞罗那"],
     "拜仁": ["Bayern Munich", "拜仁慕尼黑"],
     "大巴黎": ["Paris Saint-Germain", "PSG", "巴黎圣日耳曼"],
+    # ── 2026 世界杯国家队（canonical = FIFA 官方英文名）──
+    # 仅收录已知会与第三方源（Fotmob 等）产生异写的队伍；
+    # France/Argentina/Brazil 等常见英文名两端一致，靠精确匹配即可。
+    "Korea Republic": ["South Korea", "Korea", "韩国"],
+    "IR Iran": ["Iran", "Islamic Republic of Iran", "伊朗"],
+    "USA": ["United States", "United States of America", "USMNT", "美国"],
+    "Côte d'Ivoire": ["Ivory Coast", "科特迪瓦"],
+    "Bosnia and Herzegovina": ["Bosnia", "波黑"],
+    "Cape Verde Islands": ["Cape Verde", "佛得角"],
+    "IRL": ["Ireland", "Republic of Ireland", "爱尔兰"],
+    "North Macedonia": ["Macedonia", "北马其顿"],
+    "Republic of Ireland": ["Ireland", "爱尔兰"],
 }
 
 # 联赛别名表

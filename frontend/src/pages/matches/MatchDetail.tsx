@@ -229,6 +229,12 @@ export function MatchDetail() {
   const hasScore = match.home_score != null && match.away_score != null;
   const xgTimeline = report?.xg_timeline;
   const shots = report?.shots?.shots ?? [];
+  // xG 来源优先级：逐脚时间线（真实射门累加）> 单场汇总（Fotmob，存在 Match.home_xg/away_xg）
+  const homeXgTimeline = xgTimeline?.available ? xgTimeline?.home_team?.final_xg : null;
+  const awayXgTimeline = xgTimeline?.available ? xgTimeline?.away_team?.final_xg : null;
+  const homeXgValue = homeXgTimeline ?? match.home_xg ?? null;
+  const awayXgValue = awayXgTimeline ?? match.away_xg ?? null;
+  const hasAggregateXg = match.home_xg != null || match.away_xg != null;
   const resolvedLeagueName =
     match.league_name && match.league_name !== "???"
       ? match.league_name
@@ -240,8 +246,10 @@ export function MatchDetail() {
   );
   const translatedShotNote = translateDataAvailabilityNote(report?.data_availability?.shots?.note || report?.shots?.note);
   const xgUnavailableNote = isScheduled
-    ? "比赛尚未开始，出现真实逐脚射门后才会生成 xG 时间线。"
-    : translatedXgNote || "2026 世界杯本地后端暂未采集到真实逐脚射门记录，当前无法生成真实 xG 时间线。";
+    ? "比赛尚未开始，开赛后才会逐步生成 xG。"
+    : hasAggregateXg
+      ? "基于 Fotmob 单场汇总 xG（逐脚时间线暂不可用）。"
+      : translatedXgNote || "2026 世界杯暂无免费逐脚射门数据源，当前无法生成 xG。";
   const shotUnavailableNote = isScheduled
     ? "开赛后这里会展示真实射门记录。"
     : translatedShotNote || "比赛结果和事件已更新，但当前仍缺少真实逐脚射门数据，因此暂时没有射门明细和热图。";
@@ -302,8 +310,8 @@ export function MatchDetail() {
 
         <TabsContent value="overview">
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <StatCard title="主队 xG" value={xgTimeline?.home_team.final_xg?.toFixed(2) ?? "--"} icon={TrendingUp} description={xgTimeline?.available ? "基于真实逐脚射门生成" : xgUnavailableNote} />
-            <StatCard title="客队 xG" value={xgTimeline?.away_team.final_xg?.toFixed(2) ?? "--"} icon={TrendingUp} description={xgTimeline?.available ? "基于真实逐脚射门生成" : xgUnavailableNote} />
+            <StatCard title="主队 xG" value={homeXgValue != null ? homeXgValue.toFixed(2) : "--"} icon={TrendingUp} description={xgTimeline?.available ? "基于真实逐脚射门生成" : hasAggregateXg ? "基于 Fotmob 单场汇总 xG" : xgUnavailableNote} />
+            <StatCard title="客队 xG" value={awayXgValue != null ? awayXgValue.toFixed(2) : "--"} icon={TrendingUp} description={xgTimeline?.available ? "基于真实逐脚射门生成" : hasAggregateXg ? "基于 Fotmob 单场汇总 xG" : xgUnavailableNote} />
             <StatCard title="联赛" value={resolvedLeagueName} icon={FileText} />
             <StatCard title="赛季" value={match.season ?? "--"} icon={Calendar} />
           </div>
@@ -397,6 +405,16 @@ export function MatchDetail() {
                           ))}
                         </div>
                       ))}
+                    </div>
+                  ) : hasAggregateXg ? (
+                    <div className="rounded-lg border border-border/50 p-4">
+                      <div className="mb-2 text-sm font-medium">单场 xG 汇总</div>
+                      <div className="flex items-center justify-between text-lg">
+                        <span className="text-muted-foreground">主 {xgTimeline?.home_team?.name ?? "主队"}</span>
+                        <span className="font-mono font-semibold tabular-nums">{homeXgValue != null ? homeXgValue.toFixed(2) : "--"} : {awayXgValue != null ? awayXgValue.toFixed(2) : "--"}</span>
+                        <span className="text-muted-foreground">{xgTimeline?.away_team?.name ?? "客队"} 客</span>
+                      </div>
+                      <div className="mt-3 text-xs text-muted-foreground">基于 Fotmob 单场汇总 xG。逐脚射门时间线暂无免费数据源（FBref 2026 年 1 月下线 xG，Understat/StatsBomb 不覆盖 2026 世界杯）。</div>
                     </div>
                   ) : <div className="rounded-lg border border-border/50 p-4 text-sm text-muted-foreground">{xgUnavailableNote}</div>}
                 </>
