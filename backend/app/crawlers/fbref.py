@@ -32,11 +32,12 @@ _UC_PATCHED = False
 
 
 def _patch_uc_auto(uc_module):
-    """Monkey-patch Patcher.auto() 跳过网络下载，直接用本地 chromedriver
+    """Monkey-patch Patcher.auto()：本地已有 chromedriver 直接用，没有则尝试自动下载
 
     UC 3.5.5 的 auto() 默认会调用 fetch_release_number() 去访问
     googlechromelabs.github.io，国内网络不稳定。
-    改为：检测 chromedriver 是否已存在，存在则直接 patch() 修补 CDP 指纹。
+    改为：检测 chromedriver 是否已存在，存在则直接 patch() 修补 CDP 指纹；
+    不存在则尝试自动下载（服务器环境通常能访问），下载失败再报错。
     幂等：多次调用只 patch 一次。
     """
     global _UC_PATCHED
@@ -47,10 +48,21 @@ def _patch_uc_auto(uc_module):
 
     def _patched_auto(self, force=None):
         if not os.path.exists(self.executable_path):
-            raise FileNotFoundError(
-                f"chromedriver 不存在: {self.executable_path}，"
-                "请先运行 backend/_install_chromedriver.py 下载"
-            )
+            # chromedriver 不存在，尝试让 UC 自动下载
+            logger.info("[uc] chromedriver 不存在，尝试自动下载: %s", self.executable_path)
+            try:
+                # 还原原始 auto 逻辑：fetch_release_number + download + unzip
+                self.fetch_release_number()
+                self.fetch_package()
+            except Exception as e:
+                raise FileNotFoundError(
+                    f"chromedriver 自动下载失败（网络问题？）: {e}\n"
+                    f"请手动下载对应版本的 chromedriver 放到 {self.executable_path}"
+                ) from e
+            if not os.path.exists(self.executable_path):
+                raise FileNotFoundError(
+                    f"chromedriver 下载后仍不存在: {self.executable_path}"
+                )
         try:
             if self.is_binary_patched():
                 return True
@@ -61,7 +73,7 @@ def _patch_uc_auto(uc_module):
 
     Patcher.auto = _patched_auto
     _UC_PATCHED = True
-    logger.info("[fbref] 已 monkey-patch Patcher.auto() 跳过网络下载")
+    logger.info("[uc] 已 monkey-patch Patcher.auto()（本地优先 + 自动下载兜底）")
 
 
 class FBrefCrawler(BaseCrawler):

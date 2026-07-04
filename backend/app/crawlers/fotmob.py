@@ -68,7 +68,17 @@ class FotmobCrawler(BaseCrawler):
         _patch_uc_auto(uc)
 
         options = uc.ChromeOptions()
-        options.add_argument("--start-maximized")
+        # 无图形界面（服务器）用 headless=new；有图形（本地）用有头模式
+        # UC 的 headless=new 能较好绕过 Cloudflare（旧 headless 会被识别）
+        if not os.environ.get("DISPLAY") and os.name != "nt":
+            # Linux 服务器无 DISPLAY
+            options.add_argument("--headless=new")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--disable-gpu")
+            options.add_argument("--window-size=1920,1080")
+        else:
+            options.add_argument("--start-maximized")
         options.add_argument("--disable-popup-blocking")
 
         user_data_dir = os.path.join(
