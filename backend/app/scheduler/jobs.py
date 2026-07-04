@@ -12,6 +12,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 from app.config import (
     AI_PREDICTION_SCAN_SECONDS,
+    ENABLE_FOTMOB_XG_CRAWL,
     EXPORT_CRON,
     LIVE_CRAWL_INTERVAL,
 )
@@ -61,15 +62,19 @@ def setup_jobs():
         coalesce=True,
     )
 
-    scheduler.add_job(
-        refresh_worldcup_match_xg,
-        IntervalTrigger(seconds=WORLD_CUP_MATCH_XG_REFRESH_SECONDS),
-        id="worldcup_match_xg_refresh",
-        name="worldcup-match-xg-refresh",
-        replace_existing=True,
-        max_instances=1,
-        coalesce=True,
-    )
+    # Fotmob xG 定时抓取：仅在能跑 UC 浏览器的环境开启（默认关闭）
+    # headless 服务器跑不了 UC（Cloudflare 检测），需在本地/能跑 UC 的环境
+    # 设置 ENABLE_FOTMOB_XG_CRAWL=True 开启
+    if ENABLE_FOTMOB_XG_CRAWL:
+        scheduler.add_job(
+            refresh_worldcup_match_xg,
+            IntervalTrigger(seconds=WORLD_CUP_MATCH_XG_REFRESH_SECONDS),
+            id="worldcup_match_xg_refresh",
+            name="worldcup-match-xg-refresh",
+            replace_existing=True,
+            max_instances=1,
+            coalesce=True,
+        )
 
     scheduler.add_job(
         export_daily_report,
@@ -90,10 +95,10 @@ def setup_jobs():
     )
 
     logger.info(
-        "Scheduler jobs registered: live(%ss), worldcup schedule(%ss), worldcup xg(%ss), daily crawl(06:00), export(%s), ai-prediction(%ss)",
+        "Scheduler jobs registered: live(%ss), worldcup schedule(%ss), worldcup xg(%s), daily crawl(06:00), export(%s), ai-prediction(%ss)",
         LIVE_CRAWL_INTERVAL,
         WORLD_CUP_SCHEDULE_REFRESH_SECONDS,
-        WORLD_CUP_MATCH_XG_REFRESH_SECONDS,
+        "on" if ENABLE_FOTMOB_XG_CRAWL else "off",
         EXPORT_CRON,
         AI_PREDICTION_SCAN_SECONDS,
     )

@@ -47,6 +47,8 @@ CRAWL_DELAY_MIN = float(os.getenv("CRAWL_DELAY_MIN", 2))
 CRAWL_DELAY_MAX = float(os.getenv("CRAWL_DELAY_MAX", 5))
 LIVE_CRAWL_INTERVAL = int(os.getenv("LIVE_CRAWL_INTERVAL", 30))
 ENABLE_SCHEDULER = os.getenv("ENABLE_SCHEDULER", "True").lower() == "true"
+# Fotmob xG 定时抓取开关：默认关闭（headless 服务器跑不了 UC，需在能跑 UC 的环境手动开启）
+ENABLE_FOTMOB_XG_CRAWL = os.getenv("ENABLE_FOTMOB_XG_CRAWL", "False").lower() == "true"
 
 # ── Excel 导出 ──
 EXPORT_DIR = os.getenv("EXPORT_DIR", "./export")
