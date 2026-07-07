@@ -5,6 +5,25 @@ import json
 import time
 import random
 import logging
+import warnings as _warnings
+
+# Suppress urllib3/chardet version-mismatch warning emitted by `requests`:
+#   RequestsDependencyWarning: urllib3 (2.x) or chardet (...) doesn't match...
+# This happens when requests 2.31+ is paired with a newer urllib3 than it
+# officially pins.  The actual HTTP/TLS behaviour is unaffected.
+_warnings.filterwarnings("ignore", message=".*urllib3.*doesn't match.*", category=DeprecationWarning)
+# `requests` emits its own subclass that doesn't always get caught above:
+try:
+    from requests.exceptions import RequestsDependencyWarning as _RDW
+    _warnings.filterwarnings("ignore", category=_RDW)
+except ImportError:
+    pass
+
+# Silence InsecureRequestWarning globally — we deliberately pass verify=False
+# for a handful of FIFA endpoints whose TLS chain causes UNEXPECTED_EOF errors.
+from urllib3.exceptions import InsecureRequestWarning as _IRW
+_warnings.filterwarnings("ignore", category=_IRW)
+
 import requests
 from abc import ABC, abstractmethod
 from app.config import CRAWL_DELAY_MIN, CRAWL_DELAY_MAX

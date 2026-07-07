@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import time
 from datetime import datetime
@@ -18,6 +19,10 @@ from app.prediction.llm_client import (
     LLMError,
     LLMResponse,
     StepFunClient,
+    _candidate_json_texts,
+    _cleanup_json_candidate,
+    _close_json_candidate,
+    _message_text,
     extract_mermaid_block,
 )
 from app.prediction.prompts import (
@@ -381,32 +386,79 @@ class PredictionOrchestrator:
         if not resp:
             return None, None, False, ["missing_response"], None
 
+        parsed: dict | None = None
+        parse_exc: LLMError | None = None
         try:
             parsed = resp.parse_json()
-            normalized = _normalize_prediction_payload(parsed, resp, include_mermaid=include_mermaid)
         except LLMError as exc:
-            mermaid = extract_mermaid_block(resp.content) or extract_mermaid_block(resp.reasoning)
-            if mermaid:
-                fallback = _normalize_prediction_payload(
-                    {
-                        "home_win_prob": 33.3,
-                        "draw_prob": 33.3,
-                        "away_win_prob": 33.4,
-                        "predicted_home_score": 1,
-                        "predicted_away_score": 1,
-                        "conservative_verdict": "结构化结论损坏，暂按保守平局兜底。",
-                        "aggressive_verdict": "等待下一轮或裁决轮给出更明确方向。",
-                        "confidence": 35,
-                        "key_reasons": ["已提取 Mermaid 导图，但未获得完整 JSON 结论"],
-                        "thinking": (resp.reasoning or resp.content or "").strip(),
-                        "mermaid_mindmap": mermaid,
-                    },
-                    resp,
-                    include_mermaid=True,
-                )
-                issues = _semantic_issues(fallback)
-                return fallback, f"{exc}（已提取 Mermaid 并做结构化兜底）", True, issues, None
-            return None, str(exc), False, ["json_parse_failed"], None
+            parse_exc = exc
+
+        # ── Aggressive fallback: search the combined content+reasoning text for
+        #    any valid JSON object when the per-source extraction fails.
+        if parsed is None and (resp.content or resp.reasoning):
+            combined = (resp.content or "") + "\n" + (resp.reasoning or "")
+            for candidate in _candidate_json_texts(_message_text(combined)):
+                try:
+                    parsed = json.loads(candidate)
+                    break
+                except json.JSONDecodeError:
+                    repaired = _cleanup_json_candidate(_close_json_candidate(candidate))
+                    if repaired != candidate:
+                        try:
+                            parsed = json.loads(repaired)
+                            break
+                        except json.JSONDecodeError:
+                            pass
+
+        if parsed is not None:
+            try:
+                normalized = _normalize_prediction_payload(parsed, resp, include_mermaid=include_mermaid)
+            except LLMError as inner_exc:
+                parse_exc = parse_exc or inner_exc
+                parsed = None
+            else:
+                issues = _semantic_issues(normalized)
+                repaired = False
+                error = None
+                if issues:
+                    normalized, error, repaired = self._attempt_semantic_repair(
+                        resp,
+                        normalized,
+                        issues,
+                        include_mermaid=include_mermaid,
+                    )
+                    issues = _semantic_issues(normalized)
+
+                source_quality = None
+                if assess_sources:
+                    normalized, source_quality = self._apply_source_quality_penalty(normalized, resp)
+
+                return normalized, error, repaired, issues, source_quality
+        else:
+            normalized = None
+
+        mermaid = extract_mermaid_block(resp.content) or extract_mermaid_block(resp.reasoning)
+        if mermaid:
+            fallback = _normalize_prediction_payload(
+                {
+                    "home_win_prob": 33.3,
+                    "draw_prob": 33.3,
+                    "away_win_prob": 33.4,
+                    "predicted_home_score": 1,
+                    "predicted_away_score": 1,
+                    "conservative_verdict": "结构化结论损坏，暂按保守平局兜底。",
+                    "aggressive_verdict": "等待下一轮或裁决轮给出更明确方向。",
+                    "confidence": 35,
+                    "key_reasons": ["已提取 Mermaid 导图，但未获得完整 JSON 结论"],
+                    "thinking": (resp.reasoning or resp.content or "").strip(),
+                    "mermaid_mindmap": mermaid,
+                },
+                resp,
+                include_mermaid=True,
+            )
+            issues = _semantic_issues(fallback)
+            return fallback, f"{parse_exc}（已提取 Mermaid 并做结构化兜底）", True, issues, None
+        return None, str(parse_exc) if parse_exc else "json_parse_failed", False, ["json_parse_failed"], None
 
         issues = _semantic_issues(normalized)
         repaired = False
@@ -435,7 +487,7 @@ class PredictionOrchestrator:
             build_tactical_prompt(context_block, meta, allow_search=False, web_intel_block=intel_block, vision_block=vision_block),
             enable_search=False,
             json_mode=True,
-            max_tokens=4096,
+            max_tokens=8192,
         )
         parsed = None
         repaired = False
@@ -461,7 +513,7 @@ class PredictionOrchestrator:
             build_contextual_prompt(context_block, meta, allow_search=False, web_intel_block=intel_block, vision_block=vision_block),
             enable_search=False,
             json_mode=True,
-            max_tokens=4096,
+            max_tokens=8192,
         )
         parsed = None
         repaired = False
@@ -660,20 +712,26 @@ class PredictionOrchestrator:
         start = time.time()
         logger.info("开始预测比赛 match_id=%s", match_id)
 
+        ctx_start = time.time()
         try:
             context = build_match_context(db, match_id)
         except ValueError as exc:
             logger.error("上下文采集失败: %s", exc)
             return self._persist_failure(db, match_id, str(exc))
+        ctx_cost_ms = int((time.time() - ctx_start) * 1000)
 
         meta = context.get("meta", {})
         context_block = build_context_block(context)
 
         # 独立联网搜索：为这场比赛拉取实时情报，注入 context 喂给 step 两轮分析
+        search_start = time.time()
         search_results, search_error = self._gather_web_intel(meta)
+        search_cost_ms = int((time.time() - search_start) * 1000)
 
         # 视觉理解增强：对搜索到的图片做视觉分析，产出额外情报块
+        vision_start = time.time()
         vision_block, vision_record = self._run_vision_analysis(meta, search_results)
+        vision_cost_ms = int((time.time() - vision_start) * 1000)
 
         round1 = self._round_tactical(context_block, meta, search_results, vision_block)
         round2 = self._round_contextual(context_block, meta, search_results, vision_block)
@@ -688,7 +746,17 @@ class PredictionOrchestrator:
         all_rounds_with_arbiter = all_rounds + [arbiter_round]
 
         total_tokens = sum(int(round_data.get("tokens") or 0) for round_data in all_rounds_with_arbiter)
-        total_cost_ms = int((time.time() - start) * 1000)
+        # total_cost_ms = sum of per-round LLM API latencies so that the reported number
+        # is consistent with the per-round "cost_ms" breakdown the frontend displays.
+        # (Previously this measured wall-clock, producing a 43.4 s discrepancy vs.
+        #  the round sum due to context-building / web-search / vision overhead.)
+        total_cost_ms = sum(int(round_data.get("cost_ms") or 0) for round_data in all_rounds_with_arbiter)
+        wall_ms = int((time.time() - start) * 1000)
+        logger.info(
+            "cost breakdown match_id=%s wall=%dms round_total=%dms overhead=%dms (ctx=%d search=%d vision=%d)",
+            match_id, wall_ms, total_cost_ms, wall_ms - total_cost_ms,
+            ctx_cost_ms, search_cost_ms, vision_cost_ms,
+        )
         status = "completed" if final else "failed"
         error_messages = [round_data.get("error") for round_data in all_rounds_with_arbiter if round_data.get("error")]
         error_msg = " ; ".join(error_messages) if error_messages else None

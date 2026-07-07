@@ -70,34 +70,69 @@ def _extract_fenced_blocks(text: str) -> list[str]:
 
 
 def _extract_balanced_json(text: str) -> str:
-    start = text.find("{")
-    if start < 0:
-        return ""
+    """Return the FIRST complete balanced {...} block, or empty string if none found."""
+    for block in _extract_all_balanced_json_objects(text):
+        return block
+    return ""
 
-    depth = 0
-    in_string = False
-    escaped = False
-    for idx in range(start, len(text)):
-        char = text[idx]
-        if in_string:
-            if escaped:
-                escaped = False
-            elif char == "\\":
-                escaped = True
-            elif char == '"':
-                in_string = False
-            continue
 
-        if char == '"':
-            in_string = True
-        elif char == "{":
-            depth += 1
-        elif char == "}":
-            depth -= 1
-            if depth == 0:
-                return text[start : idx + 1]
+def _extract_all_balanced_json_objects(text: str) -> list[str]:
+    """Return ALL top-level balanced {...} blocks found in *text* (longest first).
 
-    return text[start:].strip()
+    When the LLM's reasoning / content embeds multiple {…} fragments (e.g. a
+    thinking block followed by the actual JSON payload), the original single-block
+    extractor would only catch the first (often garbage) one.  By returning every
+    complete object, we guarantee the real payload is among the candidates tried.
+    """
+    blocks: list[str] = []
+    length = len(text)
+    idx = 0
+    while idx < length:
+        start = text.find("{", idx)
+        if start < 0:
+            break
+        depth = 0
+        in_string = False
+        escaped = False
+        end = start
+        for j in range(start, length):
+            char = text[j]
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif char == "\\":
+                    escaped = True
+                elif char == '"':
+                    in_string = False
+                continue
+            if char == '"':
+                in_string = True
+            elif char == "{":
+                depth += 1
+            elif char == "}":
+                depth -= 1
+                if depth == 0:
+                    end = j
+                    break
+        if depth == 0 and end > start:
+            blocks.append(text[start : end + 1])
+            idx = end + 1
+        else:
+            idx = start + 1
+    # Longest first — more likely to be the real payload, not a thinking fragment
+    blocks.sort(key=len, reverse=True)
+    return blocks
+
+
+_THINK_TAG_RE = re.compile(
+    r"<\s*(?:thinking|think|reasoning)\s*[^>]*>.*?<\s*/\s*(?:thinking|think|reasoning)\s*>",
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def _strip_llm_meta_tags(text: str) -> str:
+    """Remove <thinking>…</thinking> and similar LLM-meta blocks that are NOT JSON."""
+    return _THINK_TAG_RE.sub("", text)
 
 
 def _cleanup_json_candidate(text: str) -> str:
@@ -155,12 +190,13 @@ def _candidate_json_texts(text: str) -> list[str]:
         seen.add(normalized)
         candidates.append(normalized)
 
-    add(text)
-    for block in _extract_fenced_blocks(text):
+    # Strip LLM meta tags (<thinking> etc.) so embedded JSON isn't confused by thinking text
+    clean_text = _strip_llm_meta_tags(text)
+    add(clean_text)
+    for block in _extract_fenced_blocks(clean_text):
         add(block)
-    balanced = _extract_balanced_json(text)
-    if balanced:
-        add(balanced)
+    for block in _extract_all_balanced_json_objects(clean_text):
+        add(block)
     return candidates
 
 

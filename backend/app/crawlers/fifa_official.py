@@ -58,6 +58,10 @@ class FIFAOfficialCrawler(BaseCrawler):
         super().__init__(source_code="fifa_official", base_url=self.SITE_BASE_URL)
         self._gameday_token: str | None = None
         self._gameday_token_expires_at: float = 0.0
+        # Disable SSL verification: FIFA endpoints intermittently cause
+        # "SSL: UNEXPECTED_EOF_WHILE_READING" with certain system TLS stacks.
+        # The InsecureRequestWarning is silenced globally in base.py.
+        self.session.verify = False
         self.session.headers.update(
             {
                 "Accept": "application/json, text/plain, */*",
