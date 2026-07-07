@@ -327,7 +327,7 @@ class PredictionOrchestrator:
 
     @property
     def web_search_available(self) -> bool:
-        """独立联网搜索（Tavily/Serper）是否可用。"""
+        """独立联网搜索（Firecrawl）是否可用。"""
         return web_search_available()
 
     def _apply_source_quality_penalty(self, parsed: dict | None, resp: LLMResponse | None) -> tuple[dict | None, dict[str, Any] | None]:

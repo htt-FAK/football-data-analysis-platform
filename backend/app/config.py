@@ -82,15 +82,16 @@ AI_REQUEST_TIMEOUT = int(os.getenv("AI_REQUEST_TIMEOUT", "120"))
 # 是否启用自动预测调度
 ENABLE_AI_PREDICTION = os.getenv("ENABLE_AI_PREDICTION", "True").lower() == "true"
 
-# ── 联网搜索 API（独立于阶跃原生 web_search，作为实时情报来源）──
-# provider 选哪个：tavily / serper / none（none=禁用联网搜索）
-WEB_SEARCH_PROVIDER = os.getenv("WEB_SEARCH_PROVIDER", "tavily").lower()
-# Tavily（https://tavily.com，免费 1000 次/月）
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
-TAVILY_BASE_URL = os.getenv("TAVILY_BASE_URL", "https://api.tavily.com")
-# Serper（https://serper.dev，免费 2500 次/月）
-SERPER_API_KEY = os.getenv("SERPER_API_KEY", "")
-SERPER_BASE_URL = os.getenv("SERPER_BASE_URL", "https://google.serper.dev")
+# ── 联网搜索（Firecrawl Search，作为实时情报来源）──
+# provider 选哪个：firecrawl / none（none=禁用联网搜索）
+WEB_SEARCH_PROVIDER = os.getenv("WEB_SEARCH_PROVIDER", "firecrawl").lower()
+# Firecrawl Search API（https://firecrawl.dev，官方，有免费层）：
+#   - 免 Key：不带 Authorization 直接调 /v2/search（按出口 IP 限流，需 IPv4 且非代理）
+#   - 有 Key：填 FIRECRAWL_API_KEY（1000 credits/月免费额度），更高限额、绕过 IP 限制
+# 注：官方 Hosted MCP 免 Key 端点（mcp.firecrawl.dev）只对官方托管代理开放，
+# 后端裸 HTTP 客户端会被 401 拒绝，故这里直连 REST /v2/search。
+FIRECRAWL_API_BASE = os.getenv("FIRECRAWL_API_BASE", "https://api.firecrawl.dev")
+FIRECRAWL_API_KEY = os.getenv("FIRECRAWL_API_KEY", "")
 # 每场比赛每轮搜索返回的最大结果数
 WEB_SEARCH_MAX_RESULTS = int(os.getenv("WEB_SEARCH_MAX_RESULTS", "6"))
 WEB_SEARCH_TIMEOUT = int(os.getenv("WEB_SEARCH_TIMEOUT", "20"))
