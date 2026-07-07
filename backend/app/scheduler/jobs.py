@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
 from datetime import datetime
@@ -104,9 +105,46 @@ def setup_jobs():
     )
 
 
-def start_scheduler():
-    """Start the scheduler during FastAPI lifespan."""
+def _bootstrap_data_sources():
+    """Seed built-in data sources in a worker thread (pure DB I/O).
 
+    This is the only potentially slow/blocking step in the scheduler bootstrap
+    path. APScheduler.start() itself MUST run on the main event loop because
+    AsyncIOScheduler binds to the running loop at start time.
+    """
+    db = SessionLocal()
+    try:
+        created = ensure_builtin_data_sources(db)
+        if created:
+            logger.info("Seeded %d built-in data sources (async bootstrap)", created)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Bootstrap data sources failed (scheduler still starting): %s", exc)
+    finally:
+        db.close()
+
+
+async def start_scheduler_async():
+    """Start the scheduler without blocking the FastAPI event loop.
+
+    Data-source seeding runs in a worker thread via asyncio.to_thread; the
+    APScheduler.start() call itself stays on the main loop (AsyncIOScheduler
+    requires a running loop). Bootstrap failures are contained and logged.
+    """
+    try:
+        await asyncio.to_thread(_bootstrap_data_sources)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Async bootstrap of data sources failed: %s", exc)
+
+    try:
+        setup_jobs()
+        scheduler.start()
+        logger.info("APScheduler started (async bootstrap complete)")
+    except Exception as exc:  # noqa: BLE001
+        logger.error("APScheduler start failed: %s", exc)
+
+
+def start_scheduler():
+    """Start the scheduler during FastAPI lifespan (legacy sync entry point)."""
     db = SessionLocal()
     try:
         created = ensure_builtin_data_sources(db)

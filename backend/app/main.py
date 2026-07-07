@@ -1,6 +1,8 @@
 """FastAPI application entrypoint."""
 
+import asyncio
 import json
+import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -8,6 +10,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
+
+logger = logging.getLogger(__name__)
 
 from app.api import (
     crawl_router,
@@ -30,11 +34,22 @@ STATIC_DIR = Path(__file__).resolve().parent / "static"
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Start and stop background scheduler with the app lifecycle."""
+    startup_task: asyncio.Task | None = None
     if ENABLE_SCHEDULER:
-        from app.scheduler.jobs import shutdown_scheduler, start_scheduler
+        from app.scheduler.jobs import shutdown_scheduler, start_scheduler_async
 
-        start_scheduler()
+        # Schedule bootstrap+start in background; do not block uvicorn accept loop.
+        startup_task = asyncio.create_task(
+            start_scheduler_async(), name="scheduler-startup"
+        )
         yield
+        # On shutdown: cancel pending startup if still running, then stop scheduler.
+        if startup_task and not startup_task.done():
+            startup_task.cancel()
+            try:
+                await startup_task
+            except (asyncio.CancelledError, Exception):
+                pass
         shutdown_scheduler()
         return
 

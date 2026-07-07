@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
@@ -48,8 +49,32 @@ def list_matches_with_prediction(
     limit: int = Query(50, ge=1, le=200, description="Maximum number of rows to return"),
     db: Session = Depends(get_db),
 ):
-    """List matches that already have prediction records."""
+    """List matches that already have prediction records (fast SELECT, no external refresh)."""
     return {"matches": list_predicted_matches(db, limit=limit)}
+
+
+@router.post("/matches/{match_id}/refresh")
+async def refresh_match_prediction(
+    match_id: int,
+    db: Session = Depends(get_db),
+):
+    """Manually refresh one match's data from FIFA schedule and return the latest prediction.
+
+    Useful when the cached data is stale; triggers a single-match refresh off the
+    event loop via asyncio.to_thread so it does not block other requests.
+    """
+    match = db.get(Match, match_id)
+    if not match:
+        raise HTTPException(status_code=404, detail=f"未找到比赛 {match_id}")
+
+    try:
+        await asyncio.to_thread(refresh_worldcup_matches, db, [match])
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("refresh_worldcup_matches failed for match %s: %s", match_id, exc)
+        # 刷新失败不拒绝返回：仍返回 DB 中已有数据
+    db.expire_all()
+    result = get_prediction(db, match_id)
+    return {"match_id": match_id, "refreshed": True, "prediction": result}
 
 
 @router.post("/matches/{match_id}/trigger")

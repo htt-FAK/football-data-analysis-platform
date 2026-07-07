@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
 
 from app.config import VISION_MAX_IMAGES
@@ -62,6 +63,36 @@ def _is_good_source(url: str) -> bool:
     return any(good in host for good in _GOOD_IMAGE_HOSTS)
 
 
+def _probe_image_url(url: str) -> bool:
+    """5s 内验证 URL 可达且是 image/* Content-Type。
+
+    返回 True 表示该 URL 可以被视觉模型安全使用。
+    """
+    import requests as _requests  # 局部导入避免循环依赖
+
+    try:
+        resp = _requests.head(
+            url,
+            timeout=5,
+            allow_redirects=True,
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"},
+        )
+        if resp.status_code != 200:
+            logger.debug("image URL %s returned %d, skipped", url, resp.status_code)
+            return False
+        ct = (resp.headers.get("Content-Type") or "").lower()
+        if not ct.startswith("image/"):
+            # 部分 CDN 不返 Content-Type，但 url 含 .jpg/.png 也放行
+            lower = url.lower().split("?")[0]
+            if not any(lower.endswith(ext) for ext in _IMAGE_EXT):
+                logger.debug("image URL %s Content-Type=%s, skipped", url, ct)
+                return False
+        return True
+    except _requests.RequestException as exc:
+        logger.debug("image URL %s probe failed: %s", url, exc)
+        return False
+
+
 def extract_image_urls(results: list[SearchResult], limit: int = VISION_MAX_IMAGES) -> list[dict]:
     """从搜索结果里提取图片 URL，去重，返回 [{url, description, source}]。
 
@@ -91,6 +122,16 @@ def extract_image_urls(results: list[SearchResult], limit: int = VISION_MAX_IMAG
                 others.append(entry)
     # 优质来源优先，补足 limit
     collected = (good + others)[:limit]
+
+    # 并行 HEAD 校验：过滤掉 404/403/非 image Content-Type 的失效链接
+    if collected:
+        workers = min(5, len(collected))
+        with ThreadPoolExecutor(max_workers=workers) as exe:
+            valid_flags = list(
+                exe.map(_probe_image_url, [c["url"] for c in collected])
+            )
+        collected = [c for c, ok in zip(collected, valid_flags) if ok]
+
     return collected
 
 
@@ -134,10 +175,15 @@ def analyze_images(
 ) -> tuple[LLMResponse | None, str | None]:
     """调视觉模型分析图片，返回 (响应, 错误)。
 
-    images 为 extract_image_urls 的输出。无图片时直接返回 (None, "no_images")。
+    images 为 extract_image_urls 的输出。无图片时直接返回 (None, reason)。
+    reason 区分 "no_images"（调用方未搜到任何图片）和 "no_valid_images"
+    （所有候选 URL 经 HEAD 校验后均失效）。
     """
     if not images:
-        return None, "no_images"
+        # 区分"从未搜到"vs"搜到但全挂了"：images 调用方已做 probe，
+        # 能走到这里说明所有候选都被过滤，记 warning 静默跳过。
+        logger.warning("视觉分析跳过：无可用图片（候选 URL 均已失效或从未搜到）")
+        return None, "no_valid_images"
     image_urls = [img["url"] for img in images]
     try:
         resp = client.chat_multimodal(

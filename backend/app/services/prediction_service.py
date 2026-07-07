@@ -181,9 +181,6 @@ def serialize_prediction(pred: MatchPrediction | None, db: Session | None = None
         return None
 
     match = db.get(Match, pred.match_id) if db else None
-    if db and match:
-        refresh_worldcup_matches(db, [match])
-        match = db.get(Match, pred.match_id)
     home_team = match.home_team if match else None
     away_team = match.away_team if match else None
 
@@ -247,8 +244,7 @@ def list_predicted_matches(db: Session, limit: int = 50) -> list[dict]:
 
     match_ids = [pred.match_id for pred in preds]
     matches = db.query(Match).filter(Match.id.in_(match_ids or [-1])).all()
-    refresh_worldcup_matches(db, matches)
-    match_map = {match.id: match for match in db.query(Match).filter(Match.id.in_(match_ids or [-1])).all()}
+    match_map = {match.id: match for match in matches}
 
     result: list[dict] = []
     for pred in preds:
