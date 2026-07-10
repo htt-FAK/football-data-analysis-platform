@@ -110,10 +110,24 @@ class BaseCrawler(ABC):
         Args:
             data: 待保存的数据（dict 或 list）
             hdfs_path: HDFS 上的目标路径
+
+        工程改进 (C3):
+            - 受配置 CRAWLER_HDFS_ENABLE 开关控制；默认关闭，避免本地/HDFS 不可达
+              时错误日志刷屏。
+            - 即使开启，HDFS 写入失败也降级为 warning 而非抛出异常，不阻断主爬取流程。
         """
-        payload = json.dumps(data, ensure_ascii=False)
-        hdfs_client.write_json(payload, hdfs_path)
-        logger.info("[%s] 原始数据已写入 HDFS: %s", self.source_code, hdfs_path)
+        from app.config import CRAWLER_HDFS_ENABLE
+        if not CRAWLER_HDFS_ENABLE:
+            return
+        try:
+            payload = json.dumps(data, ensure_ascii=False)
+            hdfs_client.write_json(payload, hdfs_path)
+            logger.info("[%s] 原始数据已写入 HDFS: %s", self.source_code, hdfs_path)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning(
+                "[%s] HDFS 写入失败（已忽略，不影响主流程）: %s -> %s",
+                self.source_code, hdfs_path, exc,
+            )
 
     @abstractmethod
     def crawl(self, target: str, **kwargs):

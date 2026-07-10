@@ -301,6 +301,8 @@ def _round_record(
         "search_results": (resp.search_results if resp else []) or [],
         "conclusion": parsed or {},
         "tokens": (resp.total_tokens if resp else 0) or 0,
+        "prompt_tokens": (resp.prompt_tokens if resp else 0) or 0,
+        "completion_tokens": (resp.completion_tokens if resp else 0) or 0,
         "cost_ms": (resp.cost_ms if resp else 0) or 0,
         "error": error,
         "repaired_json": repaired,
@@ -335,6 +337,28 @@ def _safe_call(fn, *args, **kwargs):
     except Exception as exc:  # noqa: BLE001
         logger.exception("LLM 调用异常: %s", exc)
         return None, f"{type(exc).__name__}: {exc}"
+
+
+def _emit_round_log(round_record: dict) -> None:
+    """Emit structured JSON log for a completed round (C1 observability)."""
+    try:
+        log_entry = {
+            "event": "round_completed",
+            "round": round_record.get("round"),
+            "status": round_record.get("status"),
+            "cost_ms": int(round_record.get("cost_ms") or 0),
+            "prompt_tokens": int(round_record.get("prompt_tokens") or 0),
+            "completion_tokens": int(round_record.get("completion_tokens") or 0),
+            "tokens": int(round_record.get("tokens") or 0),
+            "model": round_record.get("model"),
+            "focus": round_record.get("focus"),
+            "error": round_record.get("error"),
+            "repaired_json": round_record.get("repaired_json", False),
+            "semantic_issues": round_record.get("semantic_issues", []),
+        }
+        logger.info(json.dumps(log_entry, ensure_ascii=False))
+    except Exception:  # noqa: BLE001
+        pass  # Never let logging break the prediction flow
 
 
 class PredictionOrchestrator:
@@ -759,6 +783,8 @@ class PredictionOrchestrator:
         vision_start = time.time()
         vision_block, vision_record = self._run_vision_analysis(meta, search_results)
         vision_cost_ms = int((time.time() - vision_start) * 1000)
+        if vision_record:
+            _emit_round_log(vision_record)
 
         # ── B1 优化：R1 (战术) + R2 (场外) 并行执行 ──
         # R3 (深度推理) 依赖 R1+R2 结果 (prior_for_reasoning)，不能并行
@@ -792,15 +818,19 @@ class PredictionOrchestrator:
             match_id, parallel_cost, r1_ms, r2_ms, r1_ms + r2_ms,
             (r1_ms + r2_ms) - parallel_cost,
         )
+        _emit_round_log(round1)
+        _emit_round_log(round2)
 
         prior_for_reasoning = [round_data for round_data in (round1, round2) if round_data.get("status") in {"completed", "partial"}]
         round3 = self._round_reasoning(context_block, meta, prior_for_reasoning)
+        _emit_round_log(round3)
         all_rounds: list[dict] = []
         if vision_record:
             all_rounds.append(vision_record)
         all_rounds.extend([round1, round2, round3])
 
         final, arbiter_round = self._arbitrate(meta, all_rounds)
+        _emit_round_log(arbiter_round)
         all_rounds_with_arbiter = all_rounds + [arbiter_round]
 
         total_tokens = sum(int(round_data.get("tokens") or 0) for round_data in all_rounds_with_arbiter)
@@ -818,6 +848,37 @@ class PredictionOrchestrator:
         status = "completed" if final else "failed"
         error_messages = [round_data.get("error") for round_data in all_rounds_with_arbiter if round_data.get("error")]
         error_msg = " ; ".join(error_messages) if error_messages else None
+
+        # ── C1: Structured summary log ──────────────────────────────────────────────
+        try:
+            summary_entry = {
+                "event": "prediction_completed",
+                "match_id": match_id,
+                "status": status,
+                "total_ms": wall_ms,
+                "total_cost_ms": total_cost_ms,
+                "total_tokens": total_tokens,
+                "total_prompt_tokens": sum(int(r.get("prompt_tokens") or 0) for r in all_rounds_with_arbiter),
+                "total_completion_tokens": sum(int(r.get("completion_tokens") or 0) for r in all_rounds_with_arbiter),
+                "num_rounds": len(all_rounds_with_arbiter),
+                "rounds": [
+                    {
+                        "round": r.get("round"),
+                        "focus": r.get("focus"),
+                        "model": r.get("model"),
+                        "status": r.get("status"),
+                        "cost_ms": int(r.get("cost_ms") or 0),
+                        "tokens": int(r.get("tokens") or 0),
+                        "prompt_tokens": int(r.get("prompt_tokens") or 0),
+                        "completion_tokens": int(r.get("completion_tokens") or 0),
+                    }
+                    for r in all_rounds_with_arbiter
+                ],
+                "error": error_msg,
+            }
+            logger.info(json.dumps(summary_entry, ensure_ascii=False))
+        except Exception:  # noqa: BLE001
+            pass  # Never let logging break persistence
 
         return self._persist(
             db,

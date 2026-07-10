@@ -99,3 +99,13 @@ WEB_SEARCH_TIMEOUT = int(os.getenv("WEB_SEARCH_TIMEOUT", "20"))
 ENABLE_VISION_INTEL = os.getenv("ENABLE_VISION_INTEL", "True").lower() == "true"
 # 每场比赛视觉分析最多处理的图片数（控制 token 与耗时）
 VISION_MAX_IMAGES = int(os.getenv("VISION_MAX_IMAGES", "5"))
+
+# ── LLM 重试机制（C2 工程改进）──
+# 最大重试次数（含首次调用，共 N 次尝试）
+LLM_RETRY_MAX_ATTEMPTS = int(os.getenv("LLM_RETRY_MAX_ATTEMPTS", "3"))
+# 指数退避基数（秒）：实际等待 = backoff ** attempt（2s → 4s → 8s）
+LLM_RETRY_BACKOFF_FACTOR = int(os.getenv("LLM_RETRY_BACKOFF_FACTOR", "2"))
+
+# ── 爬虫 HDFS 落盘开关（C3 降噪改进）──
+# 默认禁用：开发/本地环境通常无 HDFS，避免大量写入错误日志刷屏
+CRAWLER_HDFS_ENABLE = os.getenv("CRAWLER_HDFS_ENABLE", "False").lower() == "true"

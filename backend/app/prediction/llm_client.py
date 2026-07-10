@@ -16,6 +16,8 @@ from app.config import (
     DEEPSEEK_API_KEY,
     DEEPSEEK_BASE_URL,
     DEEPSEEK_MODEL,
+    LLM_RETRY_BACKOFF_FACTOR,
+    LLM_RETRY_MAX_ATTEMPTS,
     STEPFUN_API_KEY,
     STEPFUN_BASE_URL,
     STEPFUN_MODEL,
@@ -27,6 +29,67 @@ logger = logging.getLogger(__name__)
 
 class LLMError(Exception):
     """Raised when an LLM request or response cannot be used safely."""
+
+
+# ── C2 工程改进：LLM 调用重试机制 ──────────────────────────────────────────────
+# 可重试的 HTTP 状态码（服务器瞬时错误 + 限流 + 超时，重试通常能恢复）
+_RETRIABLE_STATUS_CODES = frozenset({408, 429, 500, 502, 503, 504})
+
+
+def _call_with_retry(call_fn, provider_name: str):
+    """调用 LLM HTTP 请求，遇瞬时错误时指数退避重试。
+
+    Args:
+        call_fn: 无参 callable，执行一次 HTTP 调用并返回 (response, cost_ms)。
+                 call_fn 内部不处理重试逻辑，仅负责单次 POST。
+        provider_name: 用于日志标识（如 "StepFun", "DeepSeek"）。
+
+    Returns:
+        与 call_fn 相同签名的返回值（最后一次成功的那一次）。
+
+    Raises:
+        requests.RequestException / LLMError: 所有重试均失败后抛出。
+    """
+    last_exc: Exception | None = None
+    last_response = None
+    max_attempts = max(1, LLM_RETRY_MAX_ATTEMPTS)
+    backoff = max(1, LLM_RETRY_BACKOFF_FACTOR)
+
+    for attempt in range(1, max_attempts + 1):
+        response = None
+        try:
+            response = call_fn()
+        except requests.RequestException as exc:
+            last_exc = exc
+            if attempt >= max_attempts:
+                raise
+            wait = backoff ** attempt
+            logger.warning(
+                "[%s] 网络异常 (attempt %d/%d): %s — %ds 后重试",
+                provider_name, attempt, max_attempts, exc, wait,
+            )
+            time.sleep(wait)
+            continue
+
+        status = response.status_code if response is not None else 0
+        if status >= 400 and status in _RETRIABLE_STATUS_CODES and attempt < max_attempts:
+            last_response = response
+            wait = backoff ** attempt
+            logger.warning(
+                "[%s] HTTP %d (attempt %d/%d) — %ds 后重试",
+                provider_name, status, attempt, max_attempts, wait,
+            )
+            time.sleep(wait)
+            continue
+
+        return response
+
+    # 所有重试均失败（不应到达此处，但保险起见）
+    if last_response is not None:
+        return last_response
+    if last_exc is not None:
+        raise last_exc
+    raise LLMError(f"{provider_name} 重试全部失败且无响应")
 
 
 def _message_text(value: Any) -> str:
@@ -436,11 +499,15 @@ class StepFunClient:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}",
         }
+
+        def do_post() -> requests.Response:
+            return requests.post(url, headers=headers, json=body, timeout=self.timeout)
+
         start = time.time()
         try:
-            response = requests.post(url, headers=headers, json=body, timeout=self.timeout)
+            response = _call_with_retry(do_post, provider_name)
         except requests.RequestException as exc:
-            raise LLMError(f"{provider_name} 请求失败: {exc}") from exc
+            raise LLMError(f"{provider_name} 请求失败（已重试 {LLM_RETRY_MAX_ATTEMPTS} 次）: {exc}") from exc
 
         cost_ms = int((time.time() - start) * 1000)
         if response.status_code >= 400:
@@ -512,11 +579,15 @@ class DeepSeekClient:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}",
         }
+
+        def do_post() -> requests.Response:
+            return requests.post(url, headers=headers, json=body, timeout=self.timeout)
+
         start = time.time()
         try:
-            response = requests.post(url, headers=headers, json=body, timeout=self.timeout)
+            response = _call_with_retry(do_post, "DeepSeek")
         except requests.RequestException as exc:
-            raise LLMError(f"DeepSeek 请求失败: {exc}") from exc
+            raise LLMError(f"DeepSeek 请求失败（已重试 {LLM_RETRY_MAX_ATTEMPTS} 次）: {exc}") from exc
 
         cost_ms = int((time.time() - start) * 1000)
         if response.status_code >= 400:
