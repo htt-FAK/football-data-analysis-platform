@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from urllib.parse import urlparse
 from typing import Any
@@ -41,6 +42,32 @@ from app.prediction.media import (
 from app.prediction.web_search import SearchResult, build_intel_block, is_available as web_search_available, search_safe
 
 logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Firecrawl 搜索进程内缓存 (B3 优化)
+# ---------------------------------------------------------------------------
+_search_cache: dict = {}
+_CACHE_TTL_SECONDS = 300  # 5 分钟 TTL
+
+
+def search_safe_cached(query: str, **kwargs) -> list:
+    """search_safe 的带缓存版本。同一进程内 5 分钟内的重复查询直接返回缓存。"""
+    key = (query, kwargs.get("max_results"), kwargs.get("include_images"))
+    now = time.time()
+    if key in _search_cache:
+        ts, results = _search_cache[key]
+        if now - ts < _CACHE_TTL_SECONDS:
+            logger.info("search cache HIT: query=%s", query[:60])
+            return results
+    results = search_safe(query, **kwargs)
+    _search_cache[key] = (now, results)
+    # 定期清理过期项，防内存泄漏
+    if len(_search_cache) > 200:
+        cutoff = now - _CACHE_TTL_SECONDS
+        expired_keys = [k for k, (ts, _) in _search_cache.items() if ts < cutoff]
+        for k in expired_keys:
+            del _search_cache[k]
+    return results
 
 PLACEHOLDER_PHRASES = {
     "结论待补充",
@@ -641,7 +668,7 @@ class PredictionOrchestrator:
         merged: list[SearchResult] = []
         seen_urls: set[str] = set()
         for q in queries:
-            for r in search_safe(q, include_images=True):
+            for r in search_safe_cached(q, include_images=True):
                 url = (r.url or "").strip()
                 if url and url in seen_urls:
                     continue
@@ -672,7 +699,7 @@ class PredictionOrchestrator:
                 f"{home} vs {away} predicted lineup formation",
                 f"{home} {away} starting eleven squad",
             ):
-                lineup_candidates.extend(search_safe(q, include_images=True))
+                lineup_candidates.extend(search_safe_cached(q, include_images=True))
         # ② 补充：文字情报结果里的图片
         all_candidates = lineup_candidates + (search_results or [])
 
@@ -733,8 +760,39 @@ class PredictionOrchestrator:
         vision_block, vision_record = self._run_vision_analysis(meta, search_results)
         vision_cost_ms = int((time.time() - vision_start) * 1000)
 
-        round1 = self._round_tactical(context_block, meta, search_results, vision_block)
-        round2 = self._round_contextual(context_block, meta, search_results, vision_block)
+        # ── B1 优化：R1 (战术) + R2 (场外) 并行执行 ──
+        # R3 (深度推理) 依赖 R1+R2 结果 (prior_for_reasoning)，不能并行
+        parallel_start = time.time()
+
+        def _safe_round_tactical():
+            try:
+                return self._round_tactical(context_block, meta, search_results, vision_block)
+            except Exception as exc:  # noqa: BLE001
+                logger.exception("R1 战术轮异常: %s", exc)
+                return _round_record(1, "战术视角(step-3.7-flash)", "step-3.7-flash", None, None, f"{type(exc).__name__}: {exc}")
+
+        def _safe_round_contextual():
+            try:
+                return self._round_contextual(context_block, meta, search_results, vision_block)
+            except Exception as exc:  # noqa: BLE001
+                logger.exception("R2 场外轮异常: %s", exc)
+                return _round_record(2, "场外微观(step-3.7-flash)", "step-3.7-flash", None, None, f"{type(exc).__name__}: {exc}")
+
+        with ThreadPoolExecutor(max_workers=2, thread_name_prefix="pred-r") as pool:
+            fut_r1 = pool.submit(_safe_round_tactical)
+            fut_r2 = pool.submit(_safe_round_contextual)
+            round1 = fut_r1.result()
+            round2 = fut_r2.result()
+
+        parallel_cost = int((time.time() - parallel_start) * 1000)
+        r1_ms = int(round1.get("cost_ms") or 0)
+        r2_ms = int(round2.get("cost_ms") or 0)
+        logger.info(
+            "R1+R2 并行完成 match_id=%s wall=%dms (R1=%dms R2=%dms 串行估算=%dms 节省=%dms)",
+            match_id, parallel_cost, r1_ms, r2_ms, r1_ms + r2_ms,
+            (r1_ms + r2_ms) - parallel_cost,
+        )
+
         prior_for_reasoning = [round_data for round_data in (round1, round2) if round_data.get("status") in {"completed", "partial"}]
         round3 = self._round_reasoning(context_block, meta, prior_for_reasoning)
         all_rounds: list[dict] = []

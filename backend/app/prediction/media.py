@@ -25,11 +25,24 @@ logger = logging.getLogger(__name__)
 _IMAGE_HOST_HINTS = ("img", "image", "cdn", "static", "photo", "media", "upload")
 _IMAGE_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif")
 
-# 低质量/社交媒体图片源：视觉模型识别价值低，且常导致 500，直接排除
+# 低质量/社交媒体/反爬图片源：视觉模型识别价值低，且常导致 403/500，直接排除
 _BAD_IMAGE_HOSTS = (
+    # 社交媒体（低质/反爬）
     "facebook", "fbcdn", "fbsbx", "threads", "instagram",
     "tiktok", "twitter", "x.com", "pinterest", "reddit",
     "youtube", "youtu.be",
+    # 反爬/低质 CDN（hotlink block 或 Cloudflare 强反爬）
+    "totalfootballanalysis.com",
+    "fotmob.com",
+    "lookaside.fbsbx.com",
+    "external.xx.fbcdn.net",
+    "scontent",
+    "tiktokcdn",
+    "googleusercontent.com",
+    "medium.com",
+    "substack",
+    "wordpress.com",
+    "wixsite.com",
 )
 
 # 高质量阵容/战术图来源（优先采用）
@@ -37,6 +50,11 @@ _GOOD_IMAGE_HOSTS = (
     "theanalyst", "opta", "whoscored", "transfermarkt",
     "si.com", "espn", "goal", "sportskeeda", "101greatgoals",
     "footballcriticism", "footballdna", "coachesvoice",
+    # 可靠新闻/图片图源
+    "reuters", "apnews", "afp",
+    "gettyimages", "alamy",
+    "static01.nyt.com",
+    "skysports", "bbc", "theguardian",
 )
 
 
