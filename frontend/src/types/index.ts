@@ -49,6 +49,7 @@ export interface Player {
   gk_score?: number;
   phy_score?: number;
   dis_score?: number;
+  stats?: PlayerStat[];
 }
 
 export interface WorldCupPlayer {
@@ -333,6 +334,76 @@ export interface RadarData {
   position?: string;
 }
 
+// ── Raw API 响应类型 (Track F: 类型安全) ─────────────────────────
+export type RawPlayer = Partial<Player> & {
+  player_id?: number;
+  shirt_number?: number;
+  height?: number;
+  weight?: number;
+  rating?: number;
+  group?: string;
+};
+
+export type RawPlayerStat = Partial<PlayerStat> & {
+  save_rate?: number;
+  xcs?: number;
+  sweeper_actions?: number;
+};
+
+export type RawMatch = Partial<Match> & { group?: string };
+
+export interface RawRadarData {
+  dimensions?: string[];
+  values?: number[];
+  recommended_visualization?: string;
+  completeness?: string | { label?: string; recommended_visualization?: string };
+  median_values?: number[];
+  position?: string;
+  mode?: string;
+}
+
+export type RawLeaderboardRow = Partial<Player> & Partial<PlayerStat> & {
+  player_id?: number;
+  shirt_number?: number;
+  height?: number;
+  weight?: number;
+  group?: string;
+  [key: string]: unknown;
+};
+
+export type LeaderboardResponse = RawLeaderboardRow[];
+
+export interface PlayerCompareResponse {
+  player_a?: RawPlayer;
+  player_b?: RawPlayer;
+  season_stats?: {
+    player_a?: Partial<PlayerStat>;
+    player_b?: Partial<PlayerStat>;
+  };
+  radar?: {
+    player_a?: RadarData;
+    player_b?: RadarData;
+  };
+  comparison_summary?: Record<string, { a: number; b: number; better: string }>;
+  recommended_visualization?: string;
+  completeness?: string | Record<string, unknown>;
+}
+
+export interface PositionStatsResponse {
+  position?: string;
+  total_players?: number;
+  count?: number;
+  total?: number;
+  distributions?: Record<string, {
+    median?: number;
+    q1?: number;
+    q3?: number;
+    min?: number;
+    max?: number;
+  }>;
+  [key: string]: unknown;
+}
+
 export interface PositionStats {
   position: string;
   total_players: number;
@@ -350,11 +421,11 @@ export interface PlayerCompareResult {
   player_b: Player;
   stats_a: PlayerStat;
   stats_b: PlayerStat;
-  radar_a: RadarData;
-  radar_b: RadarData;
+  radar_a?: RadarData;
+  radar_b?: RadarData;
   comparison_summary: Record<string, { a: number; b: number; better: string }>;
   recommended_visualization: string;
-  completeness: string;
+  completeness: string | Record<string, unknown>;
 }
 
 export interface CrawlLog {

@@ -1,9 +1,22 @@
 import { apiClient } from "./client";
-import type { Player, PlayerStat, RadarData, PositionStats, PlayerCompareResult } from "@/types";
+import type {
+  Player,
+  PlayerStat,
+  RadarData,
+  PositionStats,
+  PlayerCompareResult,
+  RawPlayer,
+  RawPlayerStat,
+  RawRadarData,
+  RawLeaderboardRow,
+  LeaderboardResponse,
+  PlayerCompareResponse,
+  PositionStatsResponse,
+} from "@/types";
 import { getRadarDimensionLabels } from "@/lib/utils";
 import { getPositionConfig, normalizePosition } from "@/lib/position-dimensions";
 
-function normalizePlayer(raw: any): Player {
+function normalizePlayer(raw: RawPlayer): Player {
   return {
     id: raw?.id ?? raw?.player_id ?? 0,
     name: raw?.name ?? "",
@@ -28,7 +41,7 @@ function normalizePlayer(raw: any): Player {
   };
 }
 
-function normalizePlayerStat(raw: any): PlayerStat {
+function normalizePlayerStat(raw: RawPlayerStat): PlayerStat {
   return {
     player_id: raw?.player_id ?? 0,
     season: raw?.season ?? undefined,
@@ -55,7 +68,7 @@ function normalizePlayerStat(raw: any): PlayerStat {
   };
 }
 
-function enrichLeaderboardPlayers(rows: any[]): Player[] {
+function enrichLeaderboardPlayers(rows: RawLeaderboardRow[]): Player[] {
   return rows.map((row) => ({
     ...normalizePlayer(row),
     overall_rating: row?.overall_rating ?? row?.rating ?? row?.goals ?? 0,
@@ -111,23 +124,28 @@ export async function getPlayerStats(id: number, season?: string): Promise<Playe
 }
 
 export async function getPlayerRadar(id: number, season?: string, position?: string): Promise<RadarData> {
-  const { data } = await apiClient.get<RadarData>(`/api/v1/players/${id}/radar`, {
+  const { data } = await apiClient.get<RawRadarData>(`/api/v1/players/${id}/radar`, {
     params: { season, position },
   });
+
+  const completeness = data?.completeness;
+  const completenessObj =
+    typeof completeness === "object" && completeness !== null ? completeness : undefined;
+
   return {
     dimensions: Array.isArray(data?.dimensions) ? getRadarDimensionLabels(data.dimensions) : [],
     values: Array.isArray(data?.values) ? data.values : [],
     recommended_visualization:
-      (data as any)?.recommended_visualization ??
-      (data as any)?.mode ??
-      (data as any)?.completeness?.recommended_visualization ??
+      data?.recommended_visualization ??
+      data?.mode ??
+      completenessObj?.recommended_visualization ??
       "advanced_radar",
     completeness:
-      typeof (data as any)?.completeness === "string"
-        ? (data as any).completeness
-        : (data as any)?.completeness?.label ?? "available",
-    median_values: Array.isArray((data as any)?.median_values) ? (data as any).median_values : undefined,
-    position: (data as any)?.position ?? position,
+      typeof completeness === "string"
+        ? completeness
+        : completenessObj?.label ?? "available",
+    median_values: Array.isArray(data?.median_values) ? data.median_values : undefined,
+    position: data?.position ?? position,
   };
 }
 
@@ -142,7 +160,7 @@ export async function getPlayerPositionRank(id: number, season?: string) {
 }
 
 export async function comparePlayers(playerA: number, playerB: number): Promise<PlayerCompareResult> {
-  const { data } = await apiClient.get<any>("/api/v1/players/compare", {
+  const { data } = await apiClient.get<PlayerCompareResponse>("/api/v1/players/compare", {
     params: { player_a: playerA, player_b: playerB },
   });
   return {
@@ -159,14 +177,14 @@ export async function comparePlayers(playerA: number, playerB: number): Promise<
 }
 
 export async function getTopScorers(limit = 50, season?: string): Promise<Player[]> {
-  const { data } = await apiClient.get<any[]>("/api/v1/players/top-scorers", {
+  const { data } = await apiClient.get<LeaderboardResponse>("/api/v1/players/top-scorers", {
     params: { limit, season },
   });
   return Array.isArray(data) ? enrichLeaderboardPlayers(data) : [];
 }
 
 export async function getPositionStats(position: string): Promise<PositionStats> {
-  const { data } = await apiClient.get<any>("/api/v1/players/position-stats", {
+  const { data } = await apiClient.get<PositionStatsResponse>("/api/v1/players/position-stats", {
     params: { position },
   });
 
@@ -196,5 +214,5 @@ export async function getPositionStats(position: string): Promise<PositionStats>
   return {
     ...data,
     total_players: data?.total_players ?? data?.count ?? 0,
-  };
+  } as PositionStats;
 }

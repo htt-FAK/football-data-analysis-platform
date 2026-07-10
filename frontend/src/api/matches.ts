@@ -1,10 +1,15 @@
 import { apiClient } from "./client";
-import type { Match, MatchEvent, MatchReport, MatchXgTimeline, Shot } from "@/types";
+import type { Match, MatchEvent, MatchReport, MatchXgTimeline, Shot, RawMatch } from "@/types";
 
-function normalizeMatch(row: any): Match {
+function normalizeMatch(row: RawMatch): Match {
   const dateTime = row?.date_time ?? row?.match_date ?? undefined;
   return {
     ...row,
+    id: row?.id ?? 0,
+    home_team_id: row?.home_team_id ?? 0,
+    home_team_name: row?.home_team_name ?? "",
+    away_team_id: row?.away_team_id ?? 0,
+    away_team_name: row?.away_team_name ?? "",
     date_time: dateTime,
     match_date: row?.match_date ?? dateTime,
     group_name: row?.group_name ?? row?.group ?? undefined,

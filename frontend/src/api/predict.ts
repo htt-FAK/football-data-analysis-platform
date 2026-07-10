@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { apiClient } from "./client";
 import type { MatchPredictionResponse, PredictableMatch } from "@/types";
 
@@ -5,8 +6,8 @@ export async function getPrediction(matchId: number): Promise<MatchPredictionRes
   try {
     const { data } = await apiClient.get<MatchPredictionResponse>(`/api/v1/predict/matches/${matchId}`);
     return data;
-  } catch (error: any) {
-    if (error?.response?.status === 404) {
+  } catch (error) {
+    if (error instanceof AxiosError && error.response?.status === 404) {
       return null as unknown as MatchPredictionResponse;
     }
     throw error;
