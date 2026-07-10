@@ -64,3 +64,10 @@ export async function getMatchReport(id: number): Promise<MatchReport> {
   const { data } = await apiClient.get<MatchReport>(`/api/v1/matches/${id}/report`);
   return data;
 }
+
+export async function refreshMatch(id: number): Promise<{ status: string; message?: string }> {
+  const { data } = await apiClient.post<{ status: string; message?: string }>(
+    `/api/v1/matches/${id}/refresh`
+  );
+  return data;
+}

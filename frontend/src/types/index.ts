@@ -643,6 +643,16 @@ export interface PredictionAccuracyDetail extends PredictionAccuracySummary {
   real_outcome: "home_win" | "draw" | "away_win";
 }
 
+/** 视觉轮（round 0）分析过的图片 */
+export interface PredictionVisualImage {
+  url: string;
+  description?: string | null;
+  source?: string | null;
+}
+
+/** 预测状态枚举（用于比赛列表/详情徽章） */
+export type PredictionDisplayStatus = "predicted" | "unpredictable" | "upcoming";
+
 export interface PredictionRound {
   round: number;
   focus: string;
@@ -654,6 +664,8 @@ export interface PredictionRound {
   tokens: number;
   cost_ms: number;
   error?: string | null;
+  /** 视觉轮（round 0）分析过的图片列表 */
+  images?: PredictionVisualImage[] | null;
   // 顶层结论字段（可能存在）
   home_win_prob?: number;
   draw_prob?: number;

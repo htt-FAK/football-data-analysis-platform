@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { AlertCircle, CheckCircle2, Clock } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import {
   getTeamIdentity,
   shouldDisplayMatchScore,
 } from "@/lib/utils";
-import type { Match, MatchEvent, MatchReport } from "@/types";
+import type { Match, MatchEvent, MatchReport, PredictionDisplayStatus } from "@/types";
 
 function TeamFlag({
   label,
@@ -64,12 +65,49 @@ function buildReportSummary(report?: MatchReport | null): string | null {
   return "比赛已结束，摘要补充中。";
 }
 
+function PredictionStatusBadge({
+  status,
+  matchId,
+}: {
+  status: PredictionDisplayStatus;
+  matchId: number;
+}) {
+  if (status === "predicted") {
+    return (
+      <Link
+        to={`/ai-predict?match=${matchId}`}
+        onClick={(e) => e.stopPropagation()}
+        className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded border border-emerald-500/40 bg-emerald-500/10 px-1.5 py-0.5 text-[9px] font-bold text-emerald-400 transition-colors hover:bg-emerald-500/20"
+      >
+        <CheckCircle2 className="h-3 w-3" />
+        已预测
+      </Link>
+    );
+  }
+  if (status === "unpredictable") {
+    return (
+      <span className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded border border-amber-500/40 bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold text-amber-400">
+        <AlertCircle className="h-3 w-3" />
+        无预测
+      </span>
+    );
+  }
+  return (
+    <span className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded border border-border bg-secondary/60 px-1.5 py-0.5 text-[9px] font-bold text-muted-foreground">
+      <Clock className="h-3 w-3" />
+      待开赛
+    </span>
+  );
+}
+
 export function MatchCard({
   match,
   report,
+  predictionStatus,
 }: {
   match: Match;
   report?: MatchReport | null;
+  predictionStatus?: PredictionDisplayStatus;
 }) {
   const isLive = match.status === "live" || match.status === "in_progress" || match.status === "half_time";
   const isFinished = match.status === "finished";
@@ -83,6 +121,8 @@ export function MatchCard({
     <Link to={`/matches/${match.id}`}>
       <Card className="group relative cursor-pointer overflow-hidden p-4 transition-all duration-200 hover:border-primary/40">
         <div className="absolute left-0 top-0 h-full w-1 bg-primary/0 transition-all duration-200 group-hover:bg-primary" />
+
+        {predictionStatus ? <PredictionStatusBadge status={predictionStatus} matchId={match.id} /> : null}
 
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">

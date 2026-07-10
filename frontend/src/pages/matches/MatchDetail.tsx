@@ -1,11 +1,13 @@
-﻿import { useParams, useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { AlertCircle, Calendar, Clock, FileText, Flag, MapPin, Repeat, Target, TrendingUp } from "lucide-react";
+import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { AlertCircle, Brain, Calendar, CheckCircle2, Clock, ExternalLink, FileText, Flag, Loader2, MapPin, RefreshCw, Repeat, Target, TrendingUp } from "lucide-react";
 
-import { getMatch, getMatchEvents, getMatchReport } from "@/api/matches";
+import { getMatch, getMatchEvents, getMatchReport, refreshMatch } from "@/api/matches";
+import { getPrediction } from "@/api/predict";
 import { useLiveScore } from "@/hooks/useLiveScore";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState, LoadingState, PageHeader, StatCard } from "@/components/ui/stat-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -22,7 +24,7 @@ import {
   getStatusLabel,
   getTeamIdentity,
 } from "@/lib/utils";
-import type { Match, MatchEvent, MatchReport } from "@/types";
+import type { Match, MatchEvent, MatchPredictionResponse, MatchReport } from "@/types";
 
 function getAvailabilitySourceLabel(source?: string | null): string | null {
   if (!source) return null;
@@ -220,6 +222,27 @@ export function MatchDetail() {
   // 无需在此手动 refetch。此处保留订阅以确保页面在 WS 链路上保持活跃。
   useLiveScore();
 
+  // 获取该比赛的 AI 预测数据（用于显示预测摘要卡片）
+  const { data: prediction } = useQuery<MatchPredictionResponse | null>({
+    queryKey: ["prediction", matchId],
+    queryFn: () => getPrediction(matchId),
+    enabled: !!matchId,
+    staleTime: 60_000,
+    retry: 1,
+  });
+
+  // 刷新比赛数据 mutation
+  const queryClient = useQueryClient();
+  const refreshMutation = useMutation({
+    mutationFn: () => refreshMatch(matchId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["match", matchId] });
+      void queryClient.invalidateQueries({ queryKey: ["matchEvents", matchId] });
+      void queryClient.invalidateQueries({ queryKey: ["matchReport", matchId] });
+      void queryClient.invalidateQueries({ queryKey: ["prediction", matchId] });
+    },
+  });
+
   if (!matchId) return <EmptyState icon={AlertCircle} title="比赛 ID 无效" />;
   if (matchLoading) return <LoadingState rows={8} />;
   if (!match) return <EmptyState icon={AlertCircle} title="未找到比赛" description="后端没有返回这场比赛的详情数据。" />;
@@ -258,6 +281,99 @@ export function MatchDetail() {
     <div className="animate-fade-in">
       <Breadcrumb items={[{ label: "比赛中心", to: "/matches" }, { label: "比赛详情" }]} />
       <PageHeader title="比赛详情" description="查看事件时间线、xG、射门和聚合报告。" />
+
+      {/* AI 预测摘要卡 + 刷新按钮 */}
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <Card className="flex-1">
+          <CardContent className="p-4">
+            {prediction && prediction.status === "completed" ? (
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2 flex items-center gap-2">
+                    <Brain className="h-4 w-4 text-emerald-400" />
+                    <span className="text-sm font-semibold">AI 预测分析</span>
+                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                  </div>
+                  <div className="mb-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                    <span>
+                      胜/平/负：
+                      <span className="font-mono font-bold text-foreground">
+                        {Math.round(prediction.home_win_prob ?? 0)}%
+                      </span>
+                      {" / "}
+                      <span className="font-mono font-bold text-foreground">
+                        {Math.round(prediction.draw_prob ?? 0)}%
+                      </span>
+                      {" / "}
+                      <span className="font-mono font-bold text-foreground">
+                        {Math.round(prediction.away_win_prob ?? 0)}%
+                      </span>
+                    </span>
+                    {prediction.confidence != null ? (
+                      <span>
+                        置信度：
+                        <span className="font-mono font-bold text-emerald-400">
+                          {Math.round(prediction.confidence)}%
+                        </span>
+                      </span>
+                    ) : null}
+                    {prediction.predicted_home_score != null ? (
+                      <span>
+                        预测比分：
+                        <span className="font-mono font-bold text-foreground">
+                          {prediction.predicted_home_score} : {prediction.predicted_away_score}
+                        </span>
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+                <Link to={`/ai-predict?match=${matchId}`}>
+                  <Button variant="outline" size="sm" className="shrink-0">
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    查看完整分析
+                  </Button>
+                </Link>
+              </div>
+            ) : isLive ? (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Brain className="h-4 w-4 text-muted-foreground" />
+                比赛进行中，预测已锁定
+              </div>
+            ) : isScheduled ? (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                比赛未开始，开赛后可生成 AI 预测
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <AlertCircle className="h-4 w-4 text-amber-400" />
+                AI 预测不可用
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="shrink-0 sm:mt-0"
+          disabled={refreshMutation.isPending}
+          onClick={() => refreshMutation.mutate()}
+        >
+          {refreshMutation.isPending ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <RefreshCw className="h-3.5 w-3.5" />
+          )}
+          {refreshMutation.isPending
+            ? "刷新中..."
+            : refreshMutation.isSuccess
+              ? "已刷新"
+              : refreshMutation.isError
+                ? "刷新失败"
+                : "刷新比赛数据"}
+        </Button>
+      </div>
 
       {isScheduled ? (
         <Card className="mb-6 border-primary/20 bg-primary/5">

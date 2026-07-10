@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   Brain,
@@ -8,6 +9,7 @@ import {
   Clock,
   ExternalLink,
   Globe,
+  ImageIcon,
   Loader2,
   MapPin,
   RefreshCw,
@@ -15,6 +17,7 @@ import {
   Sparkles,
   Target,
   TrendingUp,
+  X,
   XCircle,
   Zap,
 } from "lucide-react";
@@ -41,6 +44,7 @@ import type {
   MatchPredictionResponse,
   PredictionAccuracyLevel,
   PredictionAccuracySummary,
+  PredictionVisualImage,
   PredictableMatch,
   PredictionRound,
   WorldCupUpcomingMatch,
@@ -513,6 +517,91 @@ function ProbabilityBar({
   );
 }
 
+function VisualImagesGrid({ images }: { images: PredictionVisualImage[] }) {
+  const [zoomedUrl, setZoomedUrl] = useState<string | null>(null);
+
+  if (images.length === 0) return null;
+
+  return (
+    <>
+      <div>
+        <div className="mb-2 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#60a5fa]">
+          <ImageIcon className="h-3 w-3" /> 视觉分析图片（{images.length}）
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {images.map((img, index) => (
+            <button
+              key={`visual-${index}`}
+              type="button"
+              onClick={() => setZoomedUrl(img.url)}
+              className="group relative overflow-hidden rounded border border-[#1a1f2e] bg-[#0f1419] transition-colors hover:border-[#22c55e]/40"
+            >
+              <img
+                src={img.url}
+                alt={img.description || `视觉分析图片 ${index + 1}`}
+                className="aspect-video w-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
+              {img.description ? (
+                <div className="truncate px-2 py-1 text-left text-[10px] text-[#64748b]">
+                  {img.description}
+                </div>
+              ) : null}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 图片放大弹层 */}
+      {zoomedUrl ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setZoomedUrl(null)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setZoomedUrl(null);
+          }}
+          role="dialog"
+          aria-modal="true"
+          tabIndex={-1}
+        >
+          <button
+            type="button"
+            className="absolute right-4 top-4 rounded-full bg-black/60 p-2 text-white transition-colors hover:bg-black/80"
+            onClick={() => setZoomedUrl(null)}
+            aria-label="关闭"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <img
+            src={zoomedUrl}
+            alt="放大查看"
+            className="max-h-[85vh] max-w-[90vw] rounded object-contain"
+          />
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+function extractVisualImages(round: PredictionRound): PredictionVisualImage[] {
+  // 优先使用顶层 images 字段
+  if (Array.isArray(round.images) && round.images.length > 0) return round.images;
+
+  // 兜底：从 conclusion 中提取 images
+  const conclusionImages = round.conclusion?.images;
+  if (Array.isArray(conclusionImages)) {
+    return conclusionImages
+      .filter(
+        (item): item is PredictionVisualImage =>
+          typeof item === "object" && item !== null && typeof (item as PredictionVisualImage).url === "string"
+      );
+  }
+  return [];
+}
+
 function RoundPanel({ round, defaultOpen = false }: { round: PredictionRound; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
   const isArbiter = round.round === 4;
@@ -613,6 +702,35 @@ function RoundPanel({ round, defaultOpen = false }: { round: PredictionRound; de
             <div className="mb-2 text-[10px] font-bold uppercase tracking-widest text-[#64748b]">本轮结论</div>
             <p className="text-sm leading-6 text-[#e2e8f0]">{summary}</p>
           </div>
+
+          {/* 视觉轮（round 0）：图片网格 + 失败提示 */}
+          {round.round === 0 ? (
+            (() => {
+              const visualImages = extractVisualImages(round);
+              if (visualImages.length > 0) {
+                return <VisualImagesGrid images={visualImages} />;
+              }
+              if (isFailed) {
+                return (
+                  <div className="rounded-md border border-rose-500/30 bg-rose-500/5 p-3">
+                    <div className="flex items-center gap-2 text-xs text-rose-300">
+                      <XCircle className="h-3.5 w-3.5" />
+                      <span>视觉分析未成功</span>
+                      <span className="ml-auto rounded border border-rose-500/30 px-1.5 py-0.5 text-[9px]">跳过</span>
+                    </div>
+                    {friendlyError ? (
+                      <p className="mt-1.5 text-[11px] text-rose-400/80">{friendlyError}</p>
+                    ) : null}
+                  </div>
+                );
+              }
+              return (
+                <div className="rounded-md border border-[#1a1f2e] bg-[#0f1419] p-3 text-xs text-[#64748b]">
+                  本轮没有可展示的视觉图片。
+                </div>
+              );
+            })()
+          ) : null}
 
           {(homeProb != null || hasRealConservative || hasRealAggressive) && (
             <div className="grid gap-3 sm:grid-cols-3">
@@ -793,8 +911,10 @@ function PredictionListItem({
 }
 
 export function AIPredict() {
+  const [searchParams] = useSearchParams();
   const [selectedMatchId, setSelectedMatchId] = useState<string>("");
   const [hasUserSelectedMatch, setHasUserSelectedMatch] = useState(false);
+  const urlMatchIdApplied = useRef(false);
   const {
     pendingPredictionMatchIds,
     setPendingPredictionMatchIds,
@@ -917,6 +1037,20 @@ export function AIPredict() {
   }, [pendingPredictionMatchIds, predictedQuery.data, setPendingPredictionMatchIds]);
 
   useEffect(() => {
+    // 从 URL 参数 ?match=xxx 自动选中比赛（仅首次生效）
+    const urlMatch = urlMatchIdApplied.current ? null : searchParams.get("match");
+    const urlMatchValid = urlMatch
+      ? historicalPredictions.some((item) => String(item.match_id) === urlMatch) ||
+        displayUpcomingMatches.some((item) => String(item.match_id) === urlMatch)
+      : false;
+
+    if (urlMatch && urlMatchValid) {
+      urlMatchIdApplied.current = true;
+      setHasUserSelectedMatch(true);
+      setSelectedMatchId(urlMatch);
+      return;
+    }
+
     if (!hasUserSelectedMatch) {
       const nextDefault = displayUpcomingMatches[0]?.match_id ?? historicalPredictions[0]?.match_id;
       if (nextDefault != null) setSelectedMatchId(String(nextDefault));
@@ -931,7 +1065,7 @@ export function AIPredict() {
       const fallback = displayUpcomingMatches[0]?.match_id ?? historicalPredictions[0]?.match_id ?? "";
       setSelectedMatchId(fallback ? String(fallback) : "");
     }
-  }, [displayUpcomingMatches, hasUserSelectedMatch, historicalPredictions, selectedMatchId]);
+  }, [displayUpcomingMatches, hasUserSelectedMatch, historicalPredictions, searchParams, selectedMatchId]);
 
   const activeMatch = selectedHistoricalMatch ?? selectedUpcomingMatch;
   const activePredictedMeta = activeMatch

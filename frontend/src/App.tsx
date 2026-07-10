@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { LiveScoreProvider } from "@/components/providers/LiveScoreProvider";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { TeamList } from "@/pages/teams/TeamList";
 import { TeamDetail } from "@/pages/teams/TeamDetail";
 import { PlayerList } from "@/pages/players/PlayerList";
@@ -27,7 +28,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <LiveScoreProvider>
         <BrowserRouter>
-          <Routes>
+          <ErrorBoundary>
+            <Routes>
             <Route element={<AppLayout />}>
               <Route path="/" element={<Navigate to="/worldcup" replace />} />
               <Route path="/leagues" element={<Navigate to="/worldcup" replace />} />
@@ -47,6 +49,7 @@ export default function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>
+          </ErrorBoundary>
         </BrowserRouter>
       </LiveScoreProvider>
     </QueryClientProvider>

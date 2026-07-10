@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Calendar, Filter, RotateCcw, Search } from "lucide-react";
 
 import { getMatchReport } from "@/api/matches";
+import { getPredictableMatches } from "@/api/predict";
 import { getWorldCupMatches } from "@/api/worldcup";
 import { MatchCard } from "@/components/cards/MatchCard";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { Input, Select } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
 import { EmptyState, LoadingState, PageHeader } from "@/components/ui/stat-card";
 import { parseWorldCupMatchDate, resolveWorldCupDisplayStatus } from "@/lib/utils";
-import type { Match, MatchReport, WorldCupMatch } from "@/types";
+import type { Match, MatchReport, PredictionDisplayStatus, WorldCupMatch } from "@/types";
 
 const STATUS_OPTIONS = [
   { value: "", label: "全部状态" },
@@ -150,6 +151,24 @@ export function MatchList() {
     },
   });
 
+  // 获取预测状态数据，用于在比赛卡片上显示预测徽章
+  const { data: predictedMatches = [] } = useQuery({
+    queryKey: ["predicted-matches-for-badges"],
+    queryFn: () => getPredictableMatches(200),
+    staleTime: 60_000,
+    refetchInterval: 60_000,
+  });
+
+  const predictedMatchIds = useMemo(() => {
+    const set = new Set<number>();
+    for (const item of predictedMatches) {
+      if (item.status === "completed") {
+        set.add(item.match_id);
+      }
+    }
+    return set;
+  }, [predictedMatches]);
+
   function handleFilterChange(key: "status" | "date" | "stage", value: string) {
     setFilters((prev) => ({ ...prev, [key]: value }));
     setCurrentPage(1);
@@ -158,6 +177,13 @@ export function MatchList() {
   function handleReset() {
     setFilters({ status: "", date: "", stage: "" });
     setCurrentPage(1);
+  }
+
+  function getPredictionStatus(match: Match): PredictionDisplayStatus {
+    if (predictedMatchIds.has(match.id)) return "predicted";
+    const displayStatus = resolveDisplayStatus(match);
+    if (displayStatus === "finished") return "unpredictable";
+    return "upcoming";
   }
 
   return (
@@ -217,6 +243,7 @@ export function MatchList() {
                 key={match.id}
                 match={{ ...match, status: resolveDisplayStatus(match) }}
                 report={pageReports[match.id] ?? null}
+                predictionStatus={getPredictionStatus(match)}
               />
             ))}
           </div>
