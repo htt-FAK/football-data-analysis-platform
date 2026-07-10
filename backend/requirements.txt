@@ -18,3 +18,10 @@ websockets>=12.0
 openpyxl>=3.1.0
 xlsxwriter>=3.2.0
 undetected-chromedriver>=3.5.0
+
+# ── 测试依赖 (Track E) ──
+pytest>=8.0
+pytest-asyncio>=0.23
+pytest-cov>=4.1
+pytest-mock>=3.12
+responses>=0.23
