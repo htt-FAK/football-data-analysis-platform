@@ -52,10 +52,17 @@ echo ""
 # ============================================================
 echo_info "步骤 1: 验证 MySQL 连接..."
 
-DB_HOST="118.126.102.143"
-DB_USER="root1"
-DB_PASS="xiangmushu"
-DB_NAME="root1"
+# 安全: 从环境变量读取,绝不把密码硬编码到仓库 (Track H P0-2 安全修复)
+# 用法: export DEPLOY_DB_HOST=xxx DEPLOY_DB_USER=xxx DEPLOY_DB_PASS=xxx DEPLOY_DB_NAME=xxx ./deploy.sh
+# 或通过 .deploy.env 文件 export (已在 .gitignore 中)
+if [ -f ".deploy.env" ]; then
+    # shellcheck source=/dev/null
+    source .deploy.env
+fi
+DB_HOST="${DEPLOY_DB_HOST:-118.126.102.143}"
+DB_USER="${DEPLOY_DB_USER:?错误: 请设置 DEPLOY_DB_USER 环境变量 (或在 .deploy.env 中配置)}"
+DB_PASS="${DEPLOY_DB_PASS:?错误: 请设置 DEPLOY_DB_PASS 环境变量}"
+DB_NAME="${DEPLOY_DB_NAME:-${DB_USER}}"
 
 if command -v mysql &> /dev/null; then
     echo_info "MySQL 客户端已安装"
@@ -262,14 +269,15 @@ echo ""
 # ============================================================
 echo_info "步骤 9: 生成配置文件..."
 
-# .env 文件（使用已有 MySQL）
-cat > "$PROJECT_ROOT/backend/.env" << 'EOF'
-# MySQL 数据库配置（复用已有 MySQL）
-DB_HOST=118.126.102.143
+# .env 文件（从环境变量填充, 不硬编码密码 — Track H 安全修复）
+# 注: EOF 不加单引号允许 shell 变量替换 $DB_HOST 等
+cat > "$PROJECT_ROOT/backend/.env" << EOF
+# MySQL 数据库配置（从环境变量填充）
+DB_HOST=$DB_HOST
 DB_PORT=3306
-DB_USER=root1
-DB_PASSWORD=xiangmushu
-DB_NAME=root1
+DB_USER=$DB_USER
+DB_PASSWORD=$DB_PASS
+DB_NAME=$DB_NAME
 
 # HDFS 配置
 HDFS_HOST=localhost

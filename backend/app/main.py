@@ -63,9 +63,23 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# CORS: 白名单式（Track H 安全修复）
+# 生产环境从 CORS_ALLOWED_ORIGINS 环境变量读取（逗号分隔），缺省为开发环境 localhost
+import os as _os
+_DEFAULT_ORIGINS = [
+    "http://localhost:5173",     # vite dev server
+    "http://localhost:4173",     # vite preview
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:4173",
+]
+_ALLOWED_ORIGINS: list[str] = (
+    [o.strip() for o in _os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if o.strip()]
+    or _DEFAULT_ORIGINS
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

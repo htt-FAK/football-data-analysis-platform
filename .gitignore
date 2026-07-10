@@ -69,3 +69,7 @@ backend/.pytest_cache/
 backend/tests/.coverage
 backend/tests/.pytest_cache/
 
+
+# Deployment credentials (local only, deploy.sh reads this)
+.deploy.env
+
