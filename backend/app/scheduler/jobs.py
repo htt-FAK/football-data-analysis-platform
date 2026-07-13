@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import asyncio
+import functools
+import json
 import logging
 import time
 from datetime import datetime
@@ -10,6 +12,17 @@ from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
+from requests.exceptions import RequestException
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from tenacity import (
+    RetryError,
+    before_log,
+    before_sleep_log,
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from app.config import (
     AI_PREDICTION_SCAN_SECONDS,
@@ -30,6 +43,85 @@ FIFA_DEFAULT_LEAGUE_NAME = "世界杯"
 FIFA_DEFAULT_SEASON_NAME = "2026"
 WORLD_CUP_SCHEDULE_REFRESH_SECONDS = 900
 WORLD_CUP_MATCH_XG_REFRESH_SECONDS = 900
+
+
+# ── 结构化日志辅助函数 ──────────────────────────────────────────────────────
+
+
+def _log_job_start(job_name: str) -> None:
+    """记录 scheduler job 开始（JSON 格式）。"""
+    logger.info(
+        json.dumps(
+            {
+                "event": "scheduler_job_start",
+                "job": job_name,
+                "ts": datetime.utcnow().isoformat() + "Z",
+            }
+        )
+    )
+
+
+def _log_job_end(
+    job_name: str, elapsed_s: float, success: bool, error: str | None = None
+) -> None:
+    """记录 scheduler job 结束（JSON 格式），含耗时与成功/失败状态。"""
+    logger.info(
+        json.dumps(
+            {
+                "event": "scheduler_job_end",
+                "job": job_name,
+                "elapsed_s": round(elapsed_s, 3),
+                "success": success,
+                "error": error,
+                "ts": datetime.utcnow().isoformat() + "Z",
+            }
+        )
+    )
+
+
+def _with_timing(job_name: str):
+    """装饰器：为 scheduler job 添加结构化 timing 日志。
+
+    在每次函数调用时记录 start/end，包括耗时（秒）和是否成功。
+    与 @_scheduler_retry 配合使用时放在内层，确保每个 retry attempt 都有独立 timing。
+    """
+
+    def decorator(fn):
+        @functools.wraps(fn)
+        async def wrapper(*args, **kwargs):
+            _log_job_start(job_name)
+            t0 = time.time()
+            try:
+                result = await fn(*args, **kwargs)
+                _log_job_end(job_name, time.time() - t0, success=True)
+                return result
+            except Exception as exc:
+                _log_job_end(job_name, time.time() - t0, success=False, error=str(exc))
+                raise
+
+        return wrapper
+
+    return decorator
+
+
+# ── tenacity 重试装饰器 ──────────────────────────────────────────────────────
+# 用于包裹周期性 scheduler job，在遇到瞬态故障时自动重试（指数退避）。
+
+_scheduler_retry = retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=2, min=2, max=30),  # 2s, 4s, 8s …
+    retry=retry_if_exception_type(
+        (
+            RequestException,
+            SQLAlchemyError,
+            IntegrityError,
+            ConnectionError,
+        )
+    ),
+    before=before_log(logger, logging.INFO),
+    before_sleep=before_sleep_log(logger, logging.WARNING),
+    reraise=False,
+)
 
 
 def setup_jobs():
@@ -159,13 +251,15 @@ def start_scheduler():
 
 
 def shutdown_scheduler():
-    """Stop the scheduler."""
-
+    """Stop the scheduler, waiting for running jobs to complete (graceful shutdown)."""
+    logger.info("Scheduler shutdown requested (wait=True)")
     if scheduler.running:
-        scheduler.shutdown(wait=False)
-        logger.info("APScheduler stopped")
+        scheduler.shutdown(wait=True)
+        logger.info("Scheduler shutdown completed")
 
 
+@_scheduler_retry
+@_with_timing("crawl_live_matches")
 async def crawl_live_matches():
     """Poll live matches using task-specific source ordering."""
 
@@ -366,6 +460,8 @@ async def _crawl_source_live(source: DataSource, db):
         raise
 
 
+@_scheduler_retry
+@_with_timing("daily_full_crawl")
 async def daily_full_crawl():
     """Run full daily crawl using task-specific source ordering."""
 
@@ -428,6 +524,8 @@ async def daily_full_crawl():
         db.close()
 
 
+@_scheduler_retry
+@_with_timing("refresh_worldcup_schedule")
 async def refresh_worldcup_schedule():
     """Refresh FIFA World Cup schedule frequently during the tournament."""
 
@@ -455,6 +553,8 @@ async def refresh_worldcup_schedule():
         db.close()
 
 
+@_scheduler_retry
+@_with_timing("refresh_worldcup_match_xg")
 async def refresh_worldcup_match_xg():
     """Refresh World Cup per-match xG from Fotmob.
 
@@ -604,6 +704,8 @@ async def _dispatch_crawl(source: DataSource, target: str) -> list:
     return []
 
 
+@_scheduler_retry
+@_with_timing("export_daily_report")
 async def export_daily_report():
     """Export the daily Excel report."""
 
@@ -621,6 +723,8 @@ async def export_daily_report():
         db.close()
 
 
+@_scheduler_retry
+@_with_timing("scan_and_predict_matches")
 async def scan_and_predict_matches():
     """扫描赛前触发窗口内待预测的比赛并逐场执行 AI 预测。
 
