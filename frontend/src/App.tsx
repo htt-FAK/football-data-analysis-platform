@@ -11,6 +11,8 @@ import { MatchList } from "@/pages/matches/MatchList";
 import { MatchDetail } from "@/pages/matches/MatchDetail";
 import { AIPredict } from "@/pages/AIPredict";
 import { WorldCupDashboard } from "@/pages/worldcup/WorldCupDashboard";
+import { NotFound } from "@/pages/NotFound";
+import { ServerError } from "@/pages/ServerError";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,7 +48,8 @@ export default function App() {
               <Route path="/live" element={<Navigate to="/" replace />} />
               <Route path="/worldcup" element={<WorldCupDashboard />} />
               <Route path="/admin" element={<Navigate to="/" replace />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="/500" element={<ServerError />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
           </ErrorBoundary>
